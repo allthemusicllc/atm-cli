@@ -31,6 +31,10 @@ After brute-force generating a range of melodies with the `batch` command, looku
 atm partition -n 'C:4,C:4,C:4,C:4,C:4,C:4,C:4,C:5' -p 2
 ```
 
+You can download an existing dataset containing all 12-note melodies containing the 8 major keys in the Middle C octave from:
+
+https://allthemusic.s3.amazonaws.com/datasets/20190706.C4_D4_E4_F4_G4_A4_B4_C5.L12.tar
+
 ## Usage
 
 ```bash
