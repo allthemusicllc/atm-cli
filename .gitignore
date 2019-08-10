@@ -1,0 +1,12 @@
+# Ignore .DS_Store files for Apple devices
+*.DS_Store
+
+# Ignore Rust build directory
+target/
+**/*.rs.bk
+
+# Ignore any test directories or log files
+*.log
+
+# Ignore Vim temp files
+*.swp

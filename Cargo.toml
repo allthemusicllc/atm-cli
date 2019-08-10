@@ -1,0 +1,13 @@
+[package]
+name = "atm"
+version = "0.1.0"
+authors = ["All The Music, LLC"]
+edition = "2018"
+
+[dependencies]
+clap = "2.33.0"
+itertools = "0.8.0"
+pbr = "1.0.1"
+tar = "0.4.26"
+flate2 = "1.0.9"
+libatm = { path = "lib/libatm" }
