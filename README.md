@@ -11,6 +11,17 @@ If you're looking for a Rust library to generate and work with MIDI files, check
 more information on All the Music, check out [allthemusic.info](http://allthemusic.info).  For more detailed
 information about the code, check out the crate documentation [here](https://allthemusicllc.github.io/atm-cli/atm/index.html).
 
+## Installation
+
+`atm-cli` is written in [Rust](https://www.rust-lang.org/), and thus requires the Rust toolchain to compile.  Follow the instructions at <https://www.rust-lang.org/tools/install> to install the toolchain.  Once that is complete, clone the repo and compile the tool:
+
+```bash
+$ git clone https://github.com/allthemusicllc/atm-cli.git
+$ cd atm-cli
+$ cargo build --release
+$ cargo run --release -- -h # show usage
+```
+
 ## Getting Started
 
 To generate a single MIDI file from a melody, use the `single` directive:
