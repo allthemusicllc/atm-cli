@@ -239,16 +239,6 @@
 <span id="239">239</span>
 <span id="240">240</span>
 <span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// directives.rs</span>
 <span class="comment">//</span>
@@ -330,16 +320,6 @@
         <span class="comment">// Parse length argument as integer</span>
         <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;LENGTH&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">length</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-
-        <span class="comment">// // Target sequence length cannot be less than # of notes</span>
-        <span class="comment">// // TODO: remove this requirement to allow sequences longer than length</span>
-        <span class="comment">// if (length as usize) &lt; sequence.notes.len() {</span>
-        <span class="comment">//     panic!(</span>
-        <span class="comment">//         &quot;Length must be &gt;= the number of notes in the sequence ({} &lt; {})&quot;,</span>
-        <span class="comment">//         length,</span>
-        <span class="comment">//         sequence.notes.len()</span>
-        <span class="comment">//     );</span>
-        <span class="comment">// }</span>
 
         <span class="comment">// Parse target argument</span>
         <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;TARGET&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>();

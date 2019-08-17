@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["atm_batch",""],["atm_partition",""],["atm_single",""]],"struct":[["BatchDirectiveArgs",""],["PartitionDirectiveArgs",""],["SingleDirectiveArgs",""]]});

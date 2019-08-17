@@ -79,16 +79,6 @@ impl<'a> From<&clap::ArgMatches<'a>> for BatchDirectiveArgs {
         let length = matches.value_of("LENGTH").unwrap();
         let length = length.parse::<u32>().unwrap();
 
-        // Target sequence length cannot be less than # of notes
-        // TODO: remove this requirement to allow sequences longer than length
-        if (length as usize) < sequence.notes.len() {
-            panic!(
-                "Length must be >= the number of notes in the sequence ({} < {})",
-                length,
-                sequence.notes.len()
-            );
-        }
-
         // Parse target argument
         let target = matches.value_of("TARGET").unwrap().to_string();
 
