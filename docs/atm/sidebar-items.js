@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["BatchedMIDIArchiveState","State of a BatchedMIDIArchive"]],"fn":[["gen_partition_size","Calculate number of MIDI notes per partition."],["gen_path","Generate a path representing the partition for the given MIDI hash separated by the OS path separator."],["gen_sequences","Generate all permutations (with replacement) of given length from the given sequence of MIDI notes."]],"struct":[["BatchedMIDIArchive","Container for tar archive of MIDI files"]]});
+initSidebarItems({"mod":[["utils",""]]});
