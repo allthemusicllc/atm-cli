@@ -10,6 +10,45 @@ extern crate clap;
 extern crate libatm;
 extern crate pbr;
 
+/*********************************************/
+/***** Argument Parsing Helper Functions *****/
+/*********************************************/
+
+fn parse_sequence_argument<'a>(matches: &clap::ArgMatches<'a>) -> libatm::MIDINoteSequence {
+    let sequence = matches.value_of("NOTES").unwrap();
+    let sequence = sequence.parse::<libatm::MIDINoteSequence>().unwrap();
+    if sequence.notes.len() == 0 {
+        panic!("Sequence must contain at least one note");
+    }
+    sequence
+}
+
+fn parse_target_argument<'a>(matches: &clap::ArgMatches<'a>) -> String {
+    matches.value_of("TARGET").unwrap().to_string()
+}
+
+fn parse_partition_depth_argument<'a>(matches: &clap::ArgMatches<'a>) -> u32 {
+    let partition_depth = matches.value_of("PARTITION_DEPTH").unwrap();
+    let partition_depth = partition_depth.parse::<u32>().unwrap();
+    if partition_depth == 0 || partition_depth > 4 {
+        panic!("Partition depth must be between 0 and 5 (exclusive)");
+    }
+    partition_depth
+}
+
+
+fn parse_max_files_argument<'a>(matches: &clap::ArgMatches<'a>) -> f32 {
+    let max_files = matches.value_of("MAX_FILES");
+    let max_files = match max_files {
+        None => 4096.0,
+        Some(files) => files.parse::<f32>().unwrap(),
+    };
+    if max_files <= 0.0 || max_files > 4096.0 {
+        panic!("Max files must be between 1 and 4096 (inclusive)");
+    }
+    max_files
+}
+
 /****************************/
 /***** Single Directive *****/
 /****************************/
@@ -23,11 +62,10 @@ pub struct SingleDirectiveArgs {
 impl<'a> From<&clap::ArgMatches<'a>> for SingleDirectiveArgs {
     fn from(matches: &clap::ArgMatches<'a>) -> SingleDirectiveArgs {
         // Generate libatm::MIDINoteSequence from notes argument
-        let sequence = matches.value_of("NOTES").unwrap();
-        let sequence = sequence.parse::<libatm::MIDINoteSequence>().unwrap();
+        let sequence = parse_sequence_argument(matches);
 
         // Parse target argument
-        let target = matches.value_of("TARGET").unwrap().to_string();
+        let target = parse_target_argument(matches);
 
         SingleDirectiveArgs { sequence, target }
     }
@@ -72,26 +110,23 @@ pub struct BatchDirectiveArgs {
 impl<'a> From<&clap::ArgMatches<'a>> for BatchDirectiveArgs {
     fn from(matches: &clap::ArgMatches<'a>) -> BatchDirectiveArgs {
         // Generate libatm::MIDINoteSequence from notes argument
-        let sequence = matches.value_of("NOTES").unwrap();
-        let sequence = sequence.parse::<libatm::MIDINoteSequence>().unwrap();
+        let sequence = parse_sequence_argument(matches);
 
         // Parse length argument as integer
         let length = matches.value_of("LENGTH").unwrap();
         let length = length.parse::<u32>().unwrap();
+        if length == 0 {
+            panic!("Length must be greater than 0")
+        }
 
         // Parse target argument
-        let target = matches.value_of("TARGET").unwrap().to_string();
+        let target = parse_target_argument(matches);
 
         // Parse partition_depth argument as integer
-        let partition_depth = matches.value_of("PARTITION_DEPTH").unwrap();
-        let partition_depth = partition_depth.parse::<u32>().unwrap();
+        let partition_depth = parse_partition_depth_argument(matches);
 
         // Parse max_files argument and set default if not provided
-        let max_files = matches.value_of("MAX_FILES");
-        let max_files = match max_files {
-            None => 4096.0,
-            Some(files) => files.parse::<f32>().unwrap(),
-        };
+        let max_files = parse_max_files_argument(matches);
 
         // Calculate partition size (# of notes) from given arguments (see: gen_partition_size)
         let partition_size = crate::utils::gen_partition_size(
@@ -117,6 +152,9 @@ impl<'a> From<&clap::ArgMatches<'a>> for BatchDirectiveArgs {
         // Parse batch_size argument
         let batch_size = matches.value_of("BATCH_SIZE").unwrap();
         let batch_size = batch_size.parse::<u32>().unwrap();
+        if batch_size == 0 {
+            panic!("Batch size must be greater than 0");
+        }
 
         // Parse update argument and set default if not provided
         let update = matches.value_of("PB_UPDATE");
@@ -124,6 +162,9 @@ impl<'a> From<&clap::ArgMatches<'a>> for BatchDirectiveArgs {
             None => 1000,
             Some(duration) => duration.parse::<u64>().unwrap(),
         };
+        if update == 0 {
+            panic!("Update must be greater than 0");
+        }
 
         BatchDirectiveArgs {
             sequence,
@@ -153,7 +194,6 @@ pub fn atm_batch(args: BatchDirectiveArgs) {
     );
     // For each generated sequence
     for (idx, notes) in crate::utils::gen_sequences(&args.sequence.notes, args.length).enumerate() {
-        println!("{}: {:?}", idx + 1, &notes);
         // if reached max count, finish
         if idx == args.max_count {
             archive.finish().unwrap();
@@ -196,19 +236,13 @@ pub struct PartitionDirectiveArgs {
 impl<'a> From<&clap::ArgMatches<'a>> for PartitionDirectiveArgs {
     fn from(matches: &clap::ArgMatches<'a>) -> PartitionDirectiveArgs {
         // Generate libatm::MIDINoteSequence from notes argument
-        let sequence = matches.value_of("NOTES").unwrap();
-        let sequence = sequence.parse::<libatm::MIDINoteSequence>().unwrap();
+        let sequence = parse_sequence_argument(matches);
 
         // Parse partition_depth argument as integer
-        let partition_depth = matches.value_of("PARTITION_DEPTH").unwrap();
-        let partition_depth = partition_depth.parse::<u32>().unwrap();
+        let partition_depth = parse_partition_depth_argument(matches);
 
         // Parse max_files argument and set default if not provided
-        let max_files = matches.value_of("MAX_FILES");
-        let max_files = match max_files {
-            None => 4096.0,
-            Some(files) => files.parse::<f32>().unwrap(),
-        };
+        let max_files = parse_max_files_argument(matches);
 
         // Calculate partition size (# of notes) from given arguments (see: gen_partition_size)
         let partition_size = crate::utils::gen_partition_size(
