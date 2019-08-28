@@ -49,6 +49,12 @@ fn parse_max_files_argument<'a>(matches: &clap::ArgMatches<'a>) -> f32 {
     max_files
 }
 
+fn enforce_num_notes_partition_depth_relation(num_notes: u32, partition_depth: u32) {
+    if partition_depth > num_notes {
+        panic!("Partition depth must not be greater than the length of the provided MIDI note sequence");
+    }
+}
+
 /****************************/
 /***** Single Directive *****/
 /****************************/
@@ -124,6 +130,7 @@ impl<'a> From<&clap::ArgMatches<'a>> for BatchDirectiveArgs {
 
         // Parse partition_depth argument as integer
         let partition_depth = parse_partition_depth_argument(matches);
+        enforce_num_notes_partition_depth_relation(sequence.notes.len() as u32, partition_depth);
 
         // Parse max_files argument and set default if not provided
         let max_files = parse_max_files_argument(matches);
@@ -240,6 +247,7 @@ impl<'a> From<&clap::ArgMatches<'a>> for PartitionDirectiveArgs {
 
         // Parse partition_depth argument as integer
         let partition_depth = parse_partition_depth_argument(matches);
+        enforce_num_notes_partition_depth_relation(sequence.notes.len() as u32, partition_depth);
 
         // Parse max_files argument and set default if not provided
         let max_files = parse_max_files_argument(matches);
