@@ -26,13 +26,22 @@ use itertools::Itertools;
 /// * `max_file_count`: maximum number of files per partition (recommended <= 4K)
 /// * `partition_depth`: number of partitions
 ///
+/// # Preconditions
+///
+/// * `num_notes` > 0
+/// * `length` > 0
+/// * `max_files_count` > 0
+/// * `partition_depth` > 0
+/// * `partition_depth` <= `num_notes`
+/// * if `num_notes`<sup>`length`</sup> <= `max_file_count`, `partition_depth` == 1
+///
 /// # Examples
 ///
 /// ```rust
 /// let partition_size = gen_partition_size(8, 12, 4096, 2);
 ///
 /// // With these parameters, the calculation would be:
-/// // https://www.wolframalpha.com/input/?i=ceil(log64(8%5E12%2F4096))
+/// // https://www.wolframalpha.com/input/?i=ceil%28log64%28max%288%5E12%2F4096%2C+1%29%29%29
 /// assert_eq!(4, partition_size)
 /// ```
 ///
@@ -45,16 +54,28 @@ use itertools::Itertools;
 /// such that no folder would contain more than `max_file_count` number of files. The formula works as follows:
 ///
 /// let N = num_notes<sup>length</sup> <b>(number of files to be generated)</b> </br>
-/// let D = N / max_file_count <b>(maximum number of directories to generate)</b> </br>
+/// let D = max(N / max_file_count, 1) <b>(maximum number of directories to generate)</b> </br>
 /// let B = num_notes<sup>partition_depth</sup> <b>(logarithm base)</b> </br>
 /// partition_size = <b>ceil(log<sub>B</sub>(D))</b>
+///
+/// NOTE: If `num_notes` is 1 or num_notes<sup>length</sup> is less than or equal to
+/// `max_file_count` then the function will simply return `length` (see Preconditions above).
 pub fn gen_partition_size(
     num_notes: f32,
     length: i32,
     max_file_count: f32,
     partition_depth: i32,
 ) -> u32 {
+    if partition_depth > (num_notes as i32) {
+        panic!("Partition depth must be greater than number of notes in MIDI sequence");
+    }
     let num_sequences = num_notes.powi(length);
+    if num_notes == 1.0 || ((num_sequences as f32) <= max_file_count) {
+        if partition_depth > 1 {
+            panic!("Total number of sequences is {} and max_files is {}, partition depth must be 1", num_sequences, max_file_count);
+        }
+        return length as u32;
+    }
     let max_directories = num_sequences / max_file_count;
     let base = num_notes.powi(partition_depth);
     max_directories.log(base).ceil() as u32
@@ -72,17 +93,20 @@ pub fn gen_partition_size(
 /// # Examples
 ///
 /// ```rust
-/// // Set hash of length 12 with 8 distinct notes
+/// // Hash of length 12 with 8 distinct notes
 /// let hash = "606060606467717262616464";
-/// // Set partition_depth to 2 and calculate partition size
+/// // Partition_depth is 2
 /// let partition_depth = 2;
-/// let partition_size = gen_partition_size(8, 12, 4096, partition_depth);
+/// let partition_size = gen_partition_size(8.0, 12, 4096.0, partition_depth);
 /// // Generate path
-/// let path = gen_path(&hash, partitions_size, partition_depth);
+/// let path = gen_path(&hash, partition_size, partition_depth);
 ///
 /// assert_eq!("60606060/64677172", path);
 /// ```
 pub fn gen_path(hash: &str, partition_size: u32, partition_depth: u32) -> String {
+    if (hash.len() as u32) < (partition_size * 2 * partition_depth) {
+        panic!("Hash has insufficient length ({}) for partition size {} and partition_depth {}", hash.len(), partition_size, partition_depth);
+    }
     (0..partition_depth)
         .map(|part| {
             &hash[((partition_size * 2 * part) as usize)
@@ -376,5 +400,136 @@ impl BatchedMIDIArchive {
         self.state = BatchedMIDIArchiveState::Closed;
 
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /************************************/
+    /***** gen_partition_size tests *****/
+    /************************************/
+
+    #[test]
+    fn test_gen_partition_size_1_1_4096_1() {
+        let partition_size = gen_partition_size(1.0, 1, 4096.0, 1);
+        assert_eq!(1, partition_size);
+    }
+
+    #[test]
+    fn test_gen_partition_size_2_8_4096_1() {
+        let partition_size = gen_partition_size(2.0, 8, 4096.0, 1);
+        assert_eq!(8, partition_size);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_gen_partition_size_2_8_4096_2() {
+        let _partition_size = gen_partition_size(2.0, 8, 4096.0, 2);
+    }
+
+    #[test]
+    fn test_gen_partition_size_8_8_4096_1() {
+        let partition_size = gen_partition_size(8.0, 8, 4096.0, 1);
+        assert_eq!(4, partition_size);
+    }
+
+    #[test]
+    fn test_gen_partition_size_8_8_4096_2() {
+        let partition_size = gen_partition_size(8.0, 8, 4096.0, 2);
+        assert_eq!(2, partition_size);
+    }
+
+    #[test]
+    fn test_gen_partition_size_8_12_4096_1() {
+        let partition_size = gen_partition_size(8.0, 12, 4096.0, 1);
+        assert_eq!(8, partition_size);
+    }
+
+    #[test]
+    fn test_gen_partition_size_8_12_4096_2() {
+        let partition_size = gen_partition_size(8.0, 12, 4096.0, 2);
+        assert_eq!(4, partition_size);
+    }
+
+    #[test]
+    fn test_gen_partition_size_9_13_4096_2() {
+        let partition_size = gen_partition_size(9.0, 13, 4096.0, 2);
+        assert_eq!(5, partition_size);
+    }
+
+    #[test]
+    fn test_gen_partition_size_9_13_256_2() {
+        let partition_size = gen_partition_size(9.0, 13, 256.0, 2);
+        assert_eq!(6, partition_size);
+    }
+
+    #[test]
+    fn test_gen_partition_size_9_13_4096_3() {
+        let partition_size = gen_partition_size(9.0, 13, 4096.0, 3);
+        assert_eq!(4, partition_size);
+    }
+
+    /**************************/
+    /***** gen_path tests *****/
+    /**************************/
+
+    fn gen_os_path(components: Vec<&str>) -> String {
+        components.join(&std::path::MAIN_SEPARATOR.to_string())
+    }
+
+    #[test]
+    fn test_gen_path_8_12_2() {
+        let partition_depth: u32 = 2;
+        let partition_size = gen_partition_size(8.0, 12, 4096.0, partition_depth as i32);
+        let hash = "606060606467717262616464";
+        let path = gen_path(hash, partition_size, partition_depth);
+        assert_eq!(gen_os_path(vec!["60606060", "64677172"]), path);
+    }
+
+    #[test]
+    fn test_gen_path_8_12_1() {
+        let partition_depth: u32 = 1;
+        let partition_size = gen_partition_size(8.0, 12, 4096.0, partition_depth as i32);
+        let hash = "606060606467717262616464";
+        let path = gen_path(hash, partition_size, partition_depth);
+        assert_eq!("6060606064677172", path);
+    }
+
+    #[test]
+    fn test_gen_path_9_9_3() {
+        let partition_depth: u32 = 3;
+        let partition_size = gen_partition_size(9.0, 9, 4096.0, partition_depth as i32);
+        let hash = "606060606467717262";
+        let path = gen_path(hash, partition_size, partition_depth);
+        assert_eq!(gen_os_path(vec!["6060", "6060", "6467"]), path);
+    }
+
+    #[test]
+    fn test_gen_path_9_6_3() {
+        let partition_depth: u32 = 3;
+        let partition_size = gen_partition_size(9.0, 6, 4096.0, partition_depth as i32);
+        let hash = "606060606467";
+        let path = gen_path(hash, partition_size, partition_depth);
+        assert_eq!(gen_os_path(vec!["60", "60", "60"]), path);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_gen_path_9_6_3_4() {
+        let partition_depth: u32 = 3;
+        let partition_size: u32 = 4;
+        let hash = "606060606467";
+        let _path = gen_path(hash, partition_size, partition_depth);
+    }
+
+    #[test]
+    fn test_gen_path_9_13_4() {
+        let partition_depth: u32 = 4;
+        let partition_size = gen_partition_size(9.0, 13, 4096.0, partition_depth as i32);
+        let hash = "60606060646760606060646760";
+        let path = gen_path(hash, partition_size, partition_depth);
+        assert_eq!(gen_os_path(vec!["606060", "606467", "606060", "606467"]), path);
     }
 }
