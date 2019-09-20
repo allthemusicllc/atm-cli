@@ -38,7 +38,7 @@ use itertools::Itertools;
 /// # Examples
 ///
 /// ```rust
-/// let partition_size = gen_partition_size(8, 12, 4096, 2);
+/// let partition_size = atm::utils::gen_partition_size(8.0, 12, 4096.0, 2);
 ///
 /// // With these parameters, the calculation would be:
 /// // https://www.wolframalpha.com/input/?i=ceil%28log64%28max%288%5E12%2F4096%2C+1%29%29%29
@@ -97,9 +97,9 @@ pub fn gen_partition_size(
 /// let hash = "606060606467717262616464";
 /// // Partition_depth is 2
 /// let partition_depth = 2;
-/// let partition_size = gen_partition_size(8.0, 12, 4096.0, partition_depth);
+/// let partition_size = atm::utils::gen_partition_size(8.0, 12, 4096.0, partition_depth);
 /// // Generate path
-/// let path = gen_path(&hash, partition_size, partition_depth);
+/// let path = atm::utils::gen_path(&hash, partition_size, partition_depth as u32);
 ///
 /// assert_eq!("60606060/64677172", path);
 /// ```
@@ -131,7 +131,7 @@ pub fn gen_path(hash: &str, partition_size: u32, partition_depth: u32) -> String
 /// let sequence = "C:4,C:4,D:4,E:4,F:4,G:5".parse::<libatm::MIDINoteSequence>().unwrap();
 /// // Create iterable over all permutations, which in this example would be
 /// // 6^8 = 1,679,616 instances of `Vec<&libatm::MIDINote>`.
-/// let permutations = gen_sequences(&sequence, 8)
+/// let permutations = atm::utils::gen_sequences(&sequence.notes, 8);
 /// ```
 pub fn gen_sequences(
     notes: &[libatm::MIDINote],
@@ -171,17 +171,17 @@ pub enum BatchedMIDIArchiveState {
 ///
 /// ```rust
 /// // Assumes sequence length of 10, 8 possible notes, and partition depth of 2
-/// let mut archive = BatchedMIDIArchive::new(
+/// let mut archive = atm::utils::BatchedMIDIArchive::new(
 ///     "archive.tar",
 ///     2,
-///     4096,
-///     partition_size: gen_partition_size(8.0, 10, 4096, 2),
+///     4096.0,
+///     atm::utils::gen_partition_size(8.0, 10, 4096.0, 2),
 ///     20
 /// );
 /// let sequence = "C:4,D:4,E:4,C:4,D:4,E:4,C:4,D:4,E:4,C:4"
 ///     .parse::<libatm::MIDINoteSequence>()
 ///     .unwrap();
-/// let mfile = libatm::MIDIFile::new(sequence, libatm::MIDIFormat::0, 1, 1);
+/// let mfile = libatm::MIDIFile::new(sequence, libatm::MIDIFormat::Format0, 1, 1);
 /// archive.push(mfile).unwrap();
 /// archive.finish().unwrap();
 /// ```
