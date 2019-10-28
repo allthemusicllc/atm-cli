@@ -48,6 +48,26 @@ impl<'a, 'b> Cli<'a, 'b> {
             .long("max-files")
             .takes_value(true)
             .help("Maximum number of files per directory (default: 4096)");
+        // Sequence length argument
+        let length_argument = clap::Arg::with_name("LENGTH")
+            .short("L")
+            .long("length")
+            .takes_value(true)
+            .required(true)
+            .help("Length of MIDI pitch sequences to generate");
+        // Maximum file count argument
+        let max_count_argument = clap::Arg::with_name("COUNT")
+            .short("c")
+            .long("count")
+            .takes_value(true)
+            .help("Number of sequences to iterate through (default: NOTES.len() ^ LENGTH)");
+        // Batch size argument
+        let batch_size = clap::Arg::with_name("BATCH_SIZE")
+            .short("b")
+            .long("batch-size")
+            .takes_value(true)
+            .required(true)
+            .help("Number of files to batch (and zip) per archive entry");
         // Command line app
         clap::App::new("atm")
             .version("0.1.0")
@@ -66,41 +86,41 @@ impl<'a, 'b> Cli<'a, 'b> {
                             "Generate by brute-force MIDI files containing permutations \
                              of a sequence of MIDI pitches",
                         )
-                        .arg(&note_sequence_argument)
-                        .arg(&target_argument)
-                        .arg(&partition_depth_argument)
+                        .arg(&batch_size)
+                        .arg(&length_argument)
+                        .arg(&max_count_argument)
                         .arg(&max_files_argument)
-                        .arg(
-                            clap::Arg::with_name("LENGTH")
-                                .short("L")
-                                .long("length")
-                                .takes_value(true)
-                                .required(true)
-                                .help("Length of MIDI pitch sequences to generate"))
-                        .arg(
-                            clap::Arg::with_name("BATCH_SIZE")
-                                .short("b")
-                                .long("batch-size")
-                                .takes_value(true)
-                                .required(true)
-                                .help("Number of files to batch (and zip) per archive entry"))
-                        .arg(
-                            clap::Arg::with_name("COUNT")
-                                .short("c")
-                                .long("count")
-                                .takes_value(true)
-                                .help("Number of sequences to iterate through (default: NOTES.len() ^ LENGTH)"))
-                        .arg(
-                            clap::Arg::with_name("PB_UPDATE")
-                                .short("u")
-                                .long("update")
-                                .takes_value(true)
-                                .help("Refresh rate for the progress bar (default: 1000 ms)")))
+                        .arg(&note_sequence_argument)
+                        .arg(&partition_depth_argument)
+                        .arg(clap::Arg::with_name("PB_UPDATE")
+                            .short("u")
+                            .long("update")
+                            .takes_value(true)
+                            .help("Refresh rate for the progress bar (default: 1000 ms)"))
+                        .arg(&target_argument))
             .subcommand(clap::SubCommand::with_name("partition")
                         .about("Generate the output path from the 'batch' directive for a given MIDI pitch sequence")
+                        .arg(&max_files_argument)
                         .arg(&note_sequence_argument)
-                        .arg(&partition_depth_argument)
-                        .arg(&max_files_argument))
+                        .arg(&partition_depth_argument))
+            .subcommand(clap::SubCommand::with_name("split")
+                        .about("Split tar archive into equal-sized chunks")
+                        .arg(clap::Arg::with_name("CHUNK_SIZE")
+                            .short("c")
+                            .long("chunk-size")
+                            .takes_value(true)
+                            .help("Approximate size of output chunks in bytes (incompatible with NUM_CHUNKS)"))
+                        .arg(clap::Arg::with_name("NUM_CHUNKS")
+                            .short("n")
+                            .long("num-chunks")
+                            .takes_value(true)
+                            .help("Number of ouptut chunks (incompatible with CHUNK_SIZE)"))
+                        .arg(clap::Arg::with_name("PREFIX")
+                            .short("p")
+                            .long("prefix")
+                            .takes_value(true)
+                            .help("Prefix to apply to filename of each output chunk"))
+                        .arg(&target_argument))
     }
 
     pub fn new() -> Cli<'a, 'b> {
@@ -116,17 +136,22 @@ impl<'a, 'b> Cli<'a, 'b> {
                 crate::directives::atm_single(crate::directives::SingleDirectiveArgs::from(
                     matches.subcommand_matches("single").unwrap(),
                 ))
-            }
+            },
             Some("batch") => {
                 crate::directives::atm_batch(crate::directives::BatchDirectiveArgs::from(
                     matches.subcommand_matches("batch").unwrap(),
                 ))
-            }
+            },
             Some("partition") => {
                 crate::directives::atm_partition(crate::directives::PartitionDirectiveArgs::from(
                     matches.subcommand_matches("partition").unwrap(),
                 ))
-            }
+            },
+            Some("split") => {
+                crate::directives::atm_split(crate::directives::SplitDirectiveArgs::from(
+                    matches.subcommand_matches("split").unwrap(),
+                ))
+            },
             Some(directive) => panic!(format!("Received unsupported directive '{}'", directive)),
             None => panic!("Did not receive directive"),
         }

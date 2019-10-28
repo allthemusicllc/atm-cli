@@ -49,6 +49,39 @@ fn parse_max_files_argument<'a>(matches: &clap::ArgMatches<'a>) -> f32 {
     max_files
 }
 
+fn parse_length_argument<'a>(matches: &clap::ArgMatches<'a>) -> u32 {
+    let length = matches.value_of("LENGTH").unwrap();
+    let length = length.parse::<u32>().unwrap();
+    if length == 0 {
+        panic!("Length must be greater than 0")
+    }
+    length 
+}
+
+fn parse_max_count_argument<'a>(matches: &clap::ArgMatches<'a>, num_notes: f32, length: i32) -> usize {
+    let max_count = matches.value_of("COUNT");
+    let max_count = match max_count {
+        None => (num_notes.powi(length) as usize),
+        Some(count) => {
+            let count = count.parse::<usize>().unwrap();
+            if count == 0 {
+                panic!("Count must be greater than 0");
+            }
+            count
+        }
+    };
+    max_count
+}
+
+fn parse_batch_size_argument<'a>(matches: &clap::ArgMatches<'a>) -> u32 {
+    let batch_size = matches.value_of("BATCH_SIZE").unwrap();
+    let batch_size = batch_size.parse::<u32>().unwrap();
+    if batch_size == 0 {
+        panic!("Batch size must be greater than 0");
+    }
+    batch_size
+}
+
 /****************************/
 /***** Single Directive *****/
 /****************************/
@@ -113,11 +146,7 @@ impl<'a> From<&clap::ArgMatches<'a>> for BatchDirectiveArgs {
         let sequence = parse_sequence_argument(matches);
 
         // Parse length argument as integer
-        let length = matches.value_of("LENGTH").unwrap();
-        let length = length.parse::<u32>().unwrap();
-        if length == 0 {
-            panic!("Length must be greater than 0")
-        }
+        let length = parse_length_argument(matches);
 
         // Parse target argument
         let target = parse_target_argument(matches);
@@ -137,24 +166,10 @@ impl<'a> From<&clap::ArgMatches<'a>> for BatchDirectiveArgs {
         );
 
         // Parse max_count argument and set default if not provided
-        let max_count = matches.value_of("COUNT");
-        let max_count = match max_count {
-            None => ((sequence.notes.len() as f32).powi(length as i32) as usize),
-            Some(count) => {
-                let count = count.parse::<usize>().unwrap();
-                if count == 0 {
-                    panic!("Count must be greater than 0");
-                }
-                count
-            }
-        };
+        let max_count = parse_max_count_argument(matches, sequence.notes.len() as f32, length as i32);
 
         // Parse batch_size argument
-        let batch_size = matches.value_of("BATCH_SIZE").unwrap();
-        let batch_size = batch_size.parse::<u32>().unwrap();
-        if batch_size == 0 {
-            panic!("Batch size must be greater than 0");
-        }
+        let batch_size = parse_batch_size_argument(matches);
 
         // Parse update argument and set default if not provided
         let update = matches.value_of("PB_UPDATE");
@@ -221,9 +236,9 @@ pub fn atm_batch(args: BatchDirectiveArgs) {
     }
 }
 
-/***************************/
+/*******************************/
 /***** Partition Directive *****/
-/***************************/
+/*******************************/
 
 #[derive(Debug)]
 pub struct PartitionDirectiveArgs {
@@ -272,4 +287,61 @@ pub fn atm_partition(args: PartitionDirectiveArgs) {
     let path = crate::utils::gen_path(&hash, args.partition_size, args.partition_depth);
     // Print full path with partitions
     println!("::: INFO: Path for sequence is {}/{}.mid", &path, &hash);
+}
+
+/***************************/
+/***** Split Directive *****/
+/***************************/
+
+#[derive(Debug)]
+pub struct SplitDirectiveArgs {
+    pub chunk_size: Option<u32>,
+    pub num_chunks: Option<u32>,
+    pub prefix: String,
+    pub target: String,
+}
+
+impl<'a> From<&clap::ArgMatches<'a>> for SplitDirectiveArgs {
+    fn from(matches: &clap::ArgMatches<'a>) -> SplitDirectiveArgs {
+        // Parse chunk size argument
+        let chunk_size = match matches.value_of("CHUNK_SIZE") {
+            None => None,
+            Some(chunk_size) => {
+                let chunk_size = chunk_size.parse::<u32>().unwrap();
+                if chunk_size == 0 {
+                    panic!("Chunk size must be greater than 0");
+                }
+                Some(chunk_size)
+            },
+        };
+        // Parse number of chunks argument
+        let num_chunks = match matches.value_of("NUM_CHUNKS") {
+            None => None,
+            Some(num_chunks) => {
+                let num_chunks = num_chunks.parse::<u32>().unwrap();
+                if num_chunks == 0 {
+                    panic!("Number of chunks must be greater than 0");
+                }
+                Some(num_chunks)
+            },
+        };
+        // Parse prefix argument
+        let prefix = match matches.value_of("PREFIX") {
+            None => String::from("split"),
+            Some(prefix) => String::from(prefix),
+        };
+        // Parse target path argument
+        let target  = parse_target_argument(matches);
+
+        SplitDirectiveArgs {
+            chunk_size,
+            num_chunks,
+            prefix,
+            target,
+        }
+    }
+}
+
+pub fn atm_split(args: SplitDirectiveArgs) {
+    println!("::: ARGS: {:?}", args);
 }
