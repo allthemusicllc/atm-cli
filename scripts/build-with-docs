@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+# build-with-docs
+# All The Music, LLC
+
+CARGO=$(which cargo)
+
+if [ -f $CARGO  ] && [ -x $CARGO ]
+then
+    echo "::: INFO: Checking code for errors" && \
+    cargo check --lib && \
+    echo "::: INFO: Building code in release mode" && \
+    cargo build --release && \
+    echo "::: INFO: Running library and doc tests" && \
+    cargo test --lib && cargo test --doc && \
+    echo "::: INFO: Creating temporary directory and building documentation" && \
+    mkdir /tmp/doc_build && \
+    cargo doc --target-dir /tmp/doc_build && \
+    echo "::: INFO: Moving documentation to docs/ directory" && \
+    cp -r /tmp/doc_build/doc/* docs/ && \
+    echo "::: INFO: Cleaning up documentation directory" && \
+    rm -rf /tmp/doc_build/
+else
+    echo "::: ERROR: Failed to locate cargo executable"
+    exit 1
+fi

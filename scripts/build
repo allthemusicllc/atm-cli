@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# build
+# All The Music, LLC
+
+CARGO=$(which cargo)
+
+if [ -f $CARGO  ] && [ -x $CARGO ]
+then
+    echo "::: INFO: Checking code for errors" && \
+    cargo check --lib && \
+    echo "::: INFO: Building code in release mode" && \
+    cargo build --release && \
+    echo "::: INFO: Running library and doc tests" && \
+    cargo test --lib && cargo test --doc
+else
+    echo "::: ERROR: Failed to locate cargo executable"
+    exit 1
+fi
