@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/cli.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cli.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../atm/index.html'><img src='../../rust-logo.png' alt='logo' width='100'></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/cli.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cli.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../atm/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -132,6 +132,37 @@
 <span id="132">132</span>
 <span id="133">133</span>
 <span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// cli.rs</span>
 <span class="comment">//</span>
@@ -183,6 +214,26 @@
             .<span class="ident">long</span>(<span class="string">&quot;max-files&quot;</span>)
             .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
             .<span class="ident">help</span>(<span class="string">&quot;Maximum number of files per directory (default: 4096)&quot;</span>);
+        <span class="comment">// Sequence length argument</span>
+        <span class="kw">let</span> <span class="ident">length_argument</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;LENGTH&quot;</span>)
+            .<span class="ident">short</span>(<span class="string">&quot;L&quot;</span>)
+            .<span class="ident">long</span>(<span class="string">&quot;length&quot;</span>)
+            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
+            .<span class="ident">required</span>(<span class="bool-val">true</span>)
+            .<span class="ident">help</span>(<span class="string">&quot;Length of MIDI pitch sequences to generate&quot;</span>);
+        <span class="comment">// Maximum file count argument</span>
+        <span class="kw">let</span> <span class="ident">max_count_argument</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;COUNT&quot;</span>)
+            .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>)
+            .<span class="ident">long</span>(<span class="string">&quot;count&quot;</span>)
+            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
+            .<span class="ident">help</span>(<span class="string">&quot;Number of sequences to iterate through (default: NOTES.len() ^ LENGTH)&quot;</span>);
+        <span class="comment">// Batch size argument</span>
+        <span class="kw">let</span> <span class="ident">batch_size</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;BATCH_SIZE&quot;</span>)
+            .<span class="ident">short</span>(<span class="string">&quot;b&quot;</span>)
+            .<span class="ident">long</span>(<span class="string">&quot;batch-size&quot;</span>)
+            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
+            .<span class="ident">required</span>(<span class="bool-val">true</span>)
+            .<span class="ident">help</span>(<span class="string">&quot;Number of files to batch (and zip) per archive entry&quot;</span>);
         <span class="comment">// Command line app</span>
         <span class="ident">clap</span>::<span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;atm&quot;</span>)
             .<span class="ident">version</span>(<span class="string">&quot;0.1.0&quot;</span>)
@@ -201,41 +252,47 @@
                             <span class="string">&quot;Generate by brute-force MIDI files containing permutations \
                              of a sequence of MIDI pitches&quot;</span>,
                         )
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">note_sequence_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">target_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">partition_depth_argument</span>)
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">batch_size</span>)
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">length_argument</span>)
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">max_count_argument</span>)
                         .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">max_files_argument</span>)
-                        .<span class="ident">arg</span>(
-                            <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;LENGTH&quot;</span>)
-                                .<span class="ident">short</span>(<span class="string">&quot;L&quot;</span>)
-                                .<span class="ident">long</span>(<span class="string">&quot;length&quot;</span>)
-                                .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                                .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                                .<span class="ident">help</span>(<span class="string">&quot;Length of MIDI pitch sequences to generate&quot;</span>))
-                        .<span class="ident">arg</span>(
-                            <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;BATCH_SIZE&quot;</span>)
-                                .<span class="ident">short</span>(<span class="string">&quot;b&quot;</span>)
-                                .<span class="ident">long</span>(<span class="string">&quot;batch-size&quot;</span>)
-                                .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                                .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                                .<span class="ident">help</span>(<span class="string">&quot;Number of files to batch (and zip) per archive entry&quot;</span>))
-                        .<span class="ident">arg</span>(
-                            <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;COUNT&quot;</span>)
-                                .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>)
-                                .<span class="ident">long</span>(<span class="string">&quot;count&quot;</span>)
-                                .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                                .<span class="ident">help</span>(<span class="string">&quot;Number of sequences to iterate through (default: NOTES.len() ^ LENGTH)&quot;</span>))
-                        .<span class="ident">arg</span>(
-                            <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;PB_UPDATE&quot;</span>)
-                                .<span class="ident">short</span>(<span class="string">&quot;u&quot;</span>)
-                                .<span class="ident">long</span>(<span class="string">&quot;update&quot;</span>)
-                                .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                                .<span class="ident">help</span>(<span class="string">&quot;Refresh rate for the progress bar (default: 1000 ms)&quot;</span>)))
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">note_sequence_argument</span>)
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">partition_depth_argument</span>)
+                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;PB_UPDATE&quot;</span>)
+                            .<span class="ident">short</span>(<span class="string">&quot;u&quot;</span>)
+                            .<span class="ident">long</span>(<span class="string">&quot;update&quot;</span>)
+                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
+                            .<span class="ident">help</span>(<span class="string">&quot;Refresh rate for the progress bar (default: 1000 ms)&quot;</span>))
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">target_argument</span>))
             .<span class="ident">subcommand</span>(<span class="ident">clap</span>::<span class="ident">SubCommand</span>::<span class="ident">with_name</span>(<span class="string">&quot;partition&quot;</span>)
                         .<span class="ident">about</span>(<span class="string">&quot;Generate the output path from the &#39;batch&#39; directive for a given MIDI pitch sequence&quot;</span>)
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">max_files_argument</span>)
                         .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">note_sequence_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">partition_depth_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">max_files_argument</span>))
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">partition_depth_argument</span>))
+            .<span class="ident">subcommand</span>(<span class="ident">clap</span>::<span class="ident">SubCommand</span>::<span class="ident">with_name</span>(<span class="string">&quot;split&quot;</span>)
+                        .<span class="ident">about</span>(<span class="string">&quot;Split tar archive into equal-sized chunks&quot;</span>)
+                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;CHUNK_SIZE&quot;</span>)
+                            .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>)
+                            .<span class="ident">long</span>(<span class="string">&quot;chunk-size&quot;</span>)
+                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
+                            .<span class="ident">help</span>(<span class="string">&quot;Approximate size of output chunks in bytes (incompatible with NUM_CHUNKS)&quot;</span>))
+                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;NUM_CHUNKS&quot;</span>)
+                            .<span class="ident">short</span>(<span class="string">&quot;n&quot;</span>)
+                            .<span class="ident">long</span>(<span class="string">&quot;num-chunks&quot;</span>)
+                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
+                            .<span class="ident">help</span>(<span class="string">&quot;Number of ouptut chunks (incompatible with CHUNK_SIZE)&quot;</span>))
+                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;PREFIX&quot;</span>)
+                            .<span class="ident">short</span>(<span class="string">&quot;p&quot;</span>)
+                            .<span class="ident">long</span>(<span class="string">&quot;prefix&quot;</span>)
+                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
+                            .<span class="ident">help</span>(<span class="string">&quot;Prefix to apply to filename of each output chunk (default: &#39;split&#39;)&quot;</span>))
+                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;SOURCE&quot;</span>)
+                            .<span class="ident">short</span>(<span class="string">&quot;s&quot;</span>)
+                            .<span class="ident">long</span>(<span class="string">&quot;source&quot;</span>)
+                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
+                            .<span class="ident">required</span>(<span class="bool-val">true</span>)
+                            .<span class="ident">help</span>(<span class="string">&quot;Path to source TAR archive&quot;</span>))
+                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">target_argument</span>))
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">Cli</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
@@ -251,17 +308,22 @@
                 <span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">atm_single</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">SingleDirectiveArgs</span>::<span class="ident">from</span>(
                     <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;single&quot;</span>).<span class="ident">unwrap</span>(),
                 ))
-            }
+            },
             <span class="prelude-val">Some</span>(<span class="string">&quot;batch&quot;</span>) <span class="op">=&gt;</span> {
                 <span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">atm_batch</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">BatchDirectiveArgs</span>::<span class="ident">from</span>(
                     <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;batch&quot;</span>).<span class="ident">unwrap</span>(),
                 ))
-            }
+            },
             <span class="prelude-val">Some</span>(<span class="string">&quot;partition&quot;</span>) <span class="op">=&gt;</span> {
                 <span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">atm_partition</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">PartitionDirectiveArgs</span>::<span class="ident">from</span>(
                     <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;partition&quot;</span>).<span class="ident">unwrap</span>(),
                 ))
-            }
+            },
+            <span class="prelude-val">Some</span>(<span class="string">&quot;split&quot;</span>) <span class="op">=&gt;</span> {
+                <span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">atm_split</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">SplitDirectiveArgs</span>::<span class="ident">from</span>(
+                    <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;split&quot;</span>).<span class="ident">unwrap</span>(),
+                ))
+            },
             <span class="prelude-val">Some</span>(<span class="ident">directive</span>) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Received unsupported directive &#39;{}&#39;&quot;</span>, <span class="ident">directive</span>)),
             <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Did not receive directive&quot;</span>),
         }

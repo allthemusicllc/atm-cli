@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `lib/libatm/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../libatm/index.html'><img src='../../rust-logo.png' alt='logo' width='100'></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `lib/libatm/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../libatm/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -588,6 +588,18 @@
 <span id="588">588</span>
 <span id="589">589</span>
 <span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// lib.rs</span>
 <span class="comment">//</span>
@@ -721,7 +733,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
     <span class="doccomment">/// // Middle C</span>
-    <span class="doccomment">/// let note = MIDINote::new(MIDINoteType::C, 4);</span>
+    <span class="doccomment">/// let note = libatm::MIDINote::new(libatm::MIDINoteType::C, 4);</span>
     <span class="doccomment">/// assert_eq!(note.convert(), 60);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
@@ -759,15 +771,15 @@
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// let sequence = &quot;C:4,D:5,CSharp:8,DSharp:3&quot;.parse::&lt;MIDINoteSequence&gt;().unwrap();</span>
-<span class="doccomment">/// assert_eq!(sequence, MIDINoteSequence::new(vec![</span>
-<span class="doccomment">///     MIDINote::new(MIDINote::C, 4),</span>
-<span class="doccomment">///     MIDINote::new(MIDINote::D, 5),</span>
-<span class="doccomment">///     MIDINote::new(MIDINote::CSharp, 8),</span>
-<span class="doccomment">///     MIDINote::new(MIDINote::DSharp, 3),</span>
+<span class="doccomment">/// let sequence = &quot;C:4,D:5,CSharp:8,DSharp:3&quot;.parse::&lt;libatm::MIDINoteSequence&gt;().unwrap();</span>
+<span class="doccomment">/// assert_eq!(sequence, libatm::MIDINoteSequence::new(vec![</span>
+<span class="doccomment">///     libatm::MIDINote::new(libatm::MIDINoteType::C, 4),</span>
+<span class="doccomment">///     libatm::MIDINote::new(libatm::MIDINoteType::D, 5),</span>
+<span class="doccomment">///     libatm::MIDINote::new(libatm::MIDINoteType::CSharp, 8),</span>
+<span class="doccomment">///     libatm::MIDINote::new(libatm::MIDINoteType::DSharp, 3),</span>
 <span class="doccomment">/// ]));</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MIDINoteSequence</span> {
     <span class="kw">pub</span> <span class="ident">notes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MIDINote</span><span class="op">&gt;</span>,
 }
@@ -825,9 +837,9 @@
     <span class="doccomment">/// ```rust</span>
     <span class="doccomment">/// // Create Middle C note and two MIDI events, one to &quot;press&quot; the key and</span>
     <span class="doccomment">/// // one to &quot;release&quot; they key after 5 ticks.</span>
-    <span class="doccomment">/// let note = MIDINote(MIDINoteType::C, 4);</span>
-    <span class="doccomment">/// let note_on_event = MIDIChannelVoiceMessage::new(0, &amp;note, 0x64, MIDIStatus::NoteOn, 0);</span>
-    <span class="doccomment">/// let note_off_event = MIDIChannelVoiceMessage::new(5, &amp;note, 0, MIDIStatus::RunningStatus, 0);</span>
+    <span class="doccomment">/// let note = libatm::MIDINote::new(libatm::MIDINoteType::C, 4);</span>
+    <span class="doccomment">/// let note_on_event = libatm::MIDIChannelVoiceMessage::new(0, &amp;note, 0x64, libatm::MIDIStatus::NoteOn, 0);</span>
+    <span class="doccomment">/// let note_off_event = libatm::MIDIChannelVoiceMessage::new(5, &amp;note, 0, libatm::MIDIStatus::RunningStatus, 0);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Notes</span>
@@ -870,15 +882,15 @@
     <span class="doccomment">/// use byteorder::WriteBytesExt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Target buffer</span>
-    <span class="doccomment">/// let buffer = std::io::BufWriter::new(Vec::new());</span>
+    <span class="doccomment">/// let mut buffer = std::io::BufWriter::new(Vec::new());</span>
     <span class="doccomment">/// // Middle C</span>
-    <span class="doccomment">/// let note = MIDINote(MIDINoteType::C, 4);</span>
+    <span class="doccomment">/// let note = libatm::MIDINote::new(libatm::MIDINoteType::C, 4);</span>
     <span class="doccomment">/// // Play for 5 ticks</span>
-    <span class="doccomment">/// let note_on_event = MIDIChannelVoiceMessage::new(0, &amp;note, 0x64, MIDIStatus::NoteOn, 0);</span>
-    <span class="doccomment">/// let note_off_event = MIDIChannelVoiceMessage::new(5, &amp;note, 0, MIDIStatus::RunningStatus, 0);</span>
+    <span class="doccomment">/// let note_on_event = libatm::MIDIChannelVoiceMessage::new(0, &amp;note, 0x64, libatm::MIDIStatus::NoteOn, 0);</span>
+    <span class="doccomment">/// let note_off_event = libatm::MIDIChannelVoiceMessage::new(5, &amp;note, 0, libatm::MIDIStatus::RunningStatus, 0);</span>
     <span class="doccomment">/// // Write notes to buffer</span>
-    <span class="doccomment">/// note_on_event.write_buffer(buffer).unwrap();</span>
-    <span class="doccomment">/// note_off_event.write_buffer(buffer).unwrap();</span>
+    <span class="doccomment">/// note_on_event.write_buffer(&amp;mut buffer).unwrap();</span>
+    <span class="doccomment">/// note_off_event.write_buffer(&amp;mut buffer).unwrap();</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_buffer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">target</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
     <span class="kw">where</span>
@@ -1005,14 +1017,14 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// let mfile = MIDIFile(</span>
-    <span class="doccomment">///     MIDINoteSequence::new(vec![</span>
-    <span class="doccomment">///         MIDINote::new(MIDINote::C, 4),</span>
-    <span class="doccomment">///         MIDINote::new(MIDINote::D, 5),</span>
-    <span class="doccomment">///         MIDINote::new(MIDINote::CSharp, 8),</span>
-    <span class="doccomment">///         MIDINote::new(MIDINote::DSharp, 3),</span>
+    <span class="doccomment">/// let mfile = libatm::MIDIFile::new(</span>
+    <span class="doccomment">///     libatm::MIDINoteSequence::new(vec![</span>
+    <span class="doccomment">///         libatm::MIDINote::new(libatm::MIDINoteType::C, 4),</span>
+    <span class="doccomment">///         libatm::MIDINote::new(libatm::MIDINoteType::D, 5),</span>
+    <span class="doccomment">///         libatm::MIDINote::new(libatm::MIDINoteType::CSharp, 8),</span>
+    <span class="doccomment">///         libatm::MIDINote::new(libatm::MIDINoteType::DSharp, 3),</span>
     <span class="doccomment">///     ]),</span>
-    <span class="doccomment">///     MIDIFormat::0,</span>
+    <span class="doccomment">///     libatm::MIDIFormat::Format0,</span>
     <span class="doccomment">///     1,</span>
     <span class="doccomment">///     1,</span>
     <span class="doccomment">/// );</span>
@@ -1030,6 +1042,18 @@
             <span class="ident">tracks</span>,
             <span class="ident">division</span>,
         }
+    }
+
+    <span class="doccomment">/// Generate the size in bytes of the track chunk for a MIDI file </span>
+    <span class="doccomment">/// with a sequence of length `num_notes` once written to disk</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gen_track_size_static</span>(<span class="ident">num_notes</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="ident">u32</span> {
+        (<span class="ident">num_notes</span> <span class="op">*</span> <span class="number">6</span>) <span class="op">+</span> <span class="number">1</span>
+    }
+
+    <span class="doccomment">/// Generate the size in bytes of a MIDI file with a sequence of length </span>
+    <span class="doccomment">/// `num_notes` once written to disk</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gen_size_static</span>(<span class="ident">num_notes</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="ident">u32</span> {
+        <span class="number">22</span> <span class="op">+</span> <span class="ident">MIDIFile</span>::<span class="ident">gen_track_size_static</span>(<span class="ident">num_notes</span>)
     }
 
     <span class="doccomment">/// Generate unique hash for this file&#39;s `MIDINoteSequence`</span>
@@ -1062,7 +1086,7 @@
 
     <span class="doccomment">/// Generate the size in bytes of the track chunk once written to disk</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gen_track_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u32</span> {
-        (((<span class="self">self</span>.<span class="ident">sequence</span>.<span class="ident">notes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">*</span> <span class="number">6</span>) <span class="op">+</span> <span class="number">1</span>)
+        <span class="ident">MIDIFile</span>::<span class="ident">gen_track_size_static</span>(<span class="self">self</span>.<span class="ident">sequence</span>.<span class="ident">notes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>)
     }
 
     <span class="doccomment">/// Generate track chunk header (see: [MIDITrackHeader](struct.MIDITrackHeader.html))</span>
@@ -1091,7 +1115,7 @@
 
     <span class="doccomment">/// Generate the size in bytes of this MIDI file once written to disk</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gen_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u32</span> {
-        <span class="number">22</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">gen_track_size</span>()
+        <span class="ident">MIDIFile</span>::<span class="ident">gen_size_static</span>(<span class="self">self</span>.<span class="ident">sequence</span>.<span class="ident">notes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>)
     }
 
     <span class="doccomment">/// Write MIDI file to buffer</span>

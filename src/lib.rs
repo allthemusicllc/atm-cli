@@ -14,6 +14,13 @@
 //! [the `libatm` project](https://github.com/allthemusicllc/libatm), on which this tool relies. For
 //! more information on All the Music, check out [allthemusic.info](http://allthemusic.info).
 
+extern crate clap;
+extern crate flate2;
+extern crate itertools;
+extern crate libatm;
+extern crate pbr;
+extern crate tar;
+
 #[doc(hidden)]
 pub mod cli;
 #[doc(hidden)]
