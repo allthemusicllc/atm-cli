@@ -119,7 +119,13 @@ impl<'a, 'b> Cli<'a, 'b> {
                             .short("p")
                             .long("prefix")
                             .takes_value(true)
-                            .help("Prefix to apply to filename of each output chunk"))
+                            .help("Prefix to apply to filename of each output chunk (default: 'split')"))
+                        .arg(clap::Arg::with_name("SOURCE")
+                            .short("s")
+                            .long("source")
+                            .takes_value(true)
+                            .required(true)
+                            .help("Path to source TAR archive"))
                         .arg(&target_argument))
     }
 

@@ -6,9 +6,7 @@
 // To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or send
 // a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-extern crate clap;
-extern crate libatm;
-extern crate pbr;
+use std::io::Read;
 
 /*********************************************/
 /***** Argument Parsing Helper Functions *****/
@@ -295,9 +293,10 @@ pub fn atm_partition(args: PartitionDirectiveArgs) {
 
 #[derive(Debug)]
 pub struct SplitDirectiveArgs {
-    pub chunk_size: Option<u32>,
+    pub chunk_size: Option<u64>,
     pub num_chunks: Option<u32>,
     pub prefix: String,
+    pub source: String,
     pub target: String,
 }
 
@@ -307,7 +306,7 @@ impl<'a> From<&clap::ArgMatches<'a>> for SplitDirectiveArgs {
         let chunk_size = match matches.value_of("CHUNK_SIZE") {
             None => None,
             Some(chunk_size) => {
-                let chunk_size = chunk_size.parse::<u32>().unwrap();
+                let chunk_size = chunk_size.parse::<u64>().unwrap();
                 if chunk_size == 0 {
                     panic!("Chunk size must be greater than 0");
                 }
@@ -316,7 +315,11 @@ impl<'a> From<&clap::ArgMatches<'a>> for SplitDirectiveArgs {
         };
         // Parse number of chunks argument
         let num_chunks = match matches.value_of("NUM_CHUNKS") {
-            None => None,
+            None => {
+                if chunk_size == None {
+                    panic!("Must provide either chunk size or number of chunks");
+                } else { None }
+            },
             Some(num_chunks) => {
                 let num_chunks = num_chunks.parse::<u32>().unwrap();
                 if num_chunks == 0 {
@@ -330,6 +333,8 @@ impl<'a> From<&clap::ArgMatches<'a>> for SplitDirectiveArgs {
             None => String::from("split"),
             Some(prefix) => String::from(prefix),
         };
+        // Parse source argument
+        let source = matches.value_of("SOURCE").unwrap().to_string();
         // Parse target path argument
         let target  = parse_target_argument(matches);
 
@@ -337,11 +342,116 @@ impl<'a> From<&clap::ArgMatches<'a>> for SplitDirectiveArgs {
             chunk_size,
             num_chunks,
             prefix,
+            source,
             target,
         }
     }
 }
 
+#[doc(hidden)]
+fn atm_split_gen_chunk_filename(prefix: &str, filename_base: &str, chunk_count: u32) -> String {
+    format!("{}_{}_{}.tar", prefix, filename_base, chunk_count)
+}
+
+#[doc(hidden)]
+fn atm_split_gen_chunk_archive(
+    target: &std::path::Path,
+    prefix: &str,
+    filename_base: &str,
+    chunk_count: u32
+) -> tar::Builder<std::io::BufWriter<std::fs::File>> {
+    let filepath = atm_split_gen_chunk_filename(prefix, filename_base, chunk_count);
+    let filepath = target.join(&filepath);
+    tar::Builder::new(std::io::BufWriter::new(std::fs::File::create(filepath.as_path()).unwrap()))
+}
+
 pub fn atm_split(args: SplitDirectiveArgs) {
-    println!("::: ARGS: {:?}", args);
+    // Ensure source is file and exists
+    let source = std::path::Path::new(&args.source);
+    if !source.is_file() {
+        panic!("Source must point to an existing TAR archive");
+    }
+
+    // Ensure target is existing directory
+    let target = std::path::Path::new(&args.target);
+    if !target.is_dir() {
+        panic!("Target must point to an existing directory");
+    }
+
+    // Read size of source archive
+    let source_size = source.metadata().unwrap().len();
+    println!("::: INFO: Source TAR archive is {} bytes", source_size);
+
+    // Calculate output chunks (maximum) size
+    let chunk_maximum_size: u64 = match args.chunk_size {
+        None => (((source_size as f64) / (args.num_chunks.unwrap() as f64)).round() as u64),
+        Some(chunk_size) => {
+            if chunk_size >= source_size {
+                panic!(
+                    "Chunk size must be less than source TAR archive size ({} >= {})",
+                    chunk_size,
+                    source_size
+                );
+            } else { chunk_size }
+        },
+    };
+    println!("::: INFO: Maximum chunk size will be {} bytes", chunk_maximum_size);
+
+    // Generate output archives base filename from source archive file stem
+    let chunk_filename_base = source.file_stem().unwrap().to_str().unwrap();
+
+    // Read source as TAR archive
+    let source = std::fs::File::open(source).unwrap();
+    let mut source = tar::Archive::new(source);
+
+    // Initialize loop variable state
+    let mut current_chunk_size: u64 = 0;
+    let mut chunk_count: u32 = 0;
+    let mut archive_chunk = atm_split_gen_chunk_archive(
+        &target,
+        &args.prefix,
+        chunk_filename_base,
+        chunk_count
+    );
+
+    // For each entry in the source archive
+    for entry in source.entries().unwrap() {
+        // Unwrap archive entry
+        let mut entry = entry.unwrap();
+        // Copy header and check entry size
+        let mut entry_header = entry.header().clone();
+        let entry_size = entry_header.entry_size().unwrap();
+        // If adding entry would make chunk large than maximum chunk size
+        if current_chunk_size + entry_size > chunk_maximum_size {
+            println!("::: INFO: Flushing chunk {} to disk", chunk_count);
+            // Flush current chunk to disk
+            archive_chunk.finish().unwrap();
+            // Increment chunk count
+            chunk_count = chunk_count + 1;
+            // Generate new archive
+            archive_chunk = atm_split_gen_chunk_archive(
+                &target,
+                &args.prefix,
+                chunk_filename_base,
+                chunk_count
+            );
+            // Reset current chunk size
+            current_chunk_size = 0;
+        }
+        // Extract entry path
+        let entry_path  = entry.path().unwrap().to_path_buf();
+        // Add entry to archive chunk
+        archive_chunk.append_data(
+            &mut entry_header,
+            entry_path,
+            entry.by_ref()
+        ).unwrap();
+        // Increment current chunk size by size of header plus entry size
+        // (each aligned to 512 bytes).
+        current_chunk_size = current_chunk_size + 512 + (if entry_size > 512 {entry_size} else {512});
+    }
+
+    // Flush final chunk to disk
+    println!("::: INFO: Flushing final chunk to disk");
+    archive_chunk.finish().unwrap();
 }

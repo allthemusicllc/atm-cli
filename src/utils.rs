@@ -8,11 +8,6 @@
 
 #![allow(unused_parens)]
 
-extern crate flate2;
-extern crate itertools;
-extern crate libatm;
-extern crate tar;
-
 use std::io::Write;
 
 use itertools::Itertools;
