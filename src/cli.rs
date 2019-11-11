@@ -70,7 +70,7 @@ impl<'a, 'b> Cli<'a, 'b> {
             .help("Number of files to batch (and zip) per archive entry");
         // Command line app
         clap::App::new("atm")
-            .version("0.1.0")
+            .version(env!("CARGO_PKG_VERSION"))
             .author("All The Music, LLC")
             .about(
                 "Tools for generating and working with MIDI files.  \

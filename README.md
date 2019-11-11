@@ -49,7 +49,7 @@ https://allthemusic.s3.amazonaws.com/datasets/20190727.C4_D4_E4_F4_G4_A4_B4_C5.L
 ## Usage
 
 ```bash
-atm 0.1.0
+atm 0.2.0
 All The Music, LLC
 Tools for generating and working with MIDI files.  This app was created as part of an effort to generate by brute-force
 billions of melodies, and is tailored for that use case.
@@ -66,4 +66,5 @@ SUBCOMMANDS:
     help         Prints this message or the help of the given subcommand(s)
     partition    Generate the output path from the 'batch' directive for a given MIDI pitch sequence
     single       Generate single MIDI file from provided MIDI pitch sequence
+    split        Split tar archive into equal-sized chunks
 ```
