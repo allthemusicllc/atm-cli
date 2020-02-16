@@ -18,6 +18,7 @@ information about the code, check out the crate documentation [here](https://all
 ```bash
 $ git clone https://github.com/allthemusicllc/atm-cli.git
 $ cd atm-cli
+$ git submodule update --init
 $ cargo build --release
 $ cargo run --release -- -h # show usage
 ```
