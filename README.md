@@ -67,5 +67,4 @@ SUBCOMMANDS:
     help         Prints this message or the help of the given subcommand(s)
     partition    Generate the output path from the 'batch' directive for a given MIDI pitch sequence
     single       Generate single MIDI file from provided MIDI pitch sequence
-    split        Split tar archive into equal-sized chunks
 ```
