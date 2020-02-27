@@ -103,30 +103,6 @@ impl<'a, 'b> Cli<'a, 'b> {
                         .arg(&max_files_argument)
                         .arg(&note_sequence_argument)
                         .arg(&partition_depth_argument))
-            .subcommand(clap::SubCommand::with_name("split")
-                        .about("Split tar archive into equal-sized chunks")
-                        .arg(clap::Arg::with_name("CHUNK_SIZE")
-                            .short("c")
-                            .long("chunk-size")
-                            .takes_value(true)
-                            .help("Approximate size of output chunks in bytes (incompatible with NUM_CHUNKS)"))
-                        .arg(clap::Arg::with_name("NUM_CHUNKS")
-                            .short("n")
-                            .long("num-chunks")
-                            .takes_value(true)
-                            .help("Number of ouptut chunks (incompatible with CHUNK_SIZE)"))
-                        .arg(clap::Arg::with_name("PREFIX")
-                            .short("p")
-                            .long("prefix")
-                            .takes_value(true)
-                            .help("Prefix to apply to filename of each output chunk (default: 'split')"))
-                        .arg(clap::Arg::with_name("SOURCE")
-                            .short("s")
-                            .long("source")
-                            .takes_value(true)
-                            .required(true)
-                            .help("Path to source TAR archive"))
-                        .arg(&target_argument))
     }
 
     pub fn new() -> Cli<'a, 'b> {
@@ -151,11 +127,6 @@ impl<'a, 'b> Cli<'a, 'b> {
             Some("partition") => {
                 crate::directives::atm_partition(crate::directives::PartitionDirectiveArgs::from(
                     matches.subcommand_matches("partition").unwrap(),
-                ))
-            },
-            Some("split") => {
-                crate::directives::atm_split(crate::directives::SplitDirectiveArgs::from(
-                    matches.subcommand_matches("split").unwrap(),
                 ))
             },
             Some(directive) => panic!(format!("Received unsupported directive '{}'", directive)),
