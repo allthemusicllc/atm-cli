@@ -77,6 +77,7 @@ impl<'a, 'b> Cli<'a, 'b> {
                 This app was created as part of an effort to generate \
                 by brute-force billions of melodies, and is tailored for that use case."
             )
+            .setting(clap::AppSettings::SubcommandRequiredElseHelp)
             .subcommand(clap::SubCommand::with_name("single")
                         .about("Generate single MIDI file from provided MIDI pitch sequence")
                         .arg(&note_sequence_argument)
@@ -129,6 +130,7 @@ impl<'a, 'b> Cli<'a, 'b> {
                     matches.subcommand_matches("partition").unwrap(),
                 ))
             },
+            // Unreachable
             Some(directive) => panic!(format!("Received unsupported directive '{}'", directive)),
             None => panic!("Did not receive directive"),
         }
