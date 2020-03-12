@@ -1,6 +1,6 @@
 // lib.rs
 //
-// Copyright (c) 2019 All The Music, LLC
+// Copyright (c) 2020 All The Music, LLC
 //
 // This work is licensed under the Creative Commons Attribution 4.0 International License.
 // To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or send
@@ -19,6 +19,7 @@ extern crate flate2;
 extern crate itertools;
 extern crate libatm;
 extern crate pbr;
+extern crate structopt;
 extern crate tar;
 
 #[doc(hidden)]
