@@ -9,17 +9,17 @@
 use crate::cli::CliDirective;
 
 #[derive(structopt::StructOpt)]
-pub struct SingleDirectiveArgs {
+pub struct SingleDirective {
     #[structopt(flatten)]
-    pub sequence: crate::cli::NoteSequenceArg,
+    pub sequence: crate::cli::NoteSetArg,
     #[structopt(flatten)]
     pub target: crate::cli::TargetArg,
 }
 
-impl CliDirective for SingleDirectiveArgs {
+impl CliDirective for SingleDirective {
     fn run(self) {
         // Get values from args
-        let sequence = self.sequence.sequence;
+        let sequence = Vec::<libatm::MIDINote>::from(&self.sequence.sequence);
         let target = self.target.target;
         // Generate MIDIFile from input melody
         println!("::: INFO: Generating MIDI file from pitch sequence");
