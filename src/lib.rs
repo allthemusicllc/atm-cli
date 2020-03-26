@@ -26,4 +26,5 @@ extern crate tar;
 pub mod cli;
 #[doc(hidden)]
 pub mod directives;
+pub mod storage;
 pub mod utils;
