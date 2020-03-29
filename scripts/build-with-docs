@@ -10,8 +10,8 @@ then
     cargo check --lib && \
     echo "::: INFO: Building code in release mode" && \
     cargo build --release && \
-    echo "::: INFO: Running library and doc tests" && \
-    cargo test --lib && cargo test --doc && \
+    ## echo "::: INFO: Running library and doc tests" && \
+    ## cargo test --lib && cargo test --doc && \
     echo "::: INFO: Creating temporary directory and building documentation" && \
     mkdir /tmp/doc_build && \
     cargo doc --target-dir /tmp/doc_build && \

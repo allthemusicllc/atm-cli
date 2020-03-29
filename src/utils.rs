@@ -22,13 +22,13 @@ use itertools::Itertools;
 ///
 /// ```rust
 /// // Create MIDI note sequence
-/// let sequence = "C:4,C:4,D:4,E:4,F:4,G:5".parse::<libatm::MIDINoteSequence>().unwrap();
+/// let note_set = "C:4,C:4,D:4,E:4,F:4,G:5".parse::<libatm::MIDINoteSet>().unwrap();
 /// // Create iterable over all permutations, which in this example would be
 /// // 6^8 = 1,679,616 instances of `Vec<&libatm::MIDINote>`.
-/// let permutations = atm::utils::gen_sequences(&sequence.notes, 8);
+/// let permutations = atm::utils::gen_sequences(&Vec::from(&note_set), 8);
 /// ```
 pub fn gen_sequences(
-    notes: &[libatm::MIDINote],
+    notes: &libatm::MIDINoteVec,
     length: u32,
 ) -> itertools::MultiProduct<std::slice::Iter<libatm::MIDINote>> {
     (0..(length))

@@ -176,7 +176,7 @@
     <span class="kw">fn</span> <span class="ident">roundtrip</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">real</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">write</span>::<span class="ident">ZlibEncoder</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>(), <span class="ident">Compression</span>::<span class="ident">default</span>());
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
+        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">200</span> {
             <span class="kw">let</span> <span class="ident">to_write</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">v</span>[..<span class="ident">thread_rng</span>().<span class="ident">gen_range</span>(<span class="number">0</span>, <span class="ident">v</span>.<span class="ident">len</span>())];
             <span class="ident">real</span>.<span class="ident">extend</span>(<span class="ident">to_write</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span>));
@@ -186,7 +186,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">read</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>[..]);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="ident">r</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ret</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ret</span> <span class="op">==</span> <span class="ident">real</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="ident">real</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -198,14 +198,14 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">read</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>[..]);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="ident">r</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ret</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ret</span> <span class="op">==</span> <span class="string">b&quot;foo&quot;</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&quot;foo&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">total_in</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">real</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">write</span>::<span class="ident">ZlibEncoder</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>(), <span class="ident">Compression</span>::<span class="ident">default</span>());
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
+        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">200</span> {
             <span class="kw">let</span> <span class="ident">to_write</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">v</span>[..<span class="ident">thread_rng</span>().<span class="ident">gen_range</span>(<span class="number">0</span>, <span class="ident">v</span>.<span class="ident">len</span>())];
             <span class="ident">real</span>.<span class="ident">extend</span>(<span class="ident">to_write</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span>));
@@ -222,13 +222,13 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">read</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>[..]);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="ident">r</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ret</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ret</span> <span class="op">==</span> <span class="ident">real</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="ident">real</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">r</span>.<span class="ident">total_in</span>(), <span class="ident">result_len</span> <span class="kw">as</span> <span class="ident">u64</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">roundtrip2</span>() {
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
+        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">read</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="ident">read</span>::<span class="ident">ZlibEncoder</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>[..], <span class="ident">Compression</span>::<span class="ident">default</span>()));
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="ident">r</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ret</span>).<span class="ident">unwrap</span>();
@@ -237,17 +237,17 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">roundtrip3</span>() {
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
+        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span>
             <span class="ident">write</span>::<span class="ident">ZlibEncoder</span>::<span class="ident">new</span>(<span class="ident">write</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>()), <span class="ident">Compression</span>::<span class="ident">default</span>());
         <span class="ident">w</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">w</span>.<span class="ident">finish</span>().<span class="ident">unwrap</span>().<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">w</span> <span class="op">==</span> <span class="ident">v</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">w</span> <span class="op">=</span><span class="op">=</span> <span class="ident">v</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">reset_decoder</span>() {
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
+        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> ::<span class="ident">random_bytes</span>().<span class="ident">take</span>(<span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">write</span>::<span class="ident">ZlibEncoder</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>(), <span class="ident">Compression</span>::<span class="ident">default</span>());
         <span class="ident">w</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">w</span>.<span class="ident">finish</span>().<span class="ident">unwrap</span>();
@@ -261,7 +261,7 @@
 
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">read</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>[..]);
             <span class="ident">r</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">c</span>).<span class="ident">unwrap</span>();
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">a</span> <span class="op">==</span> <span class="ident">b</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">==</span> <span class="ident">c</span> <span class="op">&amp;&amp;</span> <span class="ident">c</span> <span class="op">==</span> <span class="ident">v</span>);
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">c</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="ident">v</span>);
         }
 
         {
@@ -274,7 +274,7 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">write</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>());
             <span class="ident">w</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">w</span>.<span class="ident">finish</span>().<span class="ident">unwrap</span>();
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">a</span> <span class="op">==</span> <span class="ident">b</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">==</span> <span class="ident">c</span> <span class="op">&amp;&amp;</span> <span class="ident">c</span> <span class="op">==</span> <span class="ident">v</span>);
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">c</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="ident">v</span>);
         }
     }
 
@@ -285,37 +285,37 @@
         <span class="kw">let</span> <span class="ident">data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> (<span class="number">0</span>..<span class="number">255</span>).<span class="ident">cycle</span>().<span class="ident">take</span>(<span class="number">1024</span>).<span class="ident">collect</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">write</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">out</span>);
         <span class="kw">match</span> <span class="ident">w</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>[..]) {
-            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expected an error to be returned!&quot;</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>),
+            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expected an error to be returned!&quot;</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidInput</span>),
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">qc_reader</span>() {
-        ::<span class="ident">quickcheck</span>::<span class="ident">quickcheck</span>(<span class="ident">test</span> <span class="kw">as</span> <span class="kw">fn</span>(<span class="kw">_</span>) <span class="op">-&gt;</span> <span class="kw">_</span>);
+        ::<span class="ident">quickcheck</span>::<span class="ident">quickcheck</span>(<span class="ident">test</span> <span class="kw">as</span> <span class="kw">fn</span>(<span class="kw">_</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">_</span>);
 
-        <span class="kw">fn</span> <span class="ident">test</span>(<span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">fn</span> <span class="ident">test</span>(<span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span>
                 <span class="ident">read</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="ident">read</span>::<span class="ident">ZlibEncoder</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>[..], <span class="ident">Compression</span>::<span class="ident">default</span>()));
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v2</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
             <span class="ident">r</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v2</span>).<span class="ident">unwrap</span>();
-            <span class="ident">v</span> <span class="op">==</span> <span class="ident">v2</span>
+            <span class="ident">v</span> <span class="op">=</span><span class="op">=</span> <span class="ident">v2</span>
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">qc_writer</span>() {
-        ::<span class="ident">quickcheck</span>::<span class="ident">quickcheck</span>(<span class="ident">test</span> <span class="kw">as</span> <span class="kw">fn</span>(<span class="kw">_</span>) <span class="op">-&gt;</span> <span class="kw">_</span>);
+        ::<span class="ident">quickcheck</span>::<span class="ident">quickcheck</span>(<span class="ident">test</span> <span class="kw">as</span> <span class="kw">fn</span>(<span class="kw">_</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">_</span>);
 
-        <span class="kw">fn</span> <span class="ident">test</span>(<span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">fn</span> <span class="ident">test</span>(<span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident">write</span>::<span class="ident">ZlibEncoder</span>::<span class="ident">new</span>(
                 <span class="ident">write</span>::<span class="ident">ZlibDecoder</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>()),
                 <span class="ident">Compression</span>::<span class="ident">default</span>(),
             );
             <span class="ident">w</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>).<span class="ident">unwrap</span>();
-            <span class="ident">v</span> <span class="op">==</span> <span class="ident">w</span>.<span class="ident">finish</span>().<span class="ident">unwrap</span>().<span class="ident">finish</span>().<span class="ident">unwrap</span>()
+            <span class="ident">v</span> <span class="op">=</span><span class="op">=</span> <span class="ident">w</span>.<span class="ident">finish</span>().<span class="ident">unwrap</span>().<span class="ident">finish</span>().<span class="ident">unwrap</span>()
         }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "flate2";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "flate2";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

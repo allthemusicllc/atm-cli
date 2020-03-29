@@ -5,7 +5,6 @@ authors = ["All The Music, LLC"]
 edition = "2018"
 
 [dependencies]
-clap = "2.33.0"
 flate2 = "1.0.9"
 itertools = "0.8.0"
 libatm = { path = "lib/libatm" }

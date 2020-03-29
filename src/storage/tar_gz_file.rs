@@ -31,7 +31,7 @@ impl<G: PathGenerator> TarGzFile<G> {
     /// Create new `TarGzFile` instance. If no compression level specified,
     /// uses default compression level as implemented in
     /// [flate2::Compression](../../flate2/struct.Compression.html#method.default).
-    fn new<P: AsRef<std::path::Path>>(
+    pub fn new<P: AsRef<std::path::Path>>(
         target_path: P,
         path_generator: G,
         compression_level: Option<flate2::Compression>,
@@ -64,10 +64,6 @@ impl<G: PathGenerator> StorageBackend for TarGzFile<G> {
         self.archive.append_file(mfile, mode)
     }
 
-    fn append_melody(&mut self, melody: Vec<libatm::MIDINote>, mode: Option<u32>) -> Result<(), Self::Error> {
-        self.archive.append_melody(melody, mode)
-    }
-    
     fn finish(&mut self) -> Result<(), Self::Error> {
         // NOTE: The underlying flate2::write::GzEncoder implements std::ops::Drop,
         // and thus will finish itself when it goes out of scope

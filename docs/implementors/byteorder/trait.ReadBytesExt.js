@@ -6,5 +6,4 @@ implementors["byteorder"] = [];
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

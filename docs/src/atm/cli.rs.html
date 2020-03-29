@@ -163,171 +163,241 @@
 <span id="163">163</span>
 <span id="164">164</span>
 <span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// cli.rs</span>
 <span class="comment">//</span>
-<span class="comment">// Copyright (c) 2019 All The Music, LLC</span>
+<span class="comment">// Copyright (c) 2020 All The Music, LLC</span>
 <span class="comment">//</span>
 <span class="comment">// This work is licensed under the Creative Commons Attribution 4.0 International License.</span>
 <span class="comment">// To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/ or send</span>
 <span class="comment">// a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</span>
 
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">clap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cli</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="ident">app</span>: <span class="ident">clap</span>::<span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span>,
-}
+<span class="comment">/*******************************
+***** Shared CLI Arguments *****
+*******************************/</span>
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">Cli</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">initialize_parser</span>() <span class="op">-&gt;</span> <span class="ident">clap</span>::<span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
-        <span class="comment">// Note list argument</span>
-        <span class="kw">let</span> <span class="ident">note_sequence_argument</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;NOTES&quot;</span>)
-            .<span class="ident">short</span>(<span class="string">&quot;n&quot;</span>)
-            .<span class="ident">long</span>(<span class="string">&quot;notes&quot;</span>)
-            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-            .<span class="ident">required</span>(<span class="bool-val">true</span>)
-            .<span class="ident">help</span>(
-                <span class="string">&quot;Comma-separated list NOTE:OCTAVE pairs (i.e., \
-                 &#39;C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5&#39;)&quot;</span>,
-            );
-        <span class="comment">// Target (output) file argument</span>
-        <span class="kw">let</span> <span class="ident">target_argument</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;TARGET&quot;</span>)
-            .<span class="ident">short</span>(<span class="string">&quot;t&quot;</span>)
-            .<span class="ident">long</span>(<span class="string">&quot;target&quot;</span>)
-            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-            .<span class="ident">required</span>(<span class="bool-val">true</span>)
-            .<span class="ident">help</span>(<span class="string">&quot;File output path (directory must exist)&quot;</span>);
-        <span class="comment">// Directory partition depth argument</span>
-        <span class="kw">let</span> <span class="ident">partition_depth_argument</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;PARTITION_DEPTH&quot;</span>)
-            .<span class="ident">short</span>(<span class="string">&quot;p&quot;</span>)
-            .<span class="ident">long</span>(<span class="string">&quot;partitions&quot;</span>)
-            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-            .<span class="ident">required</span>(<span class="bool-val">true</span>)
-            .<span class="ident">help</span>(
-                <span class="string">&quot;Partition depth to use for output directory structure.  For \
-                 example, if set to 2 the ouput directory structure would look \
-                 like &lt;part1&gt;/&lt;part2&gt;/&lt;hash&gt;.mid.&quot;</span>,
-            );
-        <span class="comment">// Maximum files per directory argument</span>
-        <span class="kw">let</span> <span class="ident">max_files_argument</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;MAX_FILES&quot;</span>)
-            .<span class="ident">short</span>(<span class="string">&quot;m&quot;</span>)
-            .<span class="ident">long</span>(<span class="string">&quot;max-files&quot;</span>)
-            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-            .<span class="ident">help</span>(<span class="string">&quot;Maximum number of files per directory (default: 4096)&quot;</span>);
-        <span class="comment">// Sequence length argument</span>
-        <span class="kw">let</span> <span class="ident">length_argument</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;LENGTH&quot;</span>)
-            .<span class="ident">short</span>(<span class="string">&quot;L&quot;</span>)
-            .<span class="ident">long</span>(<span class="string">&quot;length&quot;</span>)
-            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-            .<span class="ident">required</span>(<span class="bool-val">true</span>)
-            .<span class="ident">help</span>(<span class="string">&quot;Length of MIDI pitch sequences to generate&quot;</span>);
-        <span class="comment">// Maximum file count argument</span>
-        <span class="kw">let</span> <span class="ident">max_count_argument</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;COUNT&quot;</span>)
-            .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>)
-            .<span class="ident">long</span>(<span class="string">&quot;count&quot;</span>)
-            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-            .<span class="ident">help</span>(<span class="string">&quot;Number of sequences to iterate through (default: NOTES.len() ^ LENGTH)&quot;</span>);
-        <span class="comment">// Batch size argument</span>
-        <span class="kw">let</span> <span class="ident">batch_size</span> <span class="op">=</span> <span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;BATCH_SIZE&quot;</span>)
-            .<span class="ident">short</span>(<span class="string">&quot;b&quot;</span>)
-            .<span class="ident">long</span>(<span class="string">&quot;batch-size&quot;</span>)
-            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-            .<span class="ident">required</span>(<span class="bool-val">true</span>)
-            .<span class="ident">help</span>(<span class="string">&quot;Number of files to batch (and zip) per archive entry&quot;</span>);
-        <span class="comment">// Command line app</span>
-        <span class="ident">clap</span>::<span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;atm&quot;</span>)
-            .<span class="ident">version</span>(<span class="string">&quot;0.1.0&quot;</span>)
-            .<span class="ident">author</span>(<span class="string">&quot;All The Music, LLC&quot;</span>)
-            .<span class="ident">about</span>(
-                <span class="string">&quot;Tools for generating and working with MIDI files.  \
-                This app was created as part of an effort to generate \
-                by brute-force billions of melodies, and is tailored for that use case.&quot;</span>
-            )
-            .<span class="ident">subcommand</span>(<span class="ident">clap</span>::<span class="ident">SubCommand</span>::<span class="ident">with_name</span>(<span class="string">&quot;single&quot;</span>)
-                        .<span class="ident">about</span>(<span class="string">&quot;Generate single MIDI file from provided MIDI pitch sequence&quot;</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">note_sequence_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">target_argument</span>))
-            .<span class="ident">subcommand</span>(<span class="ident">clap</span>::<span class="ident">SubCommand</span>::<span class="ident">with_name</span>(<span class="string">&quot;batch&quot;</span>)
-                        .<span class="ident">about</span>(
-                            <span class="string">&quot;Generate by brute-force MIDI files containing permutations \
-                             of a sequence of MIDI pitches&quot;</span>,
-                        )
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">batch_size</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">length_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">max_count_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">max_files_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">note_sequence_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">partition_depth_argument</span>)
-                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;PB_UPDATE&quot;</span>)
-                            .<span class="ident">short</span>(<span class="string">&quot;u&quot;</span>)
-                            .<span class="ident">long</span>(<span class="string">&quot;update&quot;</span>)
-                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                            .<span class="ident">help</span>(<span class="string">&quot;Refresh rate for the progress bar (default: 1000 ms)&quot;</span>))
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">target_argument</span>))
-            .<span class="ident">subcommand</span>(<span class="ident">clap</span>::<span class="ident">SubCommand</span>::<span class="ident">with_name</span>(<span class="string">&quot;partition&quot;</span>)
-                        .<span class="ident">about</span>(<span class="string">&quot;Generate the output path from the &#39;batch&#39; directive for a given MIDI pitch sequence&quot;</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">max_files_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">note_sequence_argument</span>)
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">partition_depth_argument</span>))
-            .<span class="ident">subcommand</span>(<span class="ident">clap</span>::<span class="ident">SubCommand</span>::<span class="ident">with_name</span>(<span class="string">&quot;split&quot;</span>)
-                        .<span class="ident">about</span>(<span class="string">&quot;Split tar archive into equal-sized chunks&quot;</span>)
-                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;CHUNK_SIZE&quot;</span>)
-                            .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>)
-                            .<span class="ident">long</span>(<span class="string">&quot;chunk-size&quot;</span>)
-                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                            .<span class="ident">help</span>(<span class="string">&quot;Approximate size of output chunks in bytes (incompatible with NUM_CHUNKS)&quot;</span>))
-                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;NUM_CHUNKS&quot;</span>)
-                            .<span class="ident">short</span>(<span class="string">&quot;n&quot;</span>)
-                            .<span class="ident">long</span>(<span class="string">&quot;num-chunks&quot;</span>)
-                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                            .<span class="ident">help</span>(<span class="string">&quot;Number of ouptut chunks (incompatible with CHUNK_SIZE)&quot;</span>))
-                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;PREFIX&quot;</span>)
-                            .<span class="ident">short</span>(<span class="string">&quot;p&quot;</span>)
-                            .<span class="ident">long</span>(<span class="string">&quot;prefix&quot;</span>)
-                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                            .<span class="ident">help</span>(<span class="string">&quot;Prefix to apply to filename of each output chunk (default: &#39;split&#39;)&quot;</span>))
-                        .<span class="ident">arg</span>(<span class="ident">clap</span>::<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;SOURCE&quot;</span>)
-                            .<span class="ident">short</span>(<span class="string">&quot;s&quot;</span>)
-                            .<span class="ident">long</span>(<span class="string">&quot;source&quot;</span>)
-                            .<span class="ident">takes_value</span>(<span class="bool-val">true</span>)
-                            .<span class="ident">required</span>(<span class="bool-val">true</span>)
-                            .<span class="ident">help</span>(<span class="string">&quot;Path to source TAR archive&quot;</span>))
-                        .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">target_argument</span>))
-    }
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_deref</span> {
+    (<span class="macro-nonterminal">$</span><span class="kw">struct</span>:<span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Deref</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">struct</span> {
+            <span class="kw">type</span> <span class="macro-nonterminal">Target</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>;
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">Cli</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
-        <span class="ident">Cli</span> {
-            <span class="ident">app</span>: <span class="ident">Cli</span>::<span class="ident">initialize_parser</span>(),
+            <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>
+            }
         }
     }
+}
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="self">self</span>) {
-        <span class="kw">let</span> <span class="ident">matches</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">app</span>.<span class="ident">get_matches</span>();
-        <span class="kw">match</span> <span class="ident">matches</span>.<span class="ident">subcommand_name</span>() {
-            <span class="prelude-val">Some</span>(<span class="string">&quot;single&quot;</span>) <span class="op">=&gt;</span> {
-                <span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">atm_single</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">SingleDirectiveArgs</span>::<span class="ident">from</span>(
-                    <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;single&quot;</span>).<span class="ident">unwrap</span>(),
-                ))
-            },
-            <span class="prelude-val">Some</span>(<span class="string">&quot;batch&quot;</span>) <span class="op">=&gt;</span> {
-                <span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">atm_batch</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">BatchDirectiveArgs</span>::<span class="ident">from</span>(
-                    <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;batch&quot;</span>).<span class="ident">unwrap</span>(),
-                ))
-            },
-            <span class="prelude-val">Some</span>(<span class="string">&quot;partition&quot;</span>) <span class="op">=&gt;</span> {
-                <span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">atm_partition</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">PartitionDirectiveArgs</span>::<span class="ident">from</span>(
-                    <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;partition&quot;</span>).<span class="ident">unwrap</span>(),
-                ))
-            },
-            <span class="prelude-val">Some</span>(<span class="string">&quot;split&quot;</span>) <span class="op">=&gt;</span> {
-                <span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">atm_split</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">SplitDirectiveArgs</span>::<span class="ident">from</span>(
-                    <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;split&quot;</span>).<span class="ident">unwrap</span>(),
-                ))
-            },
-            <span class="prelude-val">Some</span>(<span class="ident">directive</span>) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Received unsupported directive &#39;{}&#39;&quot;</span>, <span class="ident">directive</span>)),
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Did not receive directive&quot;</span>),
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParseBatchSizeArgError</span> {
+    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
+    <span class="ident">NotInteger</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>),
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Batch size must be greater than 0&quot;</span>)]</span>
+    <span class="ident">InvalidBatchSize</span>,
+}
+
+<span class="kw">fn</span> <span class="ident">try_batch_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseBatchSizeArgError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">batch_size</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+    <span class="kw">if</span> <span class="ident">batch_size</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseBatchSizeArgError</span>::<span class="ident">InvalidBatchSize</span>);
+    }
+    <span class="prelude-val">Ok</span>(<span class="ident">batch_size</span>)
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchSize</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">short</span><span class="op">=</span><span class="string">&quot;s&quot;</span>,
+        <span class="ident">long</span><span class="op">=</span><span class="string">&quot;batch-size&quot;</span>,
+        <span class="ident">default_value</span><span class="op">=</span><span class="string">&quot;25&quot;</span>,
+        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Number of melodies per batch&quot;</span>,
+        <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_batch_from_str</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">batch_size</span>: <span class="ident">u32</span>,
+}
+
+<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">BatchSize</span>, <span class="ident">batch_size</span>, <span class="ident">u32</span> }
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParseMelodyLengthArgError</span> {
+    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
+    <span class="ident">NotInteger</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>),
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Length must be greater than 0&quot;</span>)]</span>
+    <span class="ident">InvalidLength</span>,
+}
+
+<span class="kw">fn</span> <span class="ident">try_length_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseMelodyLengthArgError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+    <span class="kw">if</span> <span class="ident">length</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseMelodyLengthArgError</span>::<span class="ident">InvalidLength</span>);
+    }
+    <span class="prelude-val">Ok</span>(<span class="ident">length</span>)
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MelodyLengthArg</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Length of melodies (pitch sequences) to generate&quot;</span>,
+        <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_length_from_str</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">melody_length</span>: <span class="ident">u32</span>,
+}
+
+<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">MelodyLengthArg</span>, <span class="ident">melody_length</span>, <span class="ident">u32</span> }
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteSetArg</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">value_name</span><span class="op">=</span><span class="string">&quot;notes&quot;</span>,
+        <span class="ident">help</span><span class="op">=</span><span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Comma-separated set of NOTE:OCTAVE pairs &quot;</span>,
+                     <span class="string">&quot;(i.e., &#39;C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5&#39;)&quot;</span>),
+        <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span>::<span class="ident">from_str</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">note_set</span>: <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span>,
+}
+
+<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">NoteSetArg</span>, <span class="ident">note_set</span>, <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span> }
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteVecArg</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">value_name</span><span class="op">=</span><span class="string">&quot;notes&quot;</span>,
+        <span class="ident">help</span><span class="op">=</span><span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Comma-separated sequence of NOTE:OCTAVE pairs &quot;</span>,
+                     <span class="string">&quot;(i.e., &#39;C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5&#39;)&quot;</span>),
+        <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span>::<span class="ident">from_str</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">note_vec</span>: <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span>,
+}
+
+<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">NoteVecArg</span>, <span class="ident">note_vec</span>, <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span> }
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParseMaxFilesArgError</span> {
+    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
+    <span class="ident">NotFloat</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>),
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Max files per directory must be between 1 and 4096, inclusive (found {input})&quot;</span>)]</span>
+    <span class="ident">ValueOutOfRange</span> { <span class="ident">input</span>: <span class="ident">u32</span>, },
+}
+
+<span class="kw">fn</span> <span class="ident">try_maxf_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">f32</span>, <span class="ident">ParseMaxFilesArgError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">max_files</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+    <span class="kw">if</span> <span class="ident">max_files</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">max_files</span> <span class="op">&gt;</span> <span class="number">4096</span> {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseMaxFilesArgError</span>::<span class="ident">ValueOutOfRange</span> { <span class="ident">input</span>: <span class="ident">max_files</span> });
+    }
+    <span class="prelude-val">Ok</span>(<span class="ident">max_files</span> <span class="kw">as</span> <span class="ident">f32</span>)
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParsePartitionDepthArgError</span> {
+    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
+    <span class="ident">NotInteger</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>),
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Partition depth must be between 0 and 4, inclusive (found {input})&quot;</span>)]</span>
+    <span class="ident">ValueOutOfRange</span> { <span class="ident">input</span>: <span class="ident">u32</span>, },
+}
+
+<span class="kw">fn</span> <span class="ident">try_pdepth_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParsePartitionDepthArgError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">partition_depth</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+    <span class="kw">if</span> <span class="ident">partition_depth</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">partition_depth</span> <span class="op">&gt;</span> <span class="number">4</span> {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParsePartitionDepthArgError</span>::<span class="ident">ValueOutOfRange</span> { <span class="ident">input</span>: <span class="ident">partition_depth</span> });
+    }
+    <span class="prelude-val">Ok</span>(<span class="ident">partition_depth</span>)
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PartitionArgs</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">short</span>,
+        <span class="ident">long</span>,
+        <span class="ident">default_value</span><span class="op">=</span><span class="string">&quot;4096&quot;</span>,
+        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Maximum number of files per directory&quot;</span>,
+        <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_maxf_from_str</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">max_files</span>: <span class="ident">f32</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">short</span><span class="op">=</span><span class="string">&quot;p&quot;</span>,
+        <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;partitions&quot;</span>,
+        <span class="ident">required</span><span class="op">=</span><span class="bool-val">true</span>,
+        <span class="ident">help</span> <span class="op">=</span> <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Partition depth to use for output directory structure.  For &quot;</span>,
+                     <span class="string">&quot;example, if set to 2 the ouput directory structure would look &quot;</span>,
+                     <span class="string">&quot;like &lt;root&gt;/&lt;branch&gt;/&lt;hash&gt;.mid&quot;</span>),
+        <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_pdepth_from_str</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">partition_depth</span>: <span class="ident">u32</span>, 
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TargetArg</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;File output path (directory must exist)&quot;</span>,
+        <span class="ident">parse</span>(<span class="ident">from_str</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>,
+}
+
+<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">TargetArg</span>, <span class="ident">target</span>, <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span> }
+
+<span class="comment">/******************************
+***** CLI Directive Trait *****
+******************************/</span>
+
+<span class="doccomment">/// Trait to implement command line directive. Typical implementation</span>
+<span class="doccomment">/// will parse the user-provided command line arguments (if any) and run</span>
+<span class="doccomment">/// a command or set of commands.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">CliDirective</span> {
+    <span class="kw">fn</span> <span class="ident">run</span>(<span class="self">self</span>);
+}
+
+<span class="comment">/**************
+***** CLI *****
+**************/</span>
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">structopt</span>(
+    <span class="ident">about</span> <span class="op">=</span> <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Tools for generating and working with MIDI files. &quot;</span>,
+                    <span class="string">&quot;This app was created as part of an effort to generate &quot;</span>,
+                    <span class="string">&quot;by brute-force billions of melodies, and is tailored for that use case.&quot;</span>),
+    <span class="ident">author</span> <span class="op">=</span> <span class="string">&quot;All The Music, LLC&quot;</span>,
+    <span class="ident">version</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Cli</span> {
+    <span class="ident">Gen</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">GenDirective</span>),
+}
+
+<span class="kw">impl</span> <span class="ident">CliDirective</span> <span class="kw">for</span> <span class="ident">Cli</span> {
+    <span class="kw">fn</span> <span class="ident">run</span>(<span class="self">self</span>) {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="self">Self</span>::<span class="ident">Gen</span>(<span class="ident">d</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">d</span>.<span class="ident">run</span>(),
         }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

@@ -6,5 +6,4 @@ implementors["itertools"] = [{text:"impl&lt;'a, I&gt; <a class=\"trait\" href=\"
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

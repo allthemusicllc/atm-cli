@@ -150,28 +150,28 @@
     <span class="doccomment">/// let r = MinMax(1, 2);</span>
     <span class="doccomment">/// assert_eq!(r.into_option(), Some((1, 2)));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">T</span>,<span class="ident">T</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_option</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">T</span>,<span class="ident">T</span>)<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">MinMaxResult</span>::<span class="ident">NoElements</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">MinMaxResult</span>::<span class="ident">OneElement</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">x</span>.<span class="ident">clone</span>(), <span class="ident">x</span>)),
-            <span class="ident">MinMaxResult</span>::<span class="ident">MinMax</span>(<span class="ident">x</span>, <span class="ident">y</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">x</span>, <span class="ident">y</span>))
+            <span class="ident">MinMaxResult</span>::<span class="ident">NoElements</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">MinMaxResult</span>::<span class="ident">OneElement</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">x</span>.<span class="ident">clone</span>(), <span class="ident">x</span>)),
+            <span class="ident">MinMaxResult</span>::<span class="ident">MinMax</span>(<span class="ident">x</span>, <span class="ident">y</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">x</span>, <span class="ident">y</span>))
         }
     }
 }
 
 <span class="doccomment">/// Implementation guts for `minmax` and `minmax_by_key`.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">minmax_impl</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">K</span>, <span class="ident">F</span>, <span class="ident">L</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">it</span>: <span class="ident">I</span>, <span class="kw-2">mut</span> <span class="ident">key_for</span>: <span class="ident">F</span>,
-                               <span class="kw-2">mut</span> <span class="ident">lt</span>: <span class="ident">L</span>) <span class="op">-&gt;</span> <span class="ident">MinMaxResult</span><span class="op">&lt;</span><span class="ident">I</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+                               <span class="kw-2">mut</span> <span class="ident">lt</span>: <span class="ident">L</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MinMaxResult</span><span class="op">&lt;</span><span class="ident">I</span>::<span class="ident">Item</span><span class="op">&gt;</span>
     <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">Iterator</span>,
-          <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">I</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">K</span>,
-          <span class="ident">L</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">I</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="ident">I</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="ident">K</span>, <span class="kw-2">&amp;</span><span class="ident">K</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>,
+          <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">I</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">K</span>,
+          <span class="ident">L</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">I</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="ident">I</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="ident">K</span>, <span class="kw-2">&amp;</span><span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
 {
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">min</span>, <span class="kw-2">mut</span> <span class="ident">max</span>, <span class="kw-2">mut</span> <span class="ident">min_key</span>, <span class="kw-2">mut</span> <span class="ident">max_key</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">it</span>.<span class="ident">next</span>() {
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">MinMaxResult</span>::<span class="ident">NoElements</span>,
-        <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> {
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">MinMaxResult</span>::<span class="ident">NoElements</span>,
+        <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">match</span> <span class="ident">it</span>.<span class="ident">next</span>() {
-                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">MinMaxResult</span>::<span class="ident">OneElement</span>(<span class="ident">x</span>),
-                <span class="prelude-val">Some</span>(<span class="ident">y</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">MinMaxResult</span>::<span class="ident">OneElement</span>(<span class="ident">x</span>),
+                <span class="prelude-val">Some</span>(<span class="ident">y</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">xk</span> <span class="op">=</span> <span class="ident">key_for</span>(<span class="kw-2">&amp;</span><span class="ident">x</span>);
                     <span class="kw">let</span> <span class="ident">yk</span> <span class="op">=</span> <span class="ident">key_for</span>(<span class="kw-2">&amp;</span><span class="ident">y</span>);
                     <span class="kw">if</span> <span class="op">!</span><span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="ident">y</span>, <span class="kw-2">&amp;</span><span class="ident">x</span>, <span class="kw-2">&amp;</span><span class="ident">yk</span>, <span class="kw-2">&amp;</span><span class="ident">xk</span>) {(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">xk</span>, <span class="ident">yk</span>)} <span class="kw">else</span> {(<span class="ident">y</span>, <span class="ident">x</span>, <span class="ident">yk</span>, <span class="ident">xk</span>)}
@@ -187,11 +187,11 @@
         <span class="comment">// compared to current maximum (#3). This way we do 3 comparisons</span>
         <span class="comment">// for 2 elements.</span>
         <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">it</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">break</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>
         };
         <span class="kw">let</span> <span class="ident">second</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">it</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">first_key</span> <span class="op">=</span> <span class="ident">key_for</span>(<span class="kw-2">&amp;</span><span class="ident">first</span>);
                 <span class="kw">if</span> <span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="ident">first</span>, <span class="kw-2">&amp;</span><span class="ident">min</span>, <span class="kw-2">&amp;</span><span class="ident">first_key</span>, <span class="kw-2">&amp;</span><span class="ident">min_key</span>) {
                     <span class="ident">min</span> <span class="op">=</span> <span class="ident">first</span>;
@@ -200,7 +200,7 @@
                 }
                 <span class="kw">break</span>;
             }
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>
         };
         <span class="kw">let</span> <span class="ident">first_key</span> <span class="op">=</span> <span class="ident">key_for</span>(<span class="kw-2">&amp;</span><span class="ident">first</span>);
         <span class="kw">let</span> <span class="ident">second_key</span> <span class="op">=</span> <span class="ident">key_for</span>(<span class="kw-2">&amp;</span><span class="ident">second</span>);
@@ -228,4 +228,4 @@
     <span class="ident">MinMaxResult</span>::<span class="ident">MinMax</span>(<span class="ident">min</span>, <span class="ident">max</span>)
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "itertools";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "itertools";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

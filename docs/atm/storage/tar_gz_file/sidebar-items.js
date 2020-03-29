@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TarGzFile","Gzip-compressed tar archive storage backend. Use for larger datasets where smaller output file is desired (i.e., for sharing via email or messaging apps). Realized compression ratio will depend on the `compression_level` used, as well as the compressibility of the input data."]]});

@@ -73,10 +73,10 @@ more verbose.</p>
     <span class="comment">// Vary the output based on how many times the user used the &quot;verbose&quot; flag</span>
     <span class="comment">// (i.e. &#39;myprog -v -v -v&#39; or &#39;myprog -vvv&#39; vs &#39;myprog -v&#39;</span>
     <span class="kw">match</span> <span class="ident">matches</span>.<span class="ident">occurrences_of</span>(<span class="string">&quot;v&quot;</span>) {
-        <span class="number">0</span> <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;No verbose info&quot;</span>),
-        <span class="number">1</span> <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Some verbose info&quot;</span>),
-        <span class="number">2</span> <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Tons of verbose info&quot;</span>),
-        <span class="number">3</span> <span class="op">|</span> <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Don&#39;t be crazy&quot;</span>),
+        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;No verbose info&quot;</span>),
+        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Some verbose info&quot;</span>),
+        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Tons of verbose info&quot;</span>),
+        <span class="number">3</span> <span class="op">|</span> <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Don&#39;t be crazy&quot;</span>),
     }
 
     <span class="comment">// You can handle information about subcommands by requesting their matches by name</span>
@@ -184,14 +184,14 @@ builder pattern (the first example), but without all the verbosity.</p>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">clap</span>;
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="kw">let</span> <span class="ident">matches</span> <span class="op">=</span> <span class="macro">clap_app</span><span class="macro">!</span>(<span class="ident">myapp</span> <span class="op">=&gt;</span>
+    <span class="kw">let</span> <span class="ident">matches</span> <span class="op">=</span> <span class="macro">clap_app</span><span class="macro">!</span>(<span class="ident">myapp</span> <span class="op">=</span><span class="op">&gt;</span>
         (<span class="ident">version</span>: <span class="string">&quot;1.0&quot;</span>)
         (<span class="ident">author</span>: <span class="string">&quot;Kevin K. &lt;kbknapp@gmail.com&gt;&quot;</span>)
         (<span class="ident">about</span>: <span class="string">&quot;Does awesome things&quot;</span>)
         (@<span class="ident">arg</span> <span class="ident">CONFIG</span>: <span class="op">-</span><span class="ident">c</span> <span class="op">-</span><span class="op">-</span><span class="ident">config</span> <span class="op">+</span><span class="ident">takes_value</span> <span class="string">&quot;Sets a custom config file&quot;</span>)
         (@<span class="ident">arg</span> <span class="ident">INPUT</span>: <span class="op">+</span><span class="ident">required</span> <span class="string">&quot;Sets the input file to use&quot;</span>)
         (@<span class="ident">arg</span> <span class="ident">debug</span>: <span class="op">-</span><span class="ident">d</span> ... <span class="string">&quot;Sets the level of debugging information&quot;</span>)
-        (@<span class="ident">subcommand</span> <span class="ident">test</span> <span class="op">=&gt;</span>
+        (@<span class="ident">subcommand</span> <span class="ident">test</span> <span class="op">=</span><span class="op">&gt;</span>
             (<span class="ident">about</span>: <span class="string">&quot;controls testing features&quot;</span>)
             (<span class="ident">version</span>: <span class="string">&quot;1.3&quot;</span>)
             (<span class="ident">author</span>: <span class="string">&quot;Someone E. &lt;someone_else@other.com&gt;&quot;</span>)
@@ -477,4 +477,4 @@ methods <a href="./struct.Arg.html#method.set"><code>Arg::set</code></a>, <a hre
 </td></tr><tr class='module-item'><td><a class="enum" href="enum.Shell.html" title='clap::Shell enum'>Shell</a></td><td class='docblock-short'><p>Describes which shell to produce a completions file for</p>
 </td></tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table><tr class='module-item'><td><a class="type" href="type.Result.html" title='clap::Result type'>Result</a></td><td class='docblock-short'><p>Short hand for <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a> type</p>
-</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../";window.currentCrate = "clap";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "clap";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

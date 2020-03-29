@@ -6,5 +6,4 @@ implementors["xattr"] = [];
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

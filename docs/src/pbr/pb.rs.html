@@ -550,20 +550,20 @@
 <span class="kw">use</span> <span class="ident">tty</span>::{<span class="ident">Width</span>, <span class="ident">terminal_size</span>};
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">kb_fmt</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>: <span class="ident">ident</span>) <span class="op">=&gt;</span> {{
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>: <span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {{
         <span class="kw">let</span> <span class="ident">kb</span> <span class="op">=</span> <span class="number">1024f64</span>;
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> {
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">&gt;=</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">4_f64</span>) <span class="op">=&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} TB&quot;</span>, <span class="number">2</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">/</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">4_f64</span>)),
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">&gt;=</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">3_f64</span>) <span class="op">=&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} GB&quot;</span>, <span class="number">2</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">/</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">3_f64</span>)),
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">&gt;=</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">2_f64</span>) <span class="op">=&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} MB&quot;</span>, <span class="number">2</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">/</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">2_f64</span>)),
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">&gt;=</span> <span class="ident">kb</span> <span class="op">=&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} KB&quot;</span>, <span class="number">2</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">/</span> <span class="ident">kb</span>),
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} B&quot;</span>, <span class="number">0</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>)
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">4_f64</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} TB&quot;</span>, <span class="number">2</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">/</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">4_f64</span>)),
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">3_f64</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} GB&quot;</span>, <span class="number">2</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">/</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">3_f64</span>)),
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">2_f64</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} MB&quot;</span>, <span class="number">2</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">/</span> <span class="ident">kb</span>.<span class="ident">powf</span>(<span class="number">2_f64</span>)),
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">kb</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} KB&quot;</span>, <span class="number">2</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">/</span> <span class="ident">kb</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*} B&quot;</span>, <span class="number">0</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>)
         }
     }}
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">repeat</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">s</span>: <span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>: <span class="ident">expr</span>) <span class="op">=&gt;</span> {{
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">s</span>: <span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>: <span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {{
         <span class="kw-2">&amp;</span><span class="ident">repeat</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">s</span>).<span class="ident">take</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>()
     }}
 }
@@ -626,7 +626,7 @@
     <span class="doccomment">///    thread::sleep_ms(100);</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">total</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="ident">ProgressBar</span><span class="op">&lt;</span><span class="ident">Stdout</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">total</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProgressBar</span><span class="op">&lt;</span><span class="ident">Stdout</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">stdout</span>();
         <span class="ident">ProgressBar</span>::<span class="ident">on</span>(<span class="ident">handle</span>, <span class="ident">total</span>)
     }
@@ -652,7 +652,7 @@
     <span class="doccomment">///    thread::sleep_ms(100);</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on</span>(<span class="ident">handle</span>: <span class="ident">T</span>, <span class="ident">total</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="ident">ProgressBar</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on</span>(<span class="ident">handle</span>: <span class="ident">T</span>, <span class="ident">total</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProgressBar</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">ProgressBar</span> {
             <span class="ident">total</span>: <span class="ident">total</span>,
             <span class="ident">current</span>: <span class="number">0</span>,
@@ -709,7 +709,7 @@
     <span class="doccomment">/// pb.format(&quot;[=&gt;_]&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="kw">if</span> <span class="ident">fmt</span>.<span class="ident">len</span>() <span class="op">&gt;=</span> <span class="number">5</span> {
+        <span class="kw">if</span> <span class="ident">fmt</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">5</span> {
             <span class="kw">let</span> <span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">fmt</span>.<span class="ident">split</span>(<span class="string">&quot;&quot;</span>).<span class="ident">collect</span>();
             <span class="self">self</span>.<span class="ident">bar_start</span> <span class="op">=</span> <span class="ident">v</span>[<span class="number">1</span>].<span class="ident">to_owned</span>();
             <span class="self">self</span>.<span class="ident">bar_current</span> <span class="op">=</span> <span class="ident">v</span>[<span class="number">2</span>].<span class="ident">to_owned</span>();
@@ -755,10 +755,10 @@
     <span class="doccomment">/// pb.tick_format(&quot;▀▐▄▌&quot;)</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tick_format</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tick_fmt</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="kw">if</span> <span class="ident">tick_fmt</span> <span class="op">!=</span> <span class="ident">TICK_FORMAT</span> {
+        <span class="kw">if</span> <span class="ident">tick_fmt</span> <span class="op">!</span><span class="op">=</span> <span class="ident">TICK_FORMAT</span> {
             <span class="self">self</span>.<span class="ident">show_tick</span> <span class="op">=</span> <span class="bool-val">true</span>;
         }
-        <span class="self">self</span>.<span class="ident">tick</span> <span class="op">=</span> <span class="ident">tick_fmt</span>.<span class="ident">split</span>(<span class="string">&quot;&quot;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">to_owned</span>()).<span class="ident">filter</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">!=</span> <span class="string">&quot;&quot;</span>).<span class="ident">collect</span>();
+        <span class="self">self</span>.<span class="ident">tick</span> <span class="op">=</span> <span class="ident">tick_fmt</span>.<span class="ident">split</span>(<span class="string">&quot;&quot;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">to_owned</span>()).<span class="ident">filter</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="string">&quot;&quot;</span>).<span class="ident">collect</span>();
     }
 
     <span class="doccomment">/// Set width, or `None` for default.</span>
@@ -808,7 +808,7 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tick</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">tick_state</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">tick_state</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">%</span> <span class="self">self</span>.<span class="ident">tick</span>.<span class="ident">len</span>();
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">current</span> <span class="op">&lt;=</span> <span class="self">self</span>.<span class="ident">total</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">current</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">total</span> {
             <span class="self">self</span>.<span class="ident">draw</span>()
         }
     }
@@ -824,8 +824,8 @@
     <span class="doccomment">/// pb.add(5);</span>
     <span class="doccomment">/// pb.finish();</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="ident">u64</span> {
-        <span class="self">self</span>.<span class="ident">current</span> <span class="op">+=</span> <span class="ident">i</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+        <span class="self">self</span>.<span class="ident">current</span> <span class="op">+</span><span class="op">=</span> <span class="ident">i</span>;
         <span class="self">self</span>.<span class="ident">tick</span>();
         <span class="self">self</span>.<span class="ident">current</span>
     }
@@ -839,14 +839,14 @@
     <span class="doccomment">/// let mut pb = ProgressBar::new(10);</span>
     <span class="doccomment">/// pb.set(8);</span>
     <span class="doccomment">/// pb.finish();</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="ident">i</span>;
         <span class="self">self</span>.<span class="ident">tick</span>();
         <span class="self">self</span>.<span class="ident">current</span>
     }
 
     <span class="doccomment">/// Increment current value</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">add</span>(<span class="number">1</span>)
     }
 
@@ -876,12 +876,12 @@
         <span class="comment">// speed box</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">show_speed</span> {
             <span class="ident">suffix</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">units</span> {
-                <span class="ident">Units</span>::<span class="ident">Default</span> <span class="op">=&gt;</span> <span class="ident">suffix</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*}/s &quot;</span>, <span class="number">2</span>, <span class="ident">speed</span>),
-                <span class="ident">Units</span>::<span class="ident">Bytes</span> <span class="op">=&gt;</span> <span class="ident">suffix</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}/s &quot;</span>, <span class="macro">kb_fmt</span><span class="macro">!</span>(<span class="ident">speed</span>)),
+                <span class="ident">Units</span>::<span class="ident">Default</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">suffix</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:.*}/s &quot;</span>, <span class="number">2</span>, <span class="ident">speed</span>),
+                <span class="ident">Units</span>::<span class="ident">Bytes</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">suffix</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}/s &quot;</span>, <span class="macro">kb_fmt</span><span class="macro">!</span>(<span class="ident">speed</span>)),
             };
         }
         <span class="comment">// time left box</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">show_time_left</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">current</span> <span class="op">&gt;</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">show_time_left</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">current</span> <span class="op">&gt;</span> <span class="number">0</span> {
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">total</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">current</span> {
                 <span class="kw">let</span> <span class="ident">left</span> <span class="op">=</span> <span class="number">1.</span> <span class="op">/</span> <span class="ident">speed</span> <span class="op">*</span> (<span class="self">self</span>.<span class="ident">total</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">current</span>) <span class="kw">as</span> <span class="ident">f64</span>;
                 <span class="kw">if</span> <span class="ident">left</span> <span class="op">&lt;</span> <span class="number">60.</span> {
@@ -900,8 +900,8 @@
             <span class="kw">let</span> (<span class="ident">c</span>, <span class="ident">t</span>) <span class="op">=</span> (<span class="self">self</span>.<span class="ident">current</span> <span class="kw">as</span> <span class="ident">f64</span>, <span class="self">self</span>.<span class="ident">total</span> <span class="kw">as</span> <span class="ident">f64</span>);
             <span class="ident">prefix</span> <span class="op">=</span> <span class="ident">prefix</span> <span class="op">+</span>
                      <span class="kw-2">&amp;</span><span class="kw">match</span> <span class="self">self</span>.<span class="ident">units</span> {
-                <span class="ident">Units</span>::<span class="ident">Default</span> <span class="op">=&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} / {} &quot;</span>, <span class="ident">c</span>, <span class="ident">t</span>),
-                <span class="ident">Units</span>::<span class="ident">Bytes</span> <span class="op">=&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} / {} &quot;</span>, <span class="macro">kb_fmt</span><span class="macro">!</span>(<span class="ident">c</span>), <span class="macro">kb_fmt</span><span class="macro">!</span>(<span class="ident">t</span>)),
+                <span class="ident">Units</span>::<span class="ident">Default</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} / {} &quot;</span>, <span class="ident">c</span>, <span class="ident">t</span>),
+                <span class="ident">Units</span>::<span class="ident">Bytes</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} / {} &quot;</span>, <span class="macro">kb_fmt</span><span class="macro">!</span>(<span class="ident">c</span>), <span class="macro">kb_fmt</span><span class="macro">!</span>(<span class="ident">t</span>)),
             };
         }
         <span class="comment">// tick box</span>
@@ -915,10 +915,10 @@
                 <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">width</span> <span class="op">-</span> <span class="ident">p</span>;
                 <span class="kw">let</span> <span class="ident">curr_count</span> <span class="op">=</span> ((<span class="self">self</span>.<span class="ident">current</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">total</span> <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">*</span> <span class="ident">size</span> <span class="kw">as</span> <span class="ident">f64</span>)
                     .<span class="ident">ceil</span>() <span class="kw">as</span> <span class="ident">usize</span>;
-                <span class="kw">if</span> <span class="ident">size</span> <span class="op">&gt;=</span> <span class="ident">curr_count</span> {
+                <span class="kw">if</span> <span class="ident">size</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">curr_count</span> {
                     <span class="kw">let</span> <span class="ident">rema_count</span> <span class="op">=</span> <span class="ident">size</span> <span class="op">-</span> <span class="ident">curr_count</span>;
                     <span class="ident">base</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bar_start</span>.<span class="ident">clone</span>();
-                    <span class="kw">if</span> <span class="ident">rema_count</span> <span class="op">&gt;</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">curr_count</span> <span class="op">&gt;</span> <span class="number">0</span> {
+                    <span class="kw">if</span> <span class="ident">rema_count</span> <span class="op">&gt;</span> <span class="number">0</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">curr_count</span> <span class="op">&gt;</span> <span class="number">0</span> {
                         <span class="ident">base</span> <span class="op">=</span> <span class="ident">base</span> <span class="op">+</span> <span class="macro">repeat</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">bar_current</span>.<span class="ident">to_string</span>(), <span class="ident">curr_count</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">+</span>
                                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bar_current_n</span>;
                     } <span class="kw">else</span> {
@@ -977,7 +977,7 @@
         <span class="kw">let</span> <span class="ident">width</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">width</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">s</span>);
         <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">width</span> {
-            <span class="ident">out</span> <span class="op">+=</span> <span class="macro">repeat</span><span class="macro">!</span>(<span class="string">&quot; &quot;</span>, <span class="ident">width</span> <span class="op">-</span> <span class="ident">s</span>.<span class="ident">len</span>());
+            <span class="ident">out</span> <span class="op">+</span><span class="op">=</span> <span class="macro">repeat</span><span class="macro">!</span>(<span class="string">&quot; &quot;</span>, <span class="ident">width</span> <span class="op">-</span> <span class="ident">s</span>.<span class="ident">len</span>());
         };
         <span class="macro">printfl</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">handle</span>, <span class="string">&quot;\r{}&quot;</span>, <span class="ident">out</span>);
         <span class="self">self</span>.<span class="ident">finish</span>();
@@ -999,7 +999,7 @@
     }
 
     <span class="doccomment">/// Get terminal width, from configuration, terminal size, or default(80)</span>
-    <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">w</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">width</span> {
             <span class="ident">w</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">Width</span>(<span class="ident">w</span>), <span class="kw">_</span>)) <span class="op">=</span> <span class="ident">terminal_size</span>() {
@@ -1012,17 +1012,17 @@
 
 <span class="comment">// Implement io::Writer</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Write</span><span class="op">&gt;</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">ProgressBar</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">len</span>();
         <span class="self">self</span>.<span class="ident">add</span>(<span class="ident">n</span> <span class="kw">as</span> <span class="ident">u64</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">n</span>)
     }
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">fn</span> <span class="ident">time_to_std</span>(<span class="ident">d</span>: <span class="ident">time</span>::<span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="ident">Duration</span> {
+<span class="kw">fn</span> <span class="ident">time_to_std</span>(<span class="ident">d</span>: <span class="ident">time</span>::<span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
     <span class="kw">if</span> <span class="ident">d</span> <span class="op">&gt;</span> <span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">zero</span>() {
         <span class="kw">let</span> <span class="ident">secs</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">num_seconds</span>();
         <span class="kw">let</span> <span class="ident">nsecs</span> <span class="op">=</span> (<span class="ident">d</span> <span class="op">-</span> <span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">seconds</span>(<span class="ident">secs</span>)).<span class="ident">num_nanoseconds</span>().<span class="ident">unwrap</span>();
@@ -1032,7 +1032,7 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">fract_dur</span>(<span class="ident">d</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="ident">f64</span> {
+<span class="kw">fn</span> <span class="ident">fract_dur</span>(<span class="ident">d</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span> {
     <span class="ident">d</span>.<span class="ident">as_secs</span>() <span class="kw">as</span> <span class="ident">f64</span> <span class="op">+</span> <span class="ident">d</span>.<span class="ident">subsec_nanos</span>() <span class="kw">as</span> <span class="ident">f64</span> <span class="op">/</span> <span class="ident">NANOS_PER_SEC</span> <span class="kw">as</span> <span class="ident">f64</span>
 }
 
@@ -1044,8 +1044,8 @@
     <span class="kw">fn</span> <span class="ident">add</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">ProgressBar</span>::<span class="ident">new</span>(<span class="number">10</span>);
         <span class="ident">pb</span>.<span class="ident">add</span>(<span class="number">2</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">current</span> <span class="op">==</span> <span class="number">2</span>, <span class="string">&quot;should add the given `n` to current&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">add</span>(<span class="number">2</span>) <span class="op">==</span> <span class="ident">pb</span>.<span class="ident">current</span>,
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">current</span> <span class="op">=</span><span class="op">=</span> <span class="number">2</span>, <span class="string">&quot;should add the given `n` to current&quot;</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">add</span>(<span class="number">2</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">pb</span>.<span class="ident">current</span>,
                 <span class="string">&quot;add should return the current value&quot;</span>);
     }
 
@@ -1053,7 +1053,7 @@
     <span class="kw">fn</span> <span class="ident">inc</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">ProgressBar</span>::<span class="ident">new</span>(<span class="number">10</span>);
         <span class="ident">pb</span>.<span class="ident">inc</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">current</span> <span class="op">==</span> <span class="number">1</span>, <span class="string">&quot;should increment current by 1&quot;</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">current</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span>, <span class="string">&quot;should increment current by 1&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1062,14 +1062,14 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">ProgressBar</span>::<span class="ident">new</span>(<span class="number">1</span>);
         <span class="ident">pb</span>.<span class="ident">format</span>(<span class="ident">fmt</span>);
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">bar_start</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="ident">pb</span>.<span class="ident">bar_current</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="ident">pb</span>.<span class="ident">bar_current_n</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="ident">pb</span>.<span class="ident">bar_remain</span> <span class="op">+</span>
-                <span class="kw-2">&amp;</span><span class="ident">pb</span>.<span class="ident">bar_end</span> <span class="op">==</span> <span class="ident">fmt</span>);
+                <span class="kw-2">&amp;</span><span class="ident">pb</span>.<span class="ident">bar_end</span> <span class="op">=</span><span class="op">=</span> <span class="ident">fmt</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">finish</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">ProgressBar</span>::<span class="ident">new</span>(<span class="number">10</span>);
         <span class="ident">pb</span>.<span class="ident">finish</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">current</span> <span class="op">==</span> <span class="ident">pb</span>.<span class="ident">total</span>, <span class="string">&quot;should set current to total&quot;</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">current</span> <span class="op">=</span><span class="op">=</span> <span class="ident">pb</span>.<span class="ident">total</span>, <span class="string">&quot;should set current to total&quot;</span>);
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pb</span>.<span class="ident">is_finish</span>, <span class="string">&quot;should set is_finish to true&quot;</span>);
     }
 
@@ -1086,4 +1086,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "pbr";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "pbr";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

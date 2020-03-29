@@ -105,17 +105,17 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_file_times</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">atime</span>: <span class="ident">FileTime</span>, <span class="ident">mtime</span>: <span class="ident">FileTime</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_file_times</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">atime</span>: <span class="ident">FileTime</span>, <span class="ident">mtime</span>: <span class="ident">FileTime</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">set_times</span>(<span class="ident">p</span>, <span class="prelude-val">Some</span>(<span class="ident">atime</span>), <span class="prelude-val">Some</span>(<span class="ident">mtime</span>), <span class="bool-val">false</span>)
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_file_mtime</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">mtime</span>: <span class="ident">FileTime</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_file_mtime</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">mtime</span>: <span class="ident">FileTime</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">set_times</span>(<span class="ident">p</span>, <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">mtime</span>), <span class="bool-val">false</span>)
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_file_atime</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">atime</span>: <span class="ident">FileTime</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_file_atime</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">atime</span>: <span class="ident">FileTime</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">set_times</span>(<span class="ident">p</span>, <span class="prelude-val">Some</span>(<span class="ident">atime</span>), <span class="prelude-val">None</span>, <span class="bool-val">false</span>)
 }
 
@@ -124,14 +124,14 @@
     <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">fs</span>::<span class="ident">File</span>,
     <span class="ident">atime</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileTime</span><span class="op">&gt;</span>,
     <span class="ident">mtime</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileTime</span><span class="op">&gt;</span>,
-) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> (<span class="ident">atime</span>, <span class="ident">mtime</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">get_times</span>(<span class="ident">atime</span>, <span class="ident">mtime</span>, <span class="op">||</span> <span class="ident">f</span>.<span class="ident">metadata</span>())<span class="question-mark">?</span> {
-        <span class="prelude-val">Some</span>(<span class="ident">pair</span>) <span class="op">=&gt;</span> <span class="ident">pair</span>,
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">let</span> (<span class="ident">atime</span>, <span class="ident">mtime</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">get_times</span>(<span class="ident">atime</span>, <span class="ident">mtime</span>, <span class="op">|</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">metadata</span>())<span class="question-mark">?</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">pair</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">pair</span>,
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
     };
     <span class="kw">let</span> <span class="ident">times</span> <span class="op">=</span> [<span class="ident">to_timeval</span>(<span class="kw-2">&amp;</span><span class="ident">atime</span>), <span class="ident">to_timeval</span>(<span class="kw-2">&amp;</span><span class="ident">mtime</span>)];
     <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">libc</span>::<span class="ident">futimes</span>(<span class="ident">f</span>.<span class="ident">as_raw_fd</span>(), <span class="ident">times</span>.<span class="ident">as_ptr</span>()) };
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">rc</span> <span class="op">==</span> <span class="number">0</span> {
+    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">rc</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
         <span class="prelude-val">Ok</span>(())
     } <span class="kw">else</span> {
         <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>())
@@ -141,16 +141,16 @@
 <span class="kw">fn</span> <span class="ident">get_times</span>(
     <span class="ident">atime</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileTime</span><span class="op">&gt;</span>,
     <span class="ident">mtime</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileTime</span><span class="op">&gt;</span>,
-    <span class="ident">current</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>() <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">Metadata</span><span class="op">&gt;</span>,
-) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">FileTime</span>, <span class="ident">FileTime</span>)<span class="op">&gt;&gt;</span> {
+    <span class="ident">current</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">Metadata</span><span class="op">&gt;</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">FileTime</span>, <span class="ident">FileTime</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">atime</span>, <span class="ident">mtime</span>) {
-        (<span class="prelude-val">Some</span>(<span class="ident">a</span>), <span class="prelude-val">Some</span>(<span class="ident">b</span>)) <span class="op">=&gt;</span> (<span class="ident">a</span>, <span class="ident">b</span>),
-        (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-        (<span class="prelude-val">Some</span>(<span class="ident">a</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
+        (<span class="prelude-val">Some</span>(<span class="ident">a</span>), <span class="prelude-val">Some</span>(<span class="ident">b</span>)) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">a</span>, <span class="ident">b</span>),
+        (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+        (<span class="prelude-val">Some</span>(<span class="ident">a</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">meta</span> <span class="op">=</span> <span class="ident">current</span>()<span class="question-mark">?</span>;
             (<span class="ident">a</span>, <span class="ident">FileTime</span>::<span class="ident">from_last_modification_time</span>(<span class="kw-2">&amp;</span><span class="ident">meta</span>))
         }
-        (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">b</span>)) <span class="op">=&gt;</span> {
+        (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">b</span>)) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">meta</span> <span class="op">=</span> <span class="ident">current</span>()<span class="question-mark">?</span>;
             (<span class="ident">FileTime</span>::<span class="ident">from_last_access_time</span>(<span class="kw-2">&amp;</span><span class="ident">meta</span>), <span class="ident">b</span>)
         }
@@ -159,7 +159,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_symlink_file_times</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">atime</span>: <span class="ident">FileTime</span>, <span class="ident">mtime</span>: <span class="ident">FileTime</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_symlink_file_times</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">atime</span>: <span class="ident">FileTime</span>, <span class="ident">mtime</span>: <span class="ident">FileTime</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">set_times</span>(<span class="ident">p</span>, <span class="prelude-val">Some</span>(<span class="ident">atime</span>), <span class="prelude-val">Some</span>(<span class="ident">mtime</span>), <span class="bool-val">true</span>)
 }
 
@@ -168,10 +168,10 @@
     <span class="ident">atime</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileTime</span><span class="op">&gt;</span>,
     <span class="ident">mtime</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileTime</span><span class="op">&gt;</span>,
     <span class="ident">symlink</span>: <span class="ident">bool</span>,
-) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> (<span class="ident">atime</span>, <span class="ident">mtime</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">get_times</span>(<span class="ident">atime</span>, <span class="ident">mtime</span>, <span class="op">||</span> <span class="ident">p</span>.<span class="ident">metadata</span>())<span class="question-mark">?</span> {
-        <span class="prelude-val">Some</span>(<span class="ident">pair</span>) <span class="op">=&gt;</span> <span class="ident">pair</span>,
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">let</span> (<span class="ident">atime</span>, <span class="ident">mtime</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">get_times</span>(<span class="ident">atime</span>, <span class="ident">mtime</span>, <span class="op">|</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">metadata</span>())<span class="question-mark">?</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">pair</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">pair</span>,
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
     };
     <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">CString</span>::<span class="ident">new</span>(<span class="ident">p</span>.<span class="ident">as_os_str</span>().<span class="ident">as_bytes</span>())<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">times</span> <span class="op">=</span> [<span class="ident">to_timeval</span>(<span class="kw-2">&amp;</span><span class="ident">atime</span>), <span class="ident">to_timeval</span>(<span class="kw-2">&amp;</span><span class="ident">mtime</span>)];
@@ -182,18 +182,18 @@
             <span class="ident">libc</span>::<span class="ident">utimes</span>(<span class="ident">p</span>.<span class="ident">as_ptr</span>(), <span class="ident">times</span>.<span class="ident">as_ptr</span>())
         }
     };
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">rc</span> <span class="op">==</span> <span class="number">0</span> {
+    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">rc</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
         <span class="prelude-val">Ok</span>(())
     } <span class="kw">else</span> {
         <span class="prelude-val">Err</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>())
     };
 }
 
-<span class="kw">fn</span> <span class="ident">to_timeval</span>(<span class="ident">ft</span>: <span class="kw-2">&amp;</span><span class="ident">FileTime</span>) <span class="op">-&gt;</span> <span class="ident">libc</span>::<span class="ident">timeval</span> {
+<span class="kw">fn</span> <span class="ident">to_timeval</span>(<span class="ident">ft</span>: <span class="kw-2">&amp;</span><span class="ident">FileTime</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">libc</span>::<span class="ident">timeval</span> {
     <span class="ident">libc</span>::<span class="ident">timeval</span> {
         <span class="ident">tv_sec</span>: <span class="ident">ft</span>.<span class="ident">seconds</span>() <span class="kw">as</span> <span class="ident">libc</span>::<span class="ident">time_t</span>,
         <span class="ident">tv_usec</span>: (<span class="ident">ft</span>.<span class="ident">nanoseconds</span>() <span class="op">/</span> <span class="number">1000</span>) <span class="kw">as</span> <span class="ident">libc</span>::<span class="ident">suseconds_t</span>,
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "filetime";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "filetime";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

@@ -6,5 +6,4 @@ implementors["itertools"] = [];
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

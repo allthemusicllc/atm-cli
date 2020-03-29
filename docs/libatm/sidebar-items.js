@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MIDIFormat","MIDI file format"],["MIDINoteType","MIDI note type"],["MIDIStatus","MIDI message status"]],"struct":[["MIDIChannelVoiceMessage","MIDI channel voice message"],["MIDIFile","MIDI file representation"],["MIDIHeader","MIDI file header"],["MIDINote","MIDI note"],["MIDINoteSequence","Container for sequence of `MIDINote`"],["MIDITrackHeader","MIDI track chunk header"]]});
+initSidebarItems({"mod":[["midi_event",""],["midi_file",""],["midi_note",""]]});

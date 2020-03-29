@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TarFile","Tar archive storage backend. Use for datasets where compression isn't necessary. For reference, a tar archive with 4096 entries will take up ~4.19MB on disk, as each entry requires a header of 512 bytes and at least 512 bytes of data."]]});

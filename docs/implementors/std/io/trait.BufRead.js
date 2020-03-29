@@ -6,5 +6,4 @@ implementors["flate2"] = [{text:"impl&lt;R:&nbsp;<a class=\"trait\" href=\"https
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

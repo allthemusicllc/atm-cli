@@ -305,7 +305,7 @@
     <span class="doccomment">/// // to ignore blocking, you can run it in a different thread.</span>
     <span class="doccomment">/// mb.listen();</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">MultiBar</span><span class="op">&lt;</span><span class="ident">Stdout</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiBar</span><span class="op">&lt;</span><span class="ident">Stdout</span><span class="op">&gt;</span> {
         <span class="ident">MultiBar</span>::<span class="ident">on</span>(::<span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">stdout</span>())
     }
 }
@@ -324,7 +324,7 @@
     <span class="doccomment">/// // see full example in `MultiBar::new`</span>
     <span class="doccomment">/// // ...</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on</span>(<span class="ident">handle</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">MultiBar</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on</span>(<span class="ident">handle</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiBar</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">MultiBar</span> {
             <span class="ident">nlines</span>: <span class="number">0</span>,
             <span class="ident">nbars</span>: <span class="number">0</span>,
@@ -362,7 +362,7 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">println</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
         <span class="self">self</span>.<span class="ident">lines</span>.<span class="ident">push</span>(<span class="ident">s</span>.<span class="ident">to_owned</span>());
-        <span class="self">self</span>.<span class="ident">nlines</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">nlines</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
     }
 
     <span class="doccomment">/// create_bar creates new `ProgressBar` with `Pipe` as the writer.</span>
@@ -395,9 +395,9 @@
     <span class="doccomment">/// // ...</span>
     <span class="doccomment">/// mb.listen();</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_bar</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">total</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="ident">ProgressBar</span><span class="op">&lt;</span><span class="ident">Pipe</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create_bar</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">total</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProgressBar</span><span class="op">&lt;</span><span class="ident">Pipe</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">println</span>(<span class="string">&quot;&quot;</span>);
-        <span class="self">self</span>.<span class="ident">nbars</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">nbars</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">ProgressBar</span>::<span class="ident">on</span>(<span class="ident">Pipe</span> {
                                         <span class="ident">level</span>: <span class="self">self</span>.<span class="ident">nlines</span> <span class="op">-</span> <span class="number">1</span>,
                                         <span class="ident">chan</span>: <span class="self">self</span>.<span class="ident">chan</span>.<span class="number">0</span>.<span class="ident">clone</span>(),
@@ -444,7 +444,7 @@
             <span class="comment">// receive message</span>
             <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">chan</span>.<span class="number">1</span>.<span class="ident">recv</span>().<span class="ident">unwrap</span>();
             <span class="kw">if</span> <span class="ident">msg</span>.<span class="ident">done</span> {
-                <span class="ident">nbars</span> <span class="op">-=</span> <span class="number">1</span>;
+                <span class="ident">nbars</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
                 <span class="kw">continue</span>;
             }
             <span class="self">self</span>.<span class="ident">lines</span>[<span class="ident">msg</span>.<span class="ident">level</span>] <span class="op">=</span> <span class="ident">msg</span>.<span class="ident">string</span>;
@@ -452,7 +452,7 @@
             <span class="comment">// and draw</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
             <span class="kw">if</span> <span class="op">!</span><span class="ident">first</span> {
-                <span class="ident">out</span> <span class="op">+=</span> <span class="kw-2">&amp;</span><span class="ident">move_cursor_up</span>(<span class="self">self</span>.<span class="ident">nlines</span>);
+                <span class="ident">out</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">move_cursor_up</span>(<span class="self">self</span>.<span class="ident">nlines</span>);
             } <span class="kw">else</span> {
                 <span class="ident">first</span> <span class="op">=</span> <span class="bool-val">false</span>;
             }
@@ -470,12 +470,12 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">Pipe</span> {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">from_utf8</span>(<span class="ident">buf</span>).<span class="ident">unwrap</span>().<span class="ident">to_owned</span>();
         <span class="self">self</span>.<span class="ident">chan</span>
             .<span class="ident">send</span>(<span class="ident">WriteMsg</span> {
                 <span class="comment">// finish method emit empty string</span>
-                <span class="ident">done</span>: <span class="ident">s</span> <span class="op">==</span> <span class="string">&quot;&quot;</span>,
+                <span class="ident">done</span>: <span class="ident">s</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;&quot;</span>,
                 <span class="ident">level</span>: <span class="self">self</span>.<span class="ident">level</span>,
                 <span class="ident">string</span>: <span class="ident">s</span>,
             })
@@ -483,7 +483,7 @@
         <span class="prelude-val">Ok</span>(<span class="number">1</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(())
     }
 }
@@ -496,4 +496,4 @@
     <span class="ident">string</span>: <span class="ident">String</span>,
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "pbr";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "pbr";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["utils",""]]});
+initSidebarItems({"mod":[["storage",""],["utils",""]]});

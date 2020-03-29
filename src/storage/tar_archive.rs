@@ -111,12 +111,6 @@ where
             .map_err(|e| TarArchiveError::IOError(e))
     }
 
-    fn append_melody(&mut self, melody: Vec<libatm::MIDINote>, mode: Option<u32>) -> Result<(), Self::Error> {
-        // Create libatm::MIDIFile instance from melody
-        let mfile = libatm::MIDIFile::new(melody, libatm::MIDIFormat::Format0, 1, 1);
-        self.append_file(mfile, mode)
-    }
-
     fn finish(&mut self) -> Result<(), Self::Error> {
         // If archive is still "open" call tar.finish() and set state
         match self.state {

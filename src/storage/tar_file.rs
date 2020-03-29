@@ -46,10 +46,6 @@ impl<G: PathGenerator> StorageBackend for TarFile<G> {
         self.archive.append_file(mfile, mode)
     }
 
-    fn append_melody(&mut self, melody: Vec<libatm::MIDINote>, mode: Option<u32>) -> Result<(), Self::Error> {
-        self.archive.append_melody(melody, mode)
-    }
-    
     fn finish(&mut self) -> Result<(), Self::Error> {
         self.archive.finish()
     }

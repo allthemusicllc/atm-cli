@@ -233,7 +233,7 @@
 <span class="doccomment">/// See [`.multi_cartesian_product()`](../trait.Itertools.html#method.multi_cartesian_product)</span>
 <span class="doccomment">/// for more information.</span>
 <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;iterator adaptors are lazy and do nothing unless consumed&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MultiProduct</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MultiProductIter</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;&gt;</span>)
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MultiProduct</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MultiProductIter</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span>)
     <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">Clone</span>,
           <span class="ident">I</span>::<span class="ident">Item</span>: <span class="ident">Clone</span>;
 
@@ -241,7 +241,7 @@
 <span class="doccomment">/// of iterators of the same type.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Iterator element is of type `Vec&lt;H::Item::Item&gt;`.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">multi_cartesian_product</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>(<span class="ident">iters</span>: <span class="ident">H</span>) <span class="op">-&gt;</span> <span class="ident">MultiProduct</span><span class="op">&lt;&lt;</span><span class="ident">H</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">multi_cartesian_product</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>(<span class="ident">iters</span>: <span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiProduct</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">H</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
     <span class="kw">where</span> <span class="ident">H</span>: <span class="ident">Iterator</span>,
           <span class="ident">H</span>::<span class="ident">Item</span>: <span class="ident">IntoIterator</span>,
           <span class="op">&lt;</span><span class="ident">H</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span>: <span class="ident">Clone</span>,
@@ -279,17 +279,17 @@
     <span class="kw">fn</span> <span class="ident">iterate_last</span>(
         <span class="ident">multi_iters</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">MultiProductIter</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>],
         <span class="kw-2">mut</span> <span class="ident">state</span>: <span class="ident">MultiProductIterState</span>
-    ) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">use</span> <span class="self">self</span>::<span class="ident">MultiProductIterState</span>::<span class="kw-2">*</span>;
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">last</span>, <span class="ident">rest</span>)) <span class="op">=</span> <span class="ident">multi_iters</span>.<span class="ident">split_last_mut</span>() {
             <span class="kw">let</span> <span class="ident">on_first_iter</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">state</span> {
-                <span class="ident">StartOfIter</span> <span class="op">=&gt;</span> {
+                <span class="ident">StartOfIter</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">on_first_iter</span> <span class="op">=</span> <span class="op">!</span><span class="ident">last</span>.<span class="ident">in_progress</span>();
                     <span class="ident">state</span> <span class="op">=</span> <span class="ident">MidIter</span> { <span class="ident">on_first_iter</span>: <span class="ident">on_first_iter</span> };
                     <span class="ident">on_first_iter</span>
                 },
-                <span class="ident">MidIter</span> { <span class="ident">on_first_iter</span> } <span class="op">=&gt;</span> <span class="ident">on_first_iter</span>
+                <span class="ident">MidIter</span> { <span class="ident">on_first_iter</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">on_first_iter</span>
             };
 
             <span class="kw">if</span> <span class="op">!</span><span class="ident">on_first_iter</span> {
@@ -311,14 +311,14 @@
             <span class="comment">// Reached end of iterator list. On initialisation, return true.</span>
             <span class="comment">// At end of iteration (final iterator finishes), finish.</span>
             <span class="kw">match</span> <span class="ident">state</span> {
-                <span class="ident">StartOfIter</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>,
-                <span class="ident">MidIter</span> { <span class="ident">on_first_iter</span> } <span class="op">=&gt;</span> <span class="ident">on_first_iter</span>
+                <span class="ident">StartOfIter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+                <span class="ident">MidIter</span> { <span class="ident">on_first_iter</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">on_first_iter</span>
             }
         }
     }
 
     <span class="doccomment">/// Returns the unwrapped value of the next iteration.</span>
-    <span class="kw">fn</span> <span class="ident">curr_iterator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">I</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">curr_iterator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">I</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">multi_iter</span><span class="op">|</span> {
             <span class="ident">multi_iter</span>.<span class="ident">cur</span>.<span class="ident">clone</span>().<span class="ident">unwrap</span>()
         }).<span class="ident">collect</span>()
@@ -326,7 +326,7 @@
 
     <span class="doccomment">/// Returns true if iteration has started and has not yet finished; false</span>
     <span class="doccomment">/// otherwise.</span>
-    <span class="kw">fn</span> <span class="ident">in_progress</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">in_progress</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">last</span>) <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">last</span>() {
             <span class="ident">last</span>.<span class="ident">in_progress</span>()
         } <span class="kw">else</span> {
@@ -339,7 +339,7 @@
     <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">Clone</span>,
           <span class="ident">I</span>::<span class="ident">Item</span>: <span class="ident">Clone</span>
 {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">MultiProductIter</span> {
             <span class="ident">cur</span>: <span class="prelude-val">None</span>,
             <span class="ident">iter</span>: <span class="ident">iter</span>.<span class="ident">clone</span>(),
@@ -359,7 +359,7 @@
 
     <span class="doccomment">/// Returns true if the current iterator has been started and has not yet</span>
     <span class="doccomment">/// finished; false otherwise.</span>
-    <span class="kw">fn</span> <span class="ident">in_progress</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">in_progress</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">is_some</span>()
     }
 }
@@ -370,7 +370,7 @@
 {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">I</span>::<span class="ident">Item</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">MultiProduct</span>::<span class="ident">iterate_last</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>,
             <span class="ident">MultiProductIterState</span>::<span class="ident">StartOfIter</span>
@@ -381,8 +381,8 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">count</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
+    <span class="kw">fn</span> <span class="ident">count</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="number">0</span>;
         }
 
@@ -402,9 +402,9 @@
         )
     }
 
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="comment">// Not ExactSizeIterator because size may be larger than usize</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> (<span class="number">0</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>));
         }
 
@@ -424,7 +424,7 @@
         )
     }
 
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">iter_count</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">len</span>();
 
         <span class="kw">let</span> <span class="ident">lasts</span>: <span class="self">Self</span>::<span class="ident">Item</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">into_iter</span>()
@@ -432,7 +432,7 @@
             .<span class="ident">while_some</span>()
             .<span class="ident">collect</span>();
 
-        <span class="kw">if</span> <span class="ident">lasts</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">iter_count</span> {
+        <span class="kw">if</span> <span class="ident">lasts</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">iter_count</span> {
             <span class="prelude-val">Some</span>(<span class="ident">lasts</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -440,4 +440,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "itertools";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "itertools";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

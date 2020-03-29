@@ -114,11 +114,11 @@
 
 <span class="doccomment">/// Add **SizeHint** correctly.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="ident">a</span>: <span class="ident">SizeHint</span>, <span class="ident">b</span>: <span class="ident">SizeHint</span>) <span class="op">-&gt;</span> <span class="ident">SizeHint</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="ident">a</span>: <span class="ident">SizeHint</span>, <span class="ident">b</span>: <span class="ident">SizeHint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SizeHint</span> {
     <span class="kw">let</span> <span class="ident">min</span> <span class="op">=</span> <span class="ident">a</span>.<span class="number">0</span>.<span class="ident">checked_add</span>(<span class="ident">b</span>.<span class="number">0</span>).<span class="ident">unwrap_or</span>(<span class="ident">usize</span>::<span class="ident">MAX</span>);
     <span class="kw">let</span> <span class="ident">max</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">a</span>.<span class="number">1</span>, <span class="ident">b</span>.<span class="number">1</span>) {
-        (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=&gt;</span> <span class="ident">x</span>.<span class="ident">checked_add</span>(<span class="ident">y</span>),
-        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+        (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">checked_add</span>(<span class="ident">y</span>),
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
     };
 
     (<span class="ident">min</span>, <span class="ident">max</span>)
@@ -126,7 +126,7 @@
 
 <span class="doccomment">/// Add **x** correctly to a **SizeHint**.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_scalar</span>(<span class="ident">sh</span>: <span class="ident">SizeHint</span>, <span class="ident">x</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">SizeHint</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_scalar</span>(<span class="ident">sh</span>: <span class="ident">SizeHint</span>, <span class="ident">x</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SizeHint</span> {
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">low</span>, <span class="kw-2">mut</span> <span class="ident">hi</span>) <span class="op">=</span> <span class="ident">sh</span>;
     <span class="ident">low</span> <span class="op">=</span> <span class="ident">low</span>.<span class="ident">saturating_add</span>(<span class="ident">x</span>);
     <span class="ident">hi</span> <span class="op">=</span> <span class="ident">hi</span>.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">elt</span><span class="op">|</span> <span class="ident">elt</span>.<span class="ident">checked_add</span>(<span class="ident">x</span>));
@@ -136,7 +136,7 @@
 <span class="doccomment">/// Sbb **x** correctly to a **SizeHint**.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sub_scalar</span>(<span class="ident">sh</span>: <span class="ident">SizeHint</span>, <span class="ident">x</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">SizeHint</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sub_scalar</span>(<span class="ident">sh</span>: <span class="ident">SizeHint</span>, <span class="ident">x</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SizeHint</span> {
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">low</span>, <span class="kw-2">mut</span> <span class="ident">hi</span>) <span class="op">=</span> <span class="ident">sh</span>;
     <span class="ident">low</span> <span class="op">=</span> <span class="ident">low</span>.<span class="ident">saturating_sub</span>(<span class="ident">x</span>);
     <span class="ident">hi</span> <span class="op">=</span> <span class="ident">hi</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">elt</span><span class="op">|</span> <span class="ident">elt</span>.<span class="ident">saturating_sub</span>(<span class="ident">x</span>));
@@ -160,19 +160,19 @@
 <span class="doccomment">///            (0, Some(0)));</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mul</span>(<span class="ident">a</span>: <span class="ident">SizeHint</span>, <span class="ident">b</span>: <span class="ident">SizeHint</span>) <span class="op">-&gt;</span> <span class="ident">SizeHint</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mul</span>(<span class="ident">a</span>: <span class="ident">SizeHint</span>, <span class="ident">b</span>: <span class="ident">SizeHint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SizeHint</span> {
     <span class="kw">let</span> <span class="ident">low</span> <span class="op">=</span> <span class="ident">a</span>.<span class="number">0</span>.<span class="ident">checked_mul</span>(<span class="ident">b</span>.<span class="number">0</span>).<span class="ident">unwrap_or</span>(<span class="ident">usize</span>::<span class="ident">MAX</span>);
     <span class="kw">let</span> <span class="ident">hi</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">a</span>.<span class="number">1</span>, <span class="ident">b</span>.<span class="number">1</span>) {
-        (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=&gt;</span> <span class="ident">x</span>.<span class="ident">checked_mul</span>(<span class="ident">y</span>),
-        (<span class="prelude-val">Some</span>(<span class="number">0</span>), <span class="prelude-val">None</span>) <span class="op">|</span> (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="number">0</span>),
-        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+        (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">checked_mul</span>(<span class="ident">y</span>),
+        (<span class="prelude-val">Some</span>(<span class="number">0</span>), <span class="prelude-val">None</span>) <span class="op">|</span> (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="number">0</span>),
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
     };
     (<span class="ident">low</span>, <span class="ident">hi</span>)
 }
 
 <span class="doccomment">/// Multiply **x** correctly with a **SizeHint**.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mul_scalar</span>(<span class="ident">sh</span>: <span class="ident">SizeHint</span>, <span class="ident">x</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">SizeHint</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mul_scalar</span>(<span class="ident">sh</span>: <span class="ident">SizeHint</span>, <span class="ident">x</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SizeHint</span> {
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">low</span>, <span class="kw-2">mut</span> <span class="ident">hi</span>) <span class="op">=</span> <span class="ident">sh</span>;
     <span class="ident">low</span> <span class="op">=</span> <span class="ident">low</span>.<span class="ident">saturating_mul</span>(<span class="ident">x</span>);
     <span class="ident">hi</span> <span class="op">=</span> <span class="ident">hi</span>.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">elt</span><span class="op">|</span> <span class="ident">elt</span>.<span class="ident">checked_mul</span>(<span class="ident">x</span>));
@@ -181,15 +181,15 @@
 
 <span class="doccomment">/// Return the maximum</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max</span>(<span class="ident">a</span>: <span class="ident">SizeHint</span>, <span class="ident">b</span>: <span class="ident">SizeHint</span>) <span class="op">-&gt;</span> <span class="ident">SizeHint</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max</span>(<span class="ident">a</span>: <span class="ident">SizeHint</span>, <span class="ident">b</span>: <span class="ident">SizeHint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SizeHint</span> {
     <span class="kw">let</span> (<span class="ident">a_lower</span>, <span class="ident">a_upper</span>) <span class="op">=</span> <span class="ident">a</span>;
     <span class="kw">let</span> (<span class="ident">b_lower</span>, <span class="ident">b_upper</span>) <span class="op">=</span> <span class="ident">b</span>;
 
     <span class="kw">let</span> <span class="ident">lower</span> <span class="op">=</span> <span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">a_lower</span>, <span class="ident">b_lower</span>);
 
     <span class="kw">let</span> <span class="ident">upper</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">a_upper</span>, <span class="ident">b_upper</span>) {
-        (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">x</span>, <span class="ident">y</span>)),
-        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+        (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">x</span>, <span class="ident">y</span>)),
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
     };
 
     (<span class="ident">lower</span>, <span class="ident">upper</span>)
@@ -197,15 +197,15 @@
 
 <span class="doccomment">/// Return the minimum</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">min</span>(<span class="ident">a</span>: <span class="ident">SizeHint</span>, <span class="ident">b</span>: <span class="ident">SizeHint</span>) <span class="op">-&gt;</span> <span class="ident">SizeHint</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">min</span>(<span class="ident">a</span>: <span class="ident">SizeHint</span>, <span class="ident">b</span>: <span class="ident">SizeHint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SizeHint</span> {
     <span class="kw">let</span> (<span class="ident">a_lower</span>, <span class="ident">a_upper</span>) <span class="op">=</span> <span class="ident">a</span>;
     <span class="kw">let</span> (<span class="ident">b_lower</span>, <span class="ident">b_upper</span>) <span class="op">=</span> <span class="ident">b</span>;
     <span class="kw">let</span> <span class="ident">lower</span> <span class="op">=</span> <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">a_lower</span>, <span class="ident">b_lower</span>);
     <span class="kw">let</span> <span class="ident">upper</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">a_upper</span>, <span class="ident">b_upper</span>) {
-        (<span class="prelude-val">Some</span>(<span class="ident">u1</span>), <span class="prelude-val">Some</span>(<span class="ident">u2</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">u1</span>, <span class="ident">u2</span>)),
-        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">a_upper</span>.<span class="ident">or</span>(<span class="ident">b_upper</span>),
+        (<span class="prelude-val">Some</span>(<span class="ident">u1</span>), <span class="prelude-val">Some</span>(<span class="ident">u2</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">u1</span>, <span class="ident">u2</span>)),
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">a_upper</span>.<span class="ident">or</span>(<span class="ident">b_upper</span>),
     };
     (<span class="ident">lower</span>, <span class="ident">upper</span>)
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "itertools";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "itertools";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

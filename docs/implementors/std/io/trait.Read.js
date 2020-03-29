@@ -7,5 +7,4 @@ implementors["tar"] = [{text:"impl&lt;'a, R:&nbsp;<a class=\"trait\" href=\"http
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

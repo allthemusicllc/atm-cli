@@ -24,13 +24,17 @@ pub use tar_gz_file::TarGzFile;
 /// [libatm::MIDIFile](../../libatm/midi_file/struct.MIDIFile.html).
 pub trait StorageBackend : Sized {
     /// Error type for storage operations
-    type Error;
+    type Error: std::fmt::Debug;
 
     /// Append MIDI file to storage backend
     fn append_file(&mut self, mfile: libatm::MIDIFile, mode: Option<u32>) -> Result<(), Self::Error>;
 
     /// Convert melody to MIDI file and append to storage backend
-    fn append_melody(&mut self, melody: Vec<libatm::MIDINote>, mode: Option<u32>) -> Result<(), Self::Error>;
+    fn append_melody(&mut self, melody: libatm::MIDINoteVec, mode: Option<u32>) -> Result<(), Self::Error> {
+        // Create libatm::MIDIFile instance from melody
+        let mfile = libatm::MIDIFile::new(melody, libatm::MIDIFormat::Format0, 1, 1);
+        self.append_file(mfile, mode)
+    }
 
     /// Conduct cleanup of storage backend and close for writing
     ///
@@ -99,7 +103,7 @@ pub enum PartitionPathGeneratorError {
 /// Partitioning files by path in the output storage backend can be useful if not all files 
 /// can be written to the same directory/file. For example, most modern filesystem don't perform as
 /// well with more than 4K files per directory. Partitioning files into subdirectories with a
-/// depth (number of partitions) and partition length (number of notes per partition) can
+/// depth (number of partition branches) and partition length (number of notes per partition) can
 /// ensure no more than some threshold files are written to a directory
 /// (see: [gen_partition_length](struct.PartitionPathGenerator.html#method.gen_partition_length)).
 pub struct PartitionPathGenerator {
@@ -120,8 +124,8 @@ impl PartitionPathGenerator {
         max_files: f32,
         partition_depth: u32
     ) -> Result<u32, PartitionPathGeneratorError> {
-        // Generate maximum number of partitions (directories)
-        // as divisor of number of generated melodies and
+        // Generate maximum number of partition branches (directories)
+        // as quotient of number of generated melodies and
         // maximum number of files per directory
         let max_partitions = num_melodies / max_files;
 
@@ -156,24 +160,25 @@ impl PartitionPathGenerator {
         let num_melodies = num_notes.powi(melody_length);
         // If number of notes is 1, or total number of generated melodies is
         // less than max files per directory, then partition depth should be 1
-        let partition_depth = if num_notes == 1.0 || num_melodies <= max_files {
-            1
-        } else {
-            partition_depth
-        };
-        // Generate partition length
-        let partition_length = Self::gen_partition_length(
-            num_notes,
-            num_melodies,
-            melody_length,
-            max_files,
-            partition_depth,
-        )?;
+        // and partition length should be 0
+        let mut calc_partition_depth = 1;
+        let mut calc_partition_length = 0;
+        if !(num_notes == 1.0 || num_melodies <= max_files) {
+            calc_partition_depth = partition_depth;
+            // Generate partition length
+            calc_partition_length = Self::gen_partition_length(
+                num_notes,
+                num_melodies,
+                melody_length,
+                max_files,
+                partition_depth,
+            )?;
+        }
 
         Ok(Self {
             melody_length: melody_length as u32,
-            partition_depth,
-            partition_length,
+            partition_depth: calc_partition_depth,
+            partition_length: calc_partition_length,
         })
     }
 
@@ -189,35 +194,116 @@ impl PartitionPathGenerator {
                 }
             ));
         }
-        // Generate partitioned path by
-        //  1) Generating self.partition_depth slices of size self.partition_length over the input
-        //     melody by using a sliding window method
-        //  2) Converting each slice into a string of integer representations of each note in the
-        //     slice
-        //  3) Joining the slices together using the OS path separator
-        Ok((0..self.partition_depth)
-            .map(|p| {
-                &mfile.sequence[
-                    ( (self.partition_length * p) as usize )..( (self.partition_length * (p + 1)) as usize )
-                ]
-            })
-            .map(|p| p.iter().map(|n| n.convert().to_string()).collect::<Vec<String>>().join(""))
-            .collect::<Vec<String>>()
-            .join(&std::path::MAIN_SEPARATOR.to_string()))
+        
+        match self.partition_depth {
+            // if partition_depth is zero, return empty basename
+            0 => Ok(String::new()),
+            // Otherwise, generate partitioned path by
+            //  1) Generating self.partition_depth slices of size self.partition_length over the input
+            //     melody by using a sliding window method
+            //  2) Converting each slice into a string of integer representations of each note in the
+            //     slice
+            //  3) Joining the slices together using the OS path separator
+            _ => Ok((0..self.partition_depth)
+                .map(|p| {
+                    &mfile.sequence[
+                        ( (self.partition_length * p) as usize )..( (self.partition_length * (p + 1)) as usize )
+                    ]
+                })
+                .map(|p| p.iter().map(|n| n.convert().to_string()).collect::<Vec<String>>().join(""))
+                .collect::<Vec<String>>()
+                .join(&std::path::MAIN_SEPARATOR.to_string()))
+        }
     }
 }
 
 impl PathGenerator for PartitionPathGenerator {
     fn gen_path_for_file(&self, mfile: &libatm::MIDIFile) -> Result<String, PathGeneratorError> {
-        // Generate basename (parent directories)
+        // Generate basename (could be "")
         let basename = self.gen_basename_for_file(mfile)?;
         // Generate filename from MIDI file hash
         let filename = format!("{}.mid", mfile.gen_hash());
         Ok(format!(
-            "{}{}{}",
-            basename,
-            std::path::MAIN_SEPARATOR,
-            filename
+            "{}",
+            std::path::Path::new(&basename)
+                .join(&filename)
+                .as_path()
+                .to_string_lossy(),
         ))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /*********************************
+    ***** PartitionPathGenerator *****
+    *********************************/
+
+    #[test]
+    #[should_panic]
+    fn test_partition_depth_melody_length() {
+        // Fails because partition depth must be less
+        // less than length of melodies. Each partition branch
+        // must contian at least one note, so if depth > # of notes,
+        // cannnot generate enough branches from the input melody.        
+        let path_generator = PartitionPathGenerator::new(3f32, 3, 4096f32, 4).unwrap();
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_melody_length_match() {
+        let path_generator = PartitionPathGenerator::new(4f32, 12, 4096f32, 2).unwrap();
+        let mfile = libatm::MIDIFile::new(
+            vec!["C:4", "D:5", "G:7"].iter().map(|n| n.parse::<libatm::MIDINote>().unwrap()).collect::<Vec<libatm::MIDINote>>(),
+            libatm::MIDIFormat::Format0,
+            1,
+            1,
+        );
+        // Fails because melody isn't 4 notes
+        path_generator.gen_path_for_file(&mfile).unwrap();
+    }
+
+    macro_rules! check_num_files_partition {
+        ($test_name:ident, $note_set:expr, $melody_length:expr, $max_files:expr, $partition_depth:expr) => {
+            #[test]
+            fn $test_name() { 
+                let notes = $note_set.parse::<libatm::MIDINoteSet>().unwrap();
+                let num_notes = notes.len() as f32;
+                let mut partition = String::new();
+                let mut num_files_in_partition = 0;
+                let path_generator = PartitionPathGenerator::new(
+                    num_notes,
+                    $melody_length,
+                    $max_files,
+                    $partition_depth,
+                ).unwrap();
+
+                for melody in crate::utils::gen_sequences(
+                    &Vec::from(&notes),
+                    $melody_length,
+                ) { 
+                    // Generate partition for melody
+                    let melody_partition = path_generator.gen_basename_for_file(&libatm::MIDIFile::new(
+                        melody.iter().map(|n| *n.clone()).collect::<Vec<libatm::MIDINote>>(),
+                        libatm::MIDIFormat::Format0,
+                        1,
+                        1,
+                    )).unwrap();
+                    // If partition boundary check number of files in partition
+                    if melody_partition != partition {
+                        assert!(
+                            num_files_in_partition as f32 <= $max_files,
+                            "{} files in partition, maximum specified was {}",
+                            num_files_in_partition,
+                            $max_files,
+                        );
+                        num_files_in_partition = 0;
+                        partition = melody_partition;
+                    }
+                }
+            }
+        }
     }
 }

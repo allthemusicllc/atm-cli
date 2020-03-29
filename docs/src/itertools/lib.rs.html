@@ -2393,19 +2393,19 @@
 <span class="doccomment">/// # fn main() { }</span>
 <span class="doccomment">/// ```</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">iproduct</span> {
-    (@<span class="ident">flatten</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>,) <span class="op">=&gt;</span> (
+    (@<span class="ident">flatten</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>,) <span class="op">=</span><span class="op">&gt;</span> (
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>
     );
-    (@<span class="ident">flatten</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">K</span>:<span class="ident">expr</span>,)<span class="kw-2">*</span>) <span class="op">=&gt;</span> (
+    (@<span class="ident">flatten</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">K</span>:<span class="ident">expr</span>,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> (
         <span class="macro">iproduct</span><span class="macro">!</span>(@<span class="ident">flatten</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">cons_tuples</span>(<span class="macro">iproduct</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>)), $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">K</span>,)<span class="kw-2">*</span>)
     );
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> (
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__std_iter</span>::<span class="ident">IntoIterator</span>::<span class="ident">into_iter</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>)
     );
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> (
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Itertools</span>::<span class="ident">cartesian_product</span>(<span class="macro">iproduct</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>), <span class="macro">iproduct</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>))
     );
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">K</span>:<span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=&gt;</span> (
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">K</span>:<span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> (
         <span class="macro">iproduct</span><span class="macro">!</span>(@<span class="ident">flatten</span> <span class="macro">iproduct</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">I</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">J</span>), $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">K</span>,)<span class="op">+</span>)
     );
 }
@@ -2458,34 +2458,34 @@
     <span class="comment">// @closure creates a tuple-flattening closure for .map() call. usage:</span>
     <span class="comment">// @closure partial_pattern =&gt; partial_tuple , rest , of , iterators</span>
     <span class="comment">// eg. izip!( @closure ((a, b), c) =&gt; (a, b, c) , dd , ee )</span>
-    ( @<span class="ident">closure</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>:<span class="ident">pat</span> <span class="op">=&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tup</span>:<span class="ident">expr</span> ) <span class="op">=&gt;</span> {
+    ( @<span class="ident">closure</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>:<span class="ident">pat</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tup</span>:<span class="ident">expr</span> ) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="op">|</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tup</span>
     };
 
     <span class="comment">// The &quot;b&quot; identifier is a different identifier on each recursion level thanks to hygiene.</span>
-    ( @<span class="ident">closure</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>:<span class="ident">pat</span> <span class="op">=&gt;</span> ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tup</span>:<span class="ident">tt</span>)<span class="op">*</span> ) , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">_iter</span>:<span class="ident">expr</span> $( , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tail</span>:<span class="ident">expr</span> )<span class="op">*</span> ) <span class="op">=&gt;</span> {
-        <span class="macro">izip</span><span class="macro">!</span>(@<span class="ident">closure</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tup</span>)<span class="kw-2">*</span>, <span class="ident">b</span> ) $( , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tail</span> )<span class="kw-2">*</span>)
+    ( @<span class="ident">closure</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>:<span class="ident">pat</span> <span class="op">=</span><span class="op">&gt;</span> ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tup</span>:<span class="ident">tt</span>)<span class="op">*</span> ) , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">_iter</span>:<span class="ident">expr</span> $( , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tail</span>:<span class="ident">expr</span> )<span class="op">*</span> ) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="macro">izip</span><span class="macro">!</span>(@<span class="ident">closure</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tup</span>)<span class="kw-2">*</span>, <span class="ident">b</span> ) $( , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tail</span> )<span class="kw-2">*</span>)
     };
 
     <span class="comment">// unary</span>
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>:<span class="ident">expr</span> $(,)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>:<span class="ident">expr</span> $(,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__std_iter</span>::<span class="ident">IntoIterator</span>::<span class="ident">into_iter</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>)
     };
 
     <span class="comment">// binary</span>
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">second</span>:<span class="ident">expr</span> $(,)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">second</span>:<span class="ident">expr</span> $(,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="macro">izip</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>)
             .<span class="ident">zip</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">second</span>)
     };
 
     <span class="comment">// n-ary where n &gt; 2</span>
-    ( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>:<span class="ident">expr</span> $( , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">expr</span> )<span class="op">*</span> $(,)<span class="op">*</span> ) <span class="op">=&gt;</span> {
+    ( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>:<span class="ident">expr</span> $( , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">expr</span> )<span class="op">*</span> $(,)<span class="op">*</span> ) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="macro">izip</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>)
             $(
                 .<span class="ident">zip</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)
             )<span class="op">*</span>
             .<span class="ident">map</span>(
-                <span class="macro">izip</span><span class="macro">!</span>(@<span class="ident">closure</span> <span class="ident">a</span> <span class="op">=&gt;</span> (<span class="ident">a</span>) $( , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span> )<span class="kw-2">*</span>)
+                <span class="macro">izip</span><span class="macro">!</span>(@<span class="ident">closure</span> <span class="ident">a</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">a</span>) $( , <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span> )<span class="kw-2">*</span>)
             )
     };
 }
@@ -2520,7 +2520,7 @@
     <span class="doccomment">/// let it = (1..7).interleave(vec![-1, -2]);</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![1, -1, 2, -2, 3, 4, 5, 6]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">interleave</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-&gt;</span> <span class="ident">Interleave</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">interleave</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Interleave</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">J</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>,
               <span class="self">Self</span>: <span class="ident">Sized</span>
     {
@@ -2538,7 +2538,7 @@
     <span class="doccomment">/// let it = (1..7).interleave_shortest(vec![-1, -2]);</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![1, -1, 2, -2, 3]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">interleave_shortest</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-&gt;</span> <span class="ident">InterleaveShortest</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">interleave_shortest</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">InterleaveShortest</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">J</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>,
               <span class="self">Self</span>: <span class="ident">Sized</span>
     {
@@ -2557,7 +2557,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// itertools::assert_equal((0..3).intersperse(8), vec![0, 8, 1, 8, 2]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">intersperse</span>(<span class="self">self</span>, <span class="ident">element</span>: <span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">Intersperse</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">intersperse</span>(<span class="self">self</span>, <span class="ident">element</span>: <span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Intersperse</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Clone</span>
     {
@@ -2591,7 +2591,7 @@
     <span class="doccomment">/// itertools::assert_equal(it, vec![Both(0, 1), Right(2)]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">zip_longest</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-&gt;</span> <span class="ident">ZipLongest</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">zip_longest</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ZipLongest</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">J</span>: <span class="ident">IntoIterator</span>,
               <span class="self">Self</span>: <span class="ident">Sized</span>
     {
@@ -2604,7 +2604,7 @@
     <span class="doccomment">/// **Panics** if the iterators reach an end and they are not of equal</span>
     <span class="doccomment">/// lengths.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">zip_eq</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-&gt;</span> <span class="ident">ZipEq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">zip_eq</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ZipEq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">J</span>: <span class="ident">IntoIterator</span>,
               <span class="self">Self</span>: <span class="ident">Sized</span>
     {
@@ -2634,8 +2634,8 @@
     <span class="doccomment">/// itertools::assert_equal(pit, vec![(0, 1), (2, 3)]);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="kw">fn</span> <span class="ident">batching</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">Batching</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
+    <span class="kw">fn</span> <span class="ident">batching</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Batching</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
               <span class="self">Self</span>: <span class="ident">Sized</span>
     {
         <span class="ident">adaptors</span>::<span class="ident">batching</span>(<span class="self">self</span>, <span class="ident">f</span>)
@@ -2675,9 +2675,9 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">group_by</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">key</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">GroupBy</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">group_by</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">key</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GroupBy</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">K</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">K</span>,
               <span class="ident">K</span>: <span class="ident">PartialEq</span>,
     {
         <span class="ident">groupbylazy</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">key</span>)
@@ -2711,10 +2711,10 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">chunks</span>(<span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">IntoChunks</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">chunks</span>(<span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IntoChunks</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">size</span> <span class="op">!=</span> <span class="number">0</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">size</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>);
         <span class="ident">groupbylazy</span>::<span class="ident">new_chunks</span>(<span class="self">self</span>, <span class="ident">size</span>)
     }
 
@@ -2749,7 +2749,7 @@
     <span class="doccomment">/// let it: TupleWindows&lt;Range&lt;u32&gt;, (u32, u32, u32)&gt; = (1..5).tuple_windows();</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![(1, 2, 3), (2, 3, 4)]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">tuple_windows</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">TupleWindows</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">tuple_windows</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TupleWindows</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">Item</span><span class="op">&gt;</span>,
               <span class="ident">T</span>: <span class="ident">tuple_impl</span>::<span class="ident">TupleCollect</span>,
               <span class="ident">T</span>::<span class="ident">Item</span>: <span class="ident">Clone</span>
@@ -2788,7 +2788,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See also [`Tuples::into_buffer`](structs/struct.Tuples.html#method.into_buffer).</span>
-    <span class="kw">fn</span> <span class="ident">tuples</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Tuples</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">tuples</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Tuples</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">Item</span><span class="op">&gt;</span>,
               <span class="ident">T</span>: <span class="ident">tuple_impl</span>::<span class="ident">TupleCollect</span>
     {
@@ -2813,7 +2813,7 @@
     <span class="doccomment">/// itertools::assert_equal(t1, 1..4);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">tee</span>(<span class="self">self</span>) <span class="op">-&gt;</span> (<span class="ident">Tee</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">Tee</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>)
+    <span class="kw">fn</span> <span class="ident">tee</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Tee</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">Tee</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>)
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Clone</span>
     {
@@ -2838,7 +2838,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span><span class="op">=</span><span class="string">&quot;Use std .step_by() instead&quot;</span>, <span class="ident">since</span><span class="op">=</span><span class="string">&quot;0.8&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">step</span>(<span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">Step</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">step</span>(<span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Step</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>
     {
         <span class="ident">adaptors</span>::<span class="ident">step</span>(<span class="self">self</span>, <span class="ident">n</span>)
@@ -2851,7 +2851,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// (1i32..42i32).map_into::&lt;f64&gt;().collect_vec();</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">map_into</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">MapInto</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">R</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">map_into</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MapInto</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">R</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
     {
@@ -2869,9 +2869,9 @@
     <span class="doccomment">/// let it = input.into_iter().map_results(|i| i + 1);</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![Ok(42), Err(false), Ok(12)]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">map_results</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">MapResults</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;&gt;</span> <span class="op">+</span> <span class="ident">Sized</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">U</span>,
+    <span class="kw">fn</span> <span class="ident">map_results</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MapResults</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span>,
     {
         <span class="ident">adaptors</span>::<span class="ident">map_results</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
@@ -2890,7 +2890,7 @@
     <span class="doccomment">/// let it = a.merge(b);</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![0, 0, 3, 5, 6, 9, 10]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">merge</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-&gt;</span> <span class="ident">Merge</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">merge</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Merge</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">PartialOrd</span>,
               <span class="ident">J</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
@@ -2914,10 +2914,10 @@
     <span class="doccomment">/// itertools::assert_equal(it, vec![(0, &#39;a&#39;), (0, &#39;b&#39;), (1, &#39;c&#39;), (1, &#39;d&#39;)]);</span>
     <span class="doccomment">/// ```</span>
 
-    <span class="kw">fn</span> <span class="ident">merge_by</span><span class="op">&lt;</span><span class="ident">J</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>, <span class="ident">is_first</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">MergeBy</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">merge_by</span><span class="op">&lt;</span><span class="ident">J</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>, <span class="ident">is_first</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MergeBy</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="ident">J</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
     {
         <span class="ident">adaptors</span>::<span class="ident">merge_by_new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">into_iter</span>(), <span class="ident">is_first</span>)
     }
@@ -2954,9 +2954,9 @@
     <span class="doccomment">/// itertools::assert_equal(ki_ku, vec![&quot;KiKu&quot;, &quot;Ki&quot;, &quot;Ku&quot;, &quot;Ki&quot;, &quot;Ki&quot;]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">merge_join_by</span><span class="op">&lt;</span><span class="ident">J</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>, <span class="ident">cmp_fn</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">MergeJoinBy</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">merge_join_by</span><span class="op">&lt;</span><span class="ident">J</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>, <span class="ident">cmp_fn</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MergeJoinBy</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">J</span>: <span class="ident">IntoIterator</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="ident">J</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">Ordering</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="ident">J</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">Ordering</span>,
               <span class="self">Self</span>: <span class="ident">Sized</span>
     {
         <span class="ident">merge_join_by</span>(<span class="self">self</span>, <span class="ident">other</span>, <span class="ident">cmp_fn</span>)
@@ -2980,7 +2980,7 @@
     <span class="doccomment">/// itertools::assert_equal(it, vec![0, 1, 2, 3, 4, 5]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">kmerge</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">KMerge</span><span class="op">&lt;&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">kmerge</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">KMerge</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">IntoIterator</span>,
               <span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">Item</span>: <span class="ident">PartialOrd</span>,
@@ -3010,11 +3010,11 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">kmerge_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">first</span>: <span class="ident">F</span>)
-        <span class="op">-&gt;</span> <span class="ident">KMergeBy</span><span class="op">&lt;&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span>, <span class="ident">F</span><span class="op">&gt;</span>
+        <span class="op">-</span><span class="op">&gt;</span> <span class="ident">KMergeBy</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">IntoIterator</span>,
               <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">Item</span>,
-                       <span class="kw-2">&amp;</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+                       <span class="kw-2">&amp;</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
     {
         <span class="ident">kmerge_by</span>(<span class="self">self</span>, <span class="ident">first</span>)
     }
@@ -3030,7 +3030,7 @@
     <span class="doccomment">/// let it = (0..2).cartesian_product(&quot;αβ&quot;.chars());</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![(0, &#39;α&#39;), (0, &#39;β&#39;), (1, &#39;α&#39;), (1, &#39;β&#39;)]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">cartesian_product</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-&gt;</span> <span class="ident">Product</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">cartesian_product</span><span class="op">&lt;</span><span class="ident">J</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">J</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Product</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">J</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Clone</span>,
               <span class="ident">J</span>: <span class="ident">IntoIterator</span>,
@@ -3065,7 +3065,7 @@
     <span class="doccomment">/// assert_eq!(multi_prod.next(), None);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">multi_cartesian_product</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">MultiProduct</span><span class="op">&lt;&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">multi_cartesian_product</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiProduct</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">IntoIterator</span>,
               <span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">IntoIter</span>: <span class="ident">Clone</span>,
@@ -3102,10 +3102,10 @@
     <span class="doccomment">///         }),</span>
     <span class="doccomment">///         vec![-6., 4., -1.]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">coalesce</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">Coalesce</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">coalesce</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Coalesce</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>, <span class="self">Self</span>::<span class="ident">Item</span>)
-                       <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span>, (<span class="self">Self</span>::<span class="ident">Item</span>, <span class="self">Self</span>::<span class="ident">Item</span>)<span class="op">&gt;</span>
+                       <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span>, (<span class="self">Self</span>::<span class="ident">Item</span>, <span class="self">Self</span>::<span class="ident">Item</span>)<span class="op">&gt;</span>
     {
         <span class="ident">adaptors</span>::<span class="ident">coalesce</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
@@ -3124,7 +3124,7 @@
     <span class="doccomment">/// itertools::assert_equal(data.into_iter().dedup(),</span>
     <span class="doccomment">///                         vec![1., 2., 3., 2.]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">dedup</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Dedup</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">dedup</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Dedup</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">PartialEq</span>,
     {
@@ -3146,7 +3146,7 @@
     <span class="doccomment">///                         vec![10, 20, 30, 40, 50]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Unique</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">unique</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Unique</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span>
     {
@@ -3168,10 +3168,10 @@
     <span class="doccomment">///                         vec![&quot;a&quot;, &quot;bb&quot;, &quot;ccc&quot;]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">unique_by</span><span class="op">&lt;</span><span class="ident">V</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">UniqueBy</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">V</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">unique_by</span><span class="op">&lt;</span><span class="ident">V</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniqueBy</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">V</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="ident">V</span>: <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">V</span>
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">V</span>
     {
         <span class="ident">unique_impl</span>::<span class="ident">unique_by</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
@@ -3188,9 +3188,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// See also [`.take_while_ref()`](#method.take_while_ref)</span>
     <span class="doccomment">/// which is a similar adaptor.</span>
-    <span class="kw">fn</span> <span class="ident">peeking_take_while</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">accept</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">PeekingTakeWhile</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">peeking_take_while</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">accept</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PeekingTakeWhile</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">PeekingNext</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
     {
         <span class="ident">peeking_take_while</span>::<span class="ident">peeking_take_while</span>(<span class="self">self</span>, <span class="ident">accept</span>)
     }
@@ -3213,9 +3213,9 @@
     <span class="doccomment">/// assert_eq!(hexadecimals.next(), Some(&#39;a&#39;));</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">take_while_ref</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">accept</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">TakeWhileRef</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">take_while_ref</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">accept</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TakeWhileRef</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Clone</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
     {
         <span class="ident">adaptors</span>::<span class="ident">take_while_ref</span>(<span class="self">self</span>, <span class="ident">accept</span>)
     }
@@ -3234,8 +3234,8 @@
     <span class="doccomment">///     &quot;0123456789abcdef&quot;.chars());</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">while_some</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">WhileSome</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;&gt;</span>
+    <span class="kw">fn</span> <span class="ident">while_some</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WhileSome</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
         <span class="ident">adaptors</span>::<span class="ident">while_some</span>(<span class="self">self</span>)
     }
@@ -3273,7 +3273,7 @@
     <span class="doccomment">/// let it: TupleCombinations&lt;Range&lt;u32&gt;, (u32, u32, u32)&gt; = (1..5).tuple_combinations();</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![(1, 2, 3), (1, 2, 4), (1, 3, 4), (2, 3, 4)]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">tuple_combinations</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">TupleCombinations</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">tuple_combinations</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TupleCombinations</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Clone</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Clone</span>,
               <span class="ident">T</span>: <span class="ident">adaptors</span>::<span class="ident">HasCombination</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
@@ -3299,7 +3299,7 @@
     <span class="doccomment">///     ]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">combinations</span>(<span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">Combinations</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">combinations</span>(<span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Combinations</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Clone</span>
     {
@@ -3323,9 +3323,9 @@
     <span class="doccomment">/// let it = (0..5).pad_using(10, |i| 2*i).rev();</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![18, 16, 14, 12, 10, 4, 3, 2, 1, 0]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">pad_using</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">min</span>: <span class="ident">usize</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">PadUsing</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">pad_using</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">min</span>: <span class="ident">usize</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PadUsing</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Item</span>
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Item</span>
     {
         <span class="ident">pad_tail</span>::<span class="ident">pad_using</span>(<span class="self">self</span>, <span class="ident">min</span>, <span class="ident">f</span>)
     }
@@ -3349,7 +3349,7 @@
     <span class="doccomment">/// let it = (0..1).with_position();</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![Position::Only(0)]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">with_position</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">WithPosition</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">with_position</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WithPosition</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
         <span class="ident">with_position</span>::<span class="ident">with_position</span>(<span class="self">self</span>)
@@ -3368,9 +3368,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// itertools::assert_equal(data.iter().positions(|v| v % 2 == 1).rev(), vec![7, 6, 3, 2, 0]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">positions</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="ident">Positions</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">P</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">positions</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Positions</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">P</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
-              <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>,
+              <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
     {
         <span class="ident">adaptors</span>::<span class="ident">positions</span>(<span class="self">self</span>, <span class="ident">predicate</span>)
     }
@@ -3385,7 +3385,7 @@
     <span class="doccomment">/// let it = input.into_iter().update(|mut v| v.push(0));</span>
     <span class="doccomment">/// itertools::assert_equal(it, vec![vec![1, 0], vec![3, 2, 1, 0]]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">update</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">updater</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">Update</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">update</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">updater</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Update</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span>),
     {
@@ -3406,7 +3406,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(Some((1, 2)), iter.next_tuple());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">next_tuple</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">next_tuple</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">Item</span><span class="op">&gt;</span>,
               <span class="ident">T</span>: <span class="ident">tuple_impl</span>::<span class="ident">TupleCollect</span>
     {
@@ -3431,16 +3431,16 @@
     <span class="doccomment">///     panic!(&quot;Expected two elements&quot;)</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">collect_tuple</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">collect_tuple</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">Item</span><span class="op">&gt;</span>,
               <span class="ident">T</span>: <span class="ident">tuple_impl</span>::<span class="ident">TupleCollect</span>
     {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next_tuple</span>() {
-            <span class="ident">elt</span> @ <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
-                <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
-                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">elt</span>,
+            <span class="ident">elt</span> @ <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
+                <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">elt</span>,
             },
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>
         }
     }
 
@@ -3455,15 +3455,15 @@
     <span class="doccomment">/// let text = &quot;Hα&quot;;</span>
     <span class="doccomment">/// assert_eq!(text.chars().find_position(|ch| ch.is_lowercase()), Some((1, &#39;α&#39;)));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">find_position</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">pred</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="self">Self</span>::<span class="ident">Item</span>)<span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+    <span class="kw">fn</span> <span class="ident">find_position</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">pred</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="self">Self</span>::<span class="ident">Item</span>)<span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">index</span> <span class="op">=</span> <span class="number">0usize</span>;
         <span class="kw">for</span> <span class="ident">elt</span> <span class="kw">in</span> <span class="self">self</span> {
             <span class="kw">if</span> <span class="ident">pred</span>(<span class="kw-2">&amp;</span><span class="ident">elt</span>) {
                 <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">index</span>, <span class="ident">elt</span>));
             }
-            <span class="ident">index</span> <span class="op">+=</span> <span class="number">1</span>;
+            <span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         }
         <span class="prelude-val">None</span>
     }
@@ -3484,7 +3484,7 @@
     <span class="doccomment">/// let data : Option&lt;usize&gt; = None;</span>
     <span class="doccomment">/// assert!(data.into_iter().all_equal());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">all_equal</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+    <span class="kw">fn</span> <span class="ident">all_equal</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
         <span class="kw">where</span> <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">PartialEq</span>,
     {
         <span class="self">self</span>.<span class="ident">dedup</span>().<span class="ident">nth</span>(<span class="number">1</span>).<span class="ident">is_none</span>()
@@ -3505,7 +3505,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// *Fusing notes: if the iterator is exhausted by dropping,</span>
     <span class="doccomment">/// the result of calling `.next()` again depends on the iterator implementation.*</span>
-    <span class="kw">fn</span> <span class="ident">dropping</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
+    <span class="kw">fn</span> <span class="ident">dropping</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>
     {
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span> <span class="number">0</span> {
@@ -3529,7 +3529,7 @@
     <span class="doccomment">/// let init = vec![0, 3, 6, 9].into_iter().dropping_back(1);</span>
     <span class="doccomment">/// itertools::assert_equal(init, vec![0, 3, 6]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">dropping_back</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
+    <span class="kw">fn</span> <span class="ident">dropping_back</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>: <span class="ident">DoubleEndedIterator</span>
     {
@@ -3577,9 +3577,9 @@
     <span class="doccomment">/// assert_eq!(input.into_iter().concat(),</span>
     <span class="doccomment">///            vec![1, 2, 3, 4, 5, 6]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">concat</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Item</span>
+    <span class="kw">fn</span> <span class="ident">concat</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Item</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
-              <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Extend</span><span class="op">&lt;&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">Item</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">IntoIterator</span> <span class="op">+</span> <span class="ident">Default</span>
+              <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Extend</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span>::<span class="ident">Item</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">Item</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">IntoIterator</span> <span class="op">+</span> <span class="ident">Default</span>
     {
         <span class="ident">concat</span>(<span class="self">self</span>)
     }
@@ -3587,7 +3587,7 @@
     <span class="doccomment">/// `.collect_vec()` is simply a type specialization of `.collect()`,</span>
     <span class="doccomment">/// for convenience.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">collect_vec</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">collect_vec</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>
     {
         <span class="self">self</span>.<span class="ident">collect</span>()
@@ -3609,17 +3609,17 @@
     <span class="doccomment">/// assert_eq!(xs, [1, 2, 3, 4]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">set_from</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span>, <span class="ident">J</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">from</span>: <span class="ident">J</span>) <span class="op">-&gt;</span> <span class="ident">usize</span>
+    <span class="kw">fn</span> <span class="ident">set_from</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span>, <span class="ident">J</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">from</span>: <span class="ident">J</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">A</span><span class="op">&gt;</span>,
               <span class="ident">J</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">A</span><span class="op">&gt;</span>
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">for</span> <span class="ident">elt</span> <span class="kw">in</span> <span class="ident">from</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
-                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">break</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">ptr</span>) <span class="op">=&gt;</span> <span class="kw-2">*</span><span class="ident">ptr</span> <span class="op">=</span> <span class="ident">elt</span>,
+                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
+                <span class="prelude-val">Some</span>(<span class="ident">ptr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">ptr</span> <span class="op">=</span> <span class="ident">elt</span>,
             }
-            <span class="ident">count</span> <span class="op">+=</span> <span class="number">1</span>;
+            <span class="ident">count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         }
         <span class="ident">count</span>
     }
@@ -3635,12 +3635,12 @@
     <span class="doccomment">/// assert_eq!([1, 2, 3].iter().join(&quot;, &quot;), &quot;1, 2, 3&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">join</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sep</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">String</span>
+    <span class="kw">fn</span> <span class="ident">join</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sep</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span>
         <span class="kw">where</span> <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Display</span>
     {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">String</span>::<span class="ident">new</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">first_elt</span>) <span class="op">=&gt;</span> {
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">String</span>::<span class="ident">new</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">first_elt</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// estimate lower bound of capacity needed</span>
                 <span class="kw">let</span> (<span class="ident">lower</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">size_hint</span>();
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">with_capacity</span>(<span class="ident">sep</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">lower</span>);
@@ -3669,7 +3669,7 @@
     <span class="doccomment">///     format!(&quot;{:.2}&quot;, data.iter().format(&quot;, &quot;)),</span>
     <span class="doccomment">///            &quot;1.10, 2.72, -3.00&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">format</span>(<span class="self">self</span>, <span class="ident">sep</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">Format</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">format</span>(<span class="self">self</span>, <span class="ident">sep</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Format</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
         <span class="ident">format</span>::<span class="ident">new_format_default</span>(<span class="self">self</span>, <span class="ident">sep</span>)
@@ -3707,9 +3707,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">format_with</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">sep</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">format</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">FormatWith</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">format_with</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">sep</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">format</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FormatWith</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">fmt</span>::<span class="ident">Display</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">fmt</span>::<span class="ident">Display</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span>,
     {
         <span class="ident">format</span>::<span class="ident">new_format</span>(<span class="self">self</span>, <span class="ident">sep</span>, <span class="ident">format</span>)
     }
@@ -3756,14 +3756,14 @@
     <span class="doccomment">///           .is_err()</span>
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">fold_results</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">E</span>, <span class="ident">B</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">start</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">E</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">E</span><span class="op">&gt;&gt;</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="ident">A</span>) <span class="op">-&gt;</span> <span class="ident">B</span>
+    <span class="kw">fn</span> <span class="ident">fold_results</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">E</span>, <span class="ident">B</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">start</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">E</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">B</span>
     {
         <span class="kw">for</span> <span class="ident">elt</span> <span class="kw">in</span> <span class="self">self</span> {
             <span class="kw">match</span> <span class="ident">elt</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">f</span>(<span class="ident">start</span>, <span class="ident">v</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">u</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">u</span>),
+                <span class="prelude-val">Ok</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">f</span>(<span class="ident">start</span>, <span class="ident">v</span>),
+                <span class="prelude-val">Err</span>(<span class="ident">u</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">u</span>),
             }
         }
         <span class="prelude-val">Ok</span>(<span class="ident">start</span>)
@@ -3788,14 +3788,14 @@
     <span class="doccomment">/// assert!(more_values.fold_options(0, Add::add).is_none());</span>
     <span class="doccomment">/// assert_eq!(more_values.next().unwrap(), Some(0));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">fold_options</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">start</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;&gt;</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="ident">A</span>) <span class="op">-&gt;</span> <span class="ident">B</span>
+    <span class="kw">fn</span> <span class="ident">fold_options</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">start</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">B</span>
     {
         <span class="kw">for</span> <span class="ident">elt</span> <span class="kw">in</span> <span class="self">self</span> {
             <span class="kw">match</span> <span class="ident">elt</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">f</span>(<span class="ident">start</span>, <span class="ident">v</span>),
-                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>,
+                <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">f</span>(<span class="ident">start</span>, <span class="ident">v</span>),
+                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>,
             }
         }
         <span class="prelude-val">Some</span>(<span class="ident">start</span>)
@@ -3813,8 +3813,8 @@
     <span class="doccomment">/// assert_eq!((0..10).fold1(|x, y| x + y).unwrap_or(0), 45);</span>
     <span class="doccomment">/// assert_eq!((0..0).fold1(|x, y| x * y), None);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">fold1</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>, <span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Item</span>,
+    <span class="kw">fn</span> <span class="ident">fold1</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>, <span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Item</span>,
               <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
         <span class="self">self</span>.<span class="ident">next</span>().<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">fold</span>(<span class="ident">x</span>, <span class="ident">f</span>))
@@ -3869,16 +3869,16 @@
     <span class="doccomment">///     != (0..10).fold1(|x, y| x - y));</span>
     <span class="doccomment">/// ```</span>
     <span class="comment">// FIXME: If minver changes to &gt;= 1.13, use `assert_ne!` in the doctest.</span>
-    <span class="kw">fn</span> <span class="ident">tree_fold1</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>, <span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Item</span>,
+    <span class="kw">fn</span> <span class="ident">tree_fold1</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Item</span>, <span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Item</span>,
               <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
-        <span class="kw">type</span> <span class="ident">State</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>;
+        <span class="kw">type</span> <span class="ident">State</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-        <span class="kw">fn</span> <span class="ident">inner0</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">II</span>, <span class="ident">FF</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">II</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FF</span>) <span class="op">-&gt;</span> <span class="ident">State</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+        <span class="kw">fn</span> <span class="ident">inner0</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">II</span>, <span class="ident">FF</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">II</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FF</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">State</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
             <span class="kw">where</span>
                 <span class="ident">II</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
-                <span class="ident">FF</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">T</span>
+                <span class="ident">FF</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>
         {
             <span class="comment">// This function could be replaced with `it.next().ok_or(None)`,</span>
             <span class="comment">// but half the useful tree_fold1 work is combining adjacent items,</span>
@@ -3893,38 +3893,38 @@
             <span class="prelude-val">Ok</span>(<span class="ident">f</span>(<span class="ident">a</span>, <span class="ident">b</span>))
         }
 
-        <span class="kw">fn</span> <span class="ident">inner</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">II</span>, <span class="ident">FF</span><span class="op">&gt;</span>(<span class="ident">stop</span>: <span class="ident">usize</span>, <span class="ident">it</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">II</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FF</span>) <span class="op">-&gt;</span> <span class="ident">State</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+        <span class="kw">fn</span> <span class="ident">inner</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">II</span>, <span class="ident">FF</span><span class="op">&gt;</span>(<span class="ident">stop</span>: <span class="ident">usize</span>, <span class="ident">it</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">II</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FF</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">State</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
             <span class="kw">where</span>
                 <span class="ident">II</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
-                <span class="ident">FF</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">T</span>
+                <span class="ident">FF</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>
         {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span> <span class="op">=</span> <span class="macro">try</span><span class="macro">!</span>(<span class="ident">inner0</span>(<span class="ident">it</span>, <span class="ident">f</span>));
             <span class="kw">for</span> <span class="ident">height</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">stop</span> {
                 <span class="comment">// Try to get another tree the same size with which to combine it,</span>
                 <span class="comment">// creating a new tree that&#39;s twice as big for next time around.</span>
                 <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span>
-                    <span class="kw">if</span> <span class="ident">height</span> <span class="op">==</span> <span class="number">0</span> {
+                    <span class="kw">if</span> <span class="ident">height</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
                         <span class="ident">inner0</span>(<span class="ident">it</span>, <span class="ident">f</span>)
                     } <span class="kw">else</span> {
                         <span class="ident">inner</span>(<span class="ident">height</span>, <span class="ident">it</span>, <span class="ident">f</span>)
                     };
                 <span class="kw">match</span> <span class="ident">next</span> {
-                    <span class="prelude-val">Ok</span>(<span class="ident">y</span>) <span class="op">=&gt;</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">f</span>(<span class="ident">x</span>, <span class="ident">y</span>),
+                    <span class="prelude-val">Ok</span>(<span class="ident">y</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">f</span>(<span class="ident">x</span>, <span class="ident">y</span>),
 
                     <span class="comment">// If we ran out of items, combine whatever we did manage</span>
                     <span class="comment">// to get.  It&#39;s better combined with the current value</span>
                     <span class="comment">// than something in a parent frame, because the tree in</span>
                     <span class="comment">// the parent is always as least as big as this one.</span>
-                    <span class="prelude-val">Err</span>(<span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(<span class="ident">x</span>)),
-                    <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(<span class="ident">f</span>(<span class="ident">x</span>, <span class="ident">y</span>))),
+                    <span class="prelude-val">Err</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(<span class="ident">x</span>)),
+                    <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(<span class="ident">f</span>(<span class="ident">x</span>, <span class="ident">y</span>))),
                 }
             }
             <span class="prelude-val">Ok</span>(<span class="ident">x</span>)
         }
 
         <span class="kw">match</span> <span class="ident">inner</span>(<span class="ident">usize</span>::<span class="ident">max_value</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>) {
-            <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>,
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
         }
     }
 
@@ -3968,15 +3968,15 @@
     <span class="doccomment">/// `fold()` called the provided closure for every item of the callee iterator,</span>
     <span class="doccomment">/// `fold_while()` actually stopped iterating as soon as it encountered `Fold::Done(_)`.</span>
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span><span class="op">=</span><span class="string">&quot;Use .try_fold() instead&quot;</span>, <span class="ident">since</span><span class="op">=</span><span class="string">&quot;0.8&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fold_while</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">init</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">FoldWhile</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">fold_while</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">init</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FoldWhile</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">FoldWhile</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FoldWhile</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">acc</span> <span class="op">=</span> <span class="ident">init</span>;
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">item</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">next</span>() {
             <span class="kw">match</span> <span class="ident">f</span>(<span class="ident">acc</span>, <span class="ident">item</span>) {
-                <span class="ident">FoldWhile</span>::<span class="ident">Continue</span>(<span class="ident">res</span>) <span class="op">=&gt;</span> <span class="ident">acc</span> <span class="op">=</span> <span class="ident">res</span>,
-                <span class="ident">res</span> @ <span class="ident">FoldWhile</span>::<span class="ident">Done</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">res</span>,
+                <span class="ident">FoldWhile</span>::<span class="ident">Continue</span>(<span class="ident">res</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">acc</span> <span class="op">=</span> <span class="ident">res</span>,
+                <span class="ident">res</span> @ <span class="ident">FoldWhile</span>::<span class="ident">Done</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">res</span>,
             }
         }
         <span class="ident">FoldWhile</span>::<span class="ident">Continue</span>(<span class="ident">acc</span>)
@@ -4000,7 +4000,7 @@
     <span class="doccomment">///                         &quot;abcdef&quot;.chars());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sorted</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">VecIntoIter</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">sorted</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VecIntoIter</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">Ord</span>
     {
@@ -4035,9 +4035,9 @@
     <span class="doccomment">///                         vec![&quot;Jill&quot;, &quot;Jack&quot;, &quot;Jane&quot;, &quot;John&quot;]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sorted_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">cmp</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">VecIntoIter</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">sorted_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">cmp</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VecIntoIter</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">Ordering</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">from_iter</span>(<span class="self">self</span>);
         <span class="ident">v</span>.<span class="ident">sort_by</span>(<span class="ident">cmp</span>);
@@ -4068,10 +4068,10 @@
     <span class="doccomment">///                         vec![&quot;Jill&quot;, &quot;Jack&quot;, &quot;Jane&quot;, &quot;John&quot;]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sorted_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">VecIntoIter</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">sorted_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VecIntoIter</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
               <span class="ident">K</span>: <span class="ident">Ord</span>,
-              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">K</span>,
+              <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">K</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">from_iter</span>(<span class="self">self</span>);
         <span class="ident">v</span>.<span class="ident">sort_by_key</span>(<span class="ident">f</span>);
@@ -4099,9 +4099,9 @@
     <span class="doccomment">/// assert_eq!(successes, [1, 2]);</span>
     <span class="doccomment">/// assert_eq!(failures, [false, true]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">partition_map</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="ident">F</span>, <span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> (<span class="ident">A</span>, <span class="ident">B</span>)
+    <span class="kw">fn</span> <span class="ident">partition_map</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="ident">F</span>, <span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">A</span>, <span class="ident">B</span>)
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>,
-              <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">Either</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span>,
+              <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Either</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span>,
               <span class="ident">A</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Extend</span><span class="op">&lt;</span><span class="ident">L</span><span class="op">&gt;</span>,
               <span class="ident">B</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Extend</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
     {
@@ -4110,8 +4110,8 @@
 
         <span class="kw">for</span> <span class="ident">val</span> <span class="kw">in</span> <span class="self">self</span> {
             <span class="kw">match</span> <span class="ident">predicate</span>(<span class="ident">val</span>) {
-                <span class="ident">Either</span>::<span class="ident">Left</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">left</span>.<span class="ident">extend</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)),
-                <span class="ident">Either</span>::<span class="ident">Right</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">right</span>.<span class="ident">extend</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)),
+                <span class="ident">Either</span>::<span class="ident">Left</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">left</span>.<span class="ident">extend</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)),
+                <span class="ident">Either</span>::<span class="ident">Right</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">right</span>.<span class="ident">extend</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)),
             }
         }
 
@@ -4133,7 +4133,7 @@
     <span class="doccomment">/// assert_eq!(lookup[&amp;3], vec![13, 33]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">into_group_map</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;&gt;</span>
+    <span class="kw">fn</span> <span class="ident">into_group_map</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">=</span>(<span class="ident">K</span>, <span class="ident">V</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span>,
               <span class="ident">K</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">Eq</span>,
     {
@@ -4175,7 +4175,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The elements can be floats but no particular result is guaranteed</span>
     <span class="doccomment">/// if an element is NaN.</span>
-    <span class="kw">fn</span> <span class="ident">minmax</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">MinMaxResult</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">minmax</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MinMaxResult</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>, <span class="self">Self</span>::<span class="ident">Item</span>: <span class="ident">PartialOrd</span>
     {
         <span class="ident">minmax</span>::<span class="ident">minmax_impl</span>(<span class="self">self</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> (), <span class="op">|</span><span class="ident">x</span>, <span class="ident">y</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&lt;</span> <span class="ident">y</span>)
@@ -4192,8 +4192,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The keys can be floats but no particular result is guaranteed</span>
     <span class="doccomment">/// if a key is NaN.</span>
-    <span class="kw">fn</span> <span class="ident">minmax_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">key</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">MinMaxResult</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>, <span class="ident">K</span>: <span class="ident">PartialOrd</span>, <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">K</span>
+    <span class="kw">fn</span> <span class="ident">minmax_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">key</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MinMaxResult</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>, <span class="ident">K</span>: <span class="ident">PartialOrd</span>, <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">K</span>
     {
         <span class="ident">minmax</span>::<span class="ident">minmax_impl</span>(<span class="self">self</span>, <span class="ident">key</span>, <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">xk</span>, <span class="ident">yk</span><span class="op">|</span> <span class="ident">xk</span> <span class="op">&lt;</span> <span class="ident">yk</span>)
     }
@@ -4206,13 +4206,13 @@
     <span class="doccomment">/// For the minimum, the first minimal element is returned.  For the maximum,</span>
     <span class="doccomment">/// the last maximal element wins.  This matches the behavior of the standard</span>
     <span class="doccomment">/// `Iterator::min()` and `Iterator::max()` methods.</span>
-    <span class="kw">fn</span> <span class="ident">minmax_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">compare</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">MinMaxResult</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>, <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-&gt;</span> <span class="ident">Ordering</span>
+    <span class="kw">fn</span> <span class="ident">minmax_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">compare</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MinMaxResult</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="self">Self</span>: <span class="ident">Sized</span>, <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span>
     {
         <span class="ident">minmax</span>::<span class="ident">minmax_impl</span>(
             <span class="self">self</span>,
             <span class="op">|</span><span class="kw">_</span><span class="op">|</span> (),
-            <span class="op">|</span><span class="ident">x</span>, <span class="ident">y</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">Ordering</span>::<span class="ident">Less</span> <span class="op">==</span> <span class="ident">compare</span>(<span class="ident">x</span>, <span class="ident">y</span>)
+            <span class="op">|</span><span class="ident">x</span>, <span class="ident">y</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">Ordering</span>::<span class="ident">Less</span> <span class="op">=</span><span class="op">=</span> <span class="ident">compare</span>(<span class="ident">x</span>, <span class="ident">y</span>)
         )
     }
 }
@@ -4230,7 +4230,7 @@
 <span class="doccomment">/// assert!(itertools::equal(vec![1, 2, 3], 1..4));</span>
 <span class="doccomment">/// assert!(!itertools::equal(&amp;[0, 0], &amp;[0, 0, 0]));</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equal</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">J</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">I</span>, <span class="ident">b</span>: <span class="ident">J</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equal</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">J</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">I</span>, <span class="ident">b</span>: <span class="ident">J</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
     <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">IntoIterator</span>,
           <span class="ident">J</span>: <span class="ident">IntoIterator</span>,
           <span class="ident">I</span>::<span class="ident">Item</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">J</span>::<span class="ident">Item</span><span class="op">&gt;</span>
@@ -4239,11 +4239,11 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ib</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">into_iter</span>();
     <span class="kw">loop</span> {
         <span class="kw">match</span> <span class="ident">ia</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">ib</span>.<span class="ident">next</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">y</span>) <span class="op">=&gt;</span> <span class="kw">if</span> <span class="ident">x</span> <span class="op">!=</span> <span class="ident">y</span> { <span class="kw">return</span> <span class="bool-val">false</span>; },
-                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">ib</span>.<span class="ident">next</span>() {
+                <span class="prelude-val">Some</span>(<span class="ident">y</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">if</span> <span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="ident">y</span> { <span class="kw">return</span> <span class="bool-val">false</span>; },
+                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
             },
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">ib</span>.<span class="ident">next</span>().<span class="ident">is_none</span>()
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">ib</span>.<span class="ident">next</span>().<span class="ident">is_none</span>()
         }
     }
 }
@@ -4269,15 +4269,15 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="kw">loop</span> {
         <span class="kw">match</span> (<span class="ident">ia</span>.<span class="ident">next</span>(), <span class="ident">ib</span>.<span class="ident">next</span>()) {
-            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="kw">return</span>,
-            (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> {
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span>,
+            (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">equal</span> <span class="op">=</span> <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="ident">b</span>) {
-                    (<span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">a</span>), <span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">b</span>)) <span class="op">=&gt;</span> <span class="ident">a</span> <span class="op">==</span> <span class="ident">b</span>,
-                    <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+                    (<span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">a</span>), <span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">b</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b</span>,
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
                 };
                 <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">equal</span>, <span class="string">&quot;Failed assertion {a:?} == {b:?} for iteration {i}&quot;</span>,
                         <span class="ident">i</span><span class="op">=</span><span class="ident">i</span>, <span class="ident">a</span><span class="op">=</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">=</span><span class="ident">b</span>);
-                <span class="ident">i</span> <span class="op">+=</span> <span class="number">1</span>;
+                <span class="ident">i</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
         }
     }
@@ -4300,10 +4300,10 @@
 <span class="doccomment">/// assert_eq!(data, [7, 7, 7, 1, 1, 1, 1]);</span>
 <span class="doccomment">/// assert_eq!(split_index, 3);</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span>, <span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>, <span class="kw-2">mut</span> <span class="ident">pred</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">usize</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span>: <span class="lifetime">&#39;a</span>, <span class="ident">I</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>, <span class="kw-2">mut</span> <span class="ident">pred</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>
     <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">A</span><span class="op">&gt;</span>,
           <span class="ident">I</span>::<span class="ident">IntoIter</span>: <span class="ident">DoubleEndedIterator</span>,
-          <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">A</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+          <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
 {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">split_index</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">into_iter</span>();
@@ -4311,15 +4311,15 @@
         <span class="kw">if</span> <span class="op">!</span><span class="ident">pred</span>(<span class="ident">front</span>) {
             <span class="kw">loop</span> {
                 <span class="kw">match</span> <span class="ident">iter</span>.<span class="ident">next_back</span>() {
-                    <span class="prelude-val">Some</span>(<span class="ident">back</span>) <span class="op">=&gt;</span> <span class="kw">if</span> <span class="ident">pred</span>(<span class="ident">back</span>) {
+                    <span class="prelude-val">Some</span>(<span class="ident">back</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">if</span> <span class="ident">pred</span>(<span class="ident">back</span>) {
                         <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">swap</span>(<span class="ident">front</span>, <span class="ident">back</span>);
                         <span class="kw">break</span>;
                     },
-                    <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">break</span> <span class="lifetime">&#39;main</span>,
+                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span> <span class="lifetime">&#39;main</span>,
                 }
             }
         }
-        <span class="ident">split_index</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="ident">split_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
     }
     <span class="ident">split_index</span>
 }
@@ -4337,19 +4337,19 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">FoldWhile</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Return the value in the continue or done.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">FoldWhile</span>::<span class="ident">Continue</span>(<span class="ident">x</span>) <span class="op">|</span> <span class="ident">FoldWhile</span>::<span class="ident">Done</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>,
+            <span class="ident">FoldWhile</span>::<span class="ident">Continue</span>(<span class="ident">x</span>) <span class="op">|</span> <span class="ident">FoldWhile</span>::<span class="ident">Done</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
         }
     }
 
     <span class="doccomment">/// Return true if `self` is `Done`, false if it is `Continue`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_done</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_done</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">FoldWhile</span>::<span class="ident">Continue</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="bool-val">false</span>,
-            <span class="ident">FoldWhile</span>::<span class="ident">Done</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">FoldWhile</span>::<span class="ident">Continue</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">FoldWhile</span>::<span class="ident">Done</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
         }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "itertools";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "itertools";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

@@ -77,12 +77,12 @@ impl BatchTarFile {
     pub fn new<P: AsRef<std::path::Path>>(
         target_path: P,
         batch_size: u32,
-        batch_compression: Option<Compression>,
-        batch_mode: Option<u32>,
         num_notes: f32,
         melody_length: i32,
         max_files: f32,
         partition_depth: u32,
+        batch_compression: Option<Compression>,
+        batch_mode: Option<u32>,
     ) -> Result<Self, TarArchiveError> {
         // Validate batch entries mode (must be integer <= 777)
         if let Some(mode) = batch_mode {
@@ -220,12 +220,6 @@ impl StorageBackend for BatchTarFile {
         self.batch_archive.append_file(mfile, mode)?;
         self.batch_count = self.batch_count + 1;
         Ok(())
-    }
-
-    fn append_melody(&mut self, melody: Vec<libatm::MIDINote>, mode: Option<u32>) -> Result<(), Self::Error> {
-        // Create libatm::MIDIFile instance from melody
-        let mfile = libatm::MIDIFile::new(melody, libatm::MIDIFormat::Format0, 1, 1);
-        self.append_file(mfile, mode)
     }
 
     fn finish(&mut self) -> Result<(), Self::Error> {
