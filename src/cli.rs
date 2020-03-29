@@ -186,7 +186,8 @@ pub trait CliDirective {
                     "This app was created as part of an effort to generate ",
                     "by brute-force billions of melodies, and is tailored for that use case."),
     author = "All The Music, LLC",
-    version = env!("CARGO_PKG_VERSION"),)]
+    version = env!("CARGO_PKG_VERSION"),
+    setting=structopt::clap::AppSettings::ArgRequiredElseHelp)]
 pub enum Cli {
     Gen(crate::directives::GenDirective),
 }
