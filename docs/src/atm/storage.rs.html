@@ -307,6 +307,11 @@
 <span id="307">307</span>
 <span id="308">308</span>
 <span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// storage.rs</span>
 <span class="comment">//</span>
@@ -317,8 +322,11 @@
 <span class="comment">// a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</span>
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">tar_archive</span>;
+<span class="doccomment">/// Batch archive storage backend</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">batch_tar_file</span>;
+<span class="doccomment">/// Tar archive storage backend</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tar_file</span>;
+<span class="doccomment">/// Gzip-compressed Tar archive storage backend</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tar_gz_file</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tar_archive</span>::<span class="kw-2">*</span>;
@@ -363,9 +371,10 @@
     <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Inner</span>, <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">StorageBackend</span><span class="op">&gt;</span>::<span class="ident">Error</span><span class="op">&gt;</span>;
 }
 
-<span class="doccomment">/// Error type for PathGenerator</span>
+<span class="doccomment">/// Error type for [PathGenerator](trait.PathGenerator.html)</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PathGeneratorError</span> {
+    <span class="doccomment">/// [PartitionPathGenerator](struct.PartitionPathGenerator.html) error</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
     <span class="ident">PartitionPathGenerator</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">PartitionPathGeneratorError</span>),
 }
@@ -396,6 +405,7 @@
 ***** PartitionPathGenerator *****
 *********************************/</span>
 
+<span class="doccomment">/// Error type for [PartitionPathGenerator](struct.PartitionPathGenerator.html)</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PartitionPathGeneratorError</span> {
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Expected melody of length {expected}, found length {observed}&quot;</span>)]</span>

@@ -7,8 +7,11 @@
 // a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 pub(crate) mod tar_archive;
+/// Batch archive storage backend
 pub mod batch_tar_file;
+/// Tar archive storage backend
 pub mod tar_file;
+/// Gzip-compressed Tar archive storage backend
 pub mod tar_gz_file;
 
 pub use tar_archive::*;
@@ -53,9 +56,10 @@ pub trait IntoInner : StorageBackend {
     fn into_inner(self) -> Result<Self::Inner, <Self as StorageBackend>::Error>;
 }
 
-/// Error type for PathGenerator
+/// Error type for [PathGenerator](trait.PathGenerator.html)
 #[derive(Debug, thiserror::Error)]
 pub enum PathGeneratorError {
+    /// [PartitionPathGenerator](struct.PartitionPathGenerator.html) error
     #[error(transparent)]
     PartitionPathGenerator(#[from] PartitionPathGeneratorError),
 }
@@ -86,6 +90,7 @@ impl PathGenerator for MIDIHashPathGenerator {
 ***** PartitionPathGenerator *****
 *********************************/
 
+/// Error type for [PartitionPathGenerator](struct.PartitionPathGenerator.html)
 #[derive(Debug, thiserror::Error)]
 pub enum PartitionPathGeneratorError {
     #[error("Expected melody of length {expected}, found length {observed}")]

@@ -198,6 +198,17 @@
 <span id="198">198</span>
 <span id="199">199</span>
 <span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// cli.rs</span>
 <span class="comment">//</span>
@@ -209,68 +220,73 @@
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
 
-<span class="comment">/*******************************
-***** Shared CLI Arguments *****
-*******************************/</span>
+<span class="comment">/*************************
+***** Utility Macros *****
+*************************/</span>
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_deref</span> {
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_into</span> {
     (<span class="macro-nonterminal">$</span><span class="kw">struct</span>:<span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Deref</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">struct</span> {
-            <span class="kw">type</span> <span class="macro-nonterminal">Target</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span>;
-
-            <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
-                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>
+        <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">Into</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">struct</span> {
+            <span class="kw">fn</span> <span class="macro-nonterminal">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target</span> {
+                <span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>
             }
         }
     }
 }
 
+<span class="comment">/**********************
+***** Error Types *****
+**********************/</span>
+
+<span class="doccomment">/// Error type for parsing integers arguments from `&amp;str`</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParseBatchSizeArgError</span> {
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParseNumberArgError</span> {
     <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
     <span class="ident">NotInteger</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>),
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Batch size must be greater than 0&quot;</span>)]</span>
-    <span class="ident">InvalidBatchSize</span>,
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;{arg_name} must be greater than 0&quot;</span>)]</span>
+    <span class="ident">LessThanZero</span> { <span class="ident">arg_name</span>: <span class="ident">String</span> },
+    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;{arg_name} must be between {min} and {max}, found {input}&quot;</span>)]</span>
+    <span class="ident">OutOfRange</span> { <span class="ident">arg_name</span>: <span class="ident">String</span>, <span class="ident">min</span>: <span class="ident">String</span>, <span class="ident">max</span>: <span class="ident">String</span>, <span class="ident">input</span>: <span class="ident">String</span> },
 }
 
-<span class="kw">fn</span> <span class="ident">try_batch_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseBatchSizeArgError</span><span class="op">&gt;</span> {
+<span class="comment">/********************
+***** BatchSize *****
+********************/</span>
+
+<span class="kw">fn</span> <span class="ident">try_batch_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseNumberArgError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">batch_size</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="ident">batch_size</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseBatchSizeArgError</span>::<span class="ident">InvalidBatchSize</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseNumberArgError</span>::<span class="ident">LessThanZero</span> { <span class="ident">arg_name</span>: <span class="string">&quot;Batch size&quot;</span>.<span class="ident">to_string</span>() });
     }
     <span class="prelude-val">Ok</span>(<span class="ident">batch_size</span>)
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchSize</span> {
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">short</span><span class="op">=</span><span class="string">&quot;s&quot;</span>,
-        <span class="ident">long</span><span class="op">=</span><span class="string">&quot;batch-size&quot;</span>,
+        <span class="ident">long</span>,
         <span class="ident">default_value</span><span class="op">=</span><span class="string">&quot;25&quot;</span>,
         <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Number of melodies per batch&quot;</span>,
-        <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_batch_from_str</span>))]</span>
+        <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">try_batch_from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">batch_size</span>: <span class="ident">u32</span>,
 }
 
-<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">BatchSize</span>, <span class="ident">batch_size</span>, <span class="ident">u32</span> }
+<span class="macro">impl_into</span><span class="macro">!</span> { <span class="ident">BatchSize</span>, <span class="ident">batch_size</span>, <span class="ident">u32</span> }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParseMelodyLengthArgError</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-    <span class="ident">NotInteger</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>),
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Length must be greater than 0&quot;</span>)]</span>
-    <span class="ident">InvalidLength</span>,
-}
+<span class="comment">/***********************
+***** MelodyLength *****
+***********************/</span>
 
-<span class="kw">fn</span> <span class="ident">try_length_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseMelodyLengthArgError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">try_length_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseNumberArgError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="ident">length</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseMelodyLengthArgError</span>::<span class="ident">InvalidLength</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseNumberArgError</span>::<span class="ident">LessThanZero</span> { <span class="ident">arg_name</span>: <span class="string">&quot;Length&quot;</span>.<span class="ident">to_string</span>() });
     }
     <span class="prelude-val">Ok</span>(<span class="ident">length</span>)
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MelodyLengthArg</span> {
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Length of melodies (pitch sequences) to generate&quot;</span>,
@@ -278,9 +294,13 @@
     <span class="kw">pub</span> <span class="ident">melody_length</span>: <span class="ident">u32</span>,
 }
 
-<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">MelodyLengthArg</span>, <span class="ident">melody_length</span>, <span class="ident">u32</span> }
+<span class="macro">impl_into</span><span class="macro">!</span> { <span class="ident">MelodyLengthArg</span>, <span class="ident">melody_length</span>, <span class="ident">u32</span> }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="comment">/**************************
+***** NoteSet/NoteVec *****
+**************************/</span>
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteSetArg</span> {
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">value_name</span><span class="op">=</span><span class="string">&quot;notes&quot;</span>,
@@ -290,9 +310,9 @@
     <span class="kw">pub</span> <span class="ident">note_set</span>: <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span>,
 }
 
-<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">NoteSetArg</span>, <span class="ident">note_set</span>, <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span> }
+<span class="macro">impl_into</span><span class="macro">!</span> { <span class="ident">NoteSetArg</span>, <span class="ident">note_set</span>, <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span> }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteVecArg</span> {
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">value_name</span><span class="op">=</span><span class="string">&quot;notes&quot;</span>,
@@ -302,41 +322,39 @@
     <span class="kw">pub</span> <span class="ident">note_vec</span>: <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span>,
 }
 
-<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">NoteVecArg</span>, <span class="ident">note_vec</span>, <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span> }
+<span class="macro">impl_into</span><span class="macro">!</span> { <span class="ident">NoteVecArg</span>, <span class="ident">note_vec</span>, <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span> }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParseMaxFilesArgError</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-    <span class="ident">NotFloat</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>),
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Max files per directory must be between 1 and 4096, inclusive (found {input})&quot;</span>)]</span>
-    <span class="ident">ValueOutOfRange</span> { <span class="ident">input</span>: <span class="ident">u32</span>, },
-}
+<span class="comment">/************************
+***** PartitionArgs *****
+************************/</span>
 
-<span class="kw">fn</span> <span class="ident">try_maxf_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">f32</span>, <span class="ident">ParseMaxFilesArgError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">try_maxf_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">f32</span>, <span class="ident">ParseNumberArgError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">max_files</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="ident">max_files</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">max_files</span> <span class="op">&gt;</span> <span class="number">4096</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseMaxFilesArgError</span>::<span class="ident">ValueOutOfRange</span> { <span class="ident">input</span>: <span class="ident">max_files</span> });
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseNumberArgError</span>::<span class="ident">OutOfRange</span> {
+            <span class="ident">arg_name</span>: <span class="string">&quot;Max files per directory&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">min</span>: <span class="string">&quot;0&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">max</span>: <span class="string">&quot;4096&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">input</span>: <span class="ident">arg</span>.<span class="ident">to_string</span>(),
+        });
     }
     <span class="prelude-val">Ok</span>(<span class="ident">max_files</span> <span class="kw">as</span> <span class="ident">f32</span>)
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParsePartitionDepthArgError</span> {
-    <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-    <span class="ident">NotInteger</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>),
-    <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Partition depth must be between 0 and 4, inclusive (found {input})&quot;</span>)]</span>
-    <span class="ident">ValueOutOfRange</span> { <span class="ident">input</span>: <span class="ident">u32</span>, },
-}
-
-<span class="kw">fn</span> <span class="ident">try_pdepth_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParsePartitionDepthArgError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">try_pdepth_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseNumberArgError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">partition_depth</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="ident">partition_depth</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">partition_depth</span> <span class="op">&gt;</span> <span class="number">4</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParsePartitionDepthArgError</span>::<span class="ident">ValueOutOfRange</span> { <span class="ident">input</span>: <span class="ident">partition_depth</span> });
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseNumberArgError</span>::<span class="ident">OutOfRange</span> {
+            <span class="ident">arg_name</span>: <span class="string">&quot;Partition depth&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">min</span>: <span class="string">&quot;0&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">max</span>: <span class="string">&quot;4&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">input</span>: <span class="ident">arg</span>.<span class="ident">to_string</span>(),
+        });
     }
     <span class="prelude-val">Ok</span>(<span class="ident">partition_depth</span>)
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PartitionArgs</span> {
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">short</span>,
@@ -348,23 +366,26 @@
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">short</span><span class="op">=</span><span class="string">&quot;p&quot;</span>,
         <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;partitions&quot;</span>,
-        <span class="ident">required</span><span class="op">=</span><span class="bool-val">true</span>,
         <span class="ident">help</span> <span class="op">=</span> <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Partition depth to use for output directory structure.  For &quot;</span>,
                      <span class="string">&quot;example, if set to 2 the ouput directory structure would look &quot;</span>,
                      <span class="string">&quot;like &lt;root&gt;/&lt;branch&gt;/&lt;hash&gt;.mid&quot;</span>),
         <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_pdepth_from_str</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">partition_depth</span>: <span class="ident">u32</span>, 
+    <span class="kw">pub</span> <span class="ident">partition_depth</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>, 
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="comment">/*****************
+***** Target *****
+*****************/</span>
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TargetArg</span> {
     <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;File output path (directory must exist)&quot;</span>,
+        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;File output path (directory/directories must exist)&quot;</span>,
         <span class="ident">parse</span>(<span class="ident">from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>,
 }
 
-<span class="macro">impl_deref</span><span class="macro">!</span> { <span class="ident">TargetArg</span>, <span class="ident">target</span>, <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span> }
+<span class="macro">impl_into</span><span class="macro">!</span> { <span class="ident">TargetArg</span>, <span class="ident">target</span>, <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span> }
 
 <span class="comment">/******************************
 ***** CLI Directive Trait *****
@@ -387,7 +408,8 @@
                     <span class="string">&quot;This app was created as part of an effort to generate &quot;</span>,
                     <span class="string">&quot;by brute-force billions of melodies, and is tailored for that use case.&quot;</span>),
     <span class="ident">author</span> <span class="op">=</span> <span class="string">&quot;All The Music, LLC&quot;</span>,
-    <span class="ident">version</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),)]</span>
+    <span class="ident">version</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),
+    <span class="ident">setting</span><span class="op">=</span><span class="ident">structopt</span>::<span class="ident">clap</span>::<span class="ident">AppSettings</span>::<span class="ident">ArgRequiredElseHelp</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Cli</span> {
     <span class="ident">Gen</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">GenDirective</span>),
 }

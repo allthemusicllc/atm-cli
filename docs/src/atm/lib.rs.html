@@ -27,6 +27,8 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// lib.rs</span>
 <span class="comment">//</span>
@@ -38,8 +40,8 @@
 
 <span class="doccomment">//! `atm-cli` is a command line tool for generating and working with MIDI files. It was purpose-built for</span>
 <span class="doccomment">//! All the Music, LLC to assist in its mission to enable musicians to make all of their music</span>
-<span class="doccomment">//! without the fear of frivolous copyright lawsuits. All code is released into the public domain</span>
-<span class="doccomment">//! via the [Creative Commons Attribute 4.0 International License](http://creativecommons.org/licenses/by/4.0/).</span>
+<span class="doccomment">//! without the fear of frivolous copyright lawsuits. All code is freely available under the</span>
+<span class="doccomment">//! [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).</span>
 <span class="doccomment">//! If you&#39;re looking for a Rust library to generate and work with MIDI files, check out</span>
 <span class="doccomment">//! [the `libatm` project](https://github.com/allthemusicllc/libatm), on which this tool relies. For</span>
 <span class="doccomment">//! more information on All the Music, check out [allthemusic.info](http://allthemusic.info).</span>
@@ -55,7 +57,9 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cli</span>;
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">directives</span>;
+<span class="doccomment">/// MIDI file storage backends</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">storage</span>;
+<span class="doccomment">/// Utilities for generating melodies</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">utils</span>;
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

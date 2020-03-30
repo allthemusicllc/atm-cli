@@ -25,5 +25,7 @@ extern crate tar;
 pub mod cli;
 #[doc(hidden)]
 pub mod directives;
+/// MIDI file storage backends
 pub mod storage;
+/// Utilities for generating melodies
 pub mod utils;

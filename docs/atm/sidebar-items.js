@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["storage",""],["utils",""]]});
+initSidebarItems({"mod":[["storage","MIDI file storage backends"],["utils","Utilities for generating melodies"]]});

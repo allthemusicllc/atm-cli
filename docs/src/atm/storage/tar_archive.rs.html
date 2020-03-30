@@ -156,8 +156,7 @@
 ***** StorageState *****
 ***********************/</span>
 
-<span class="doccomment">/// Whether storage backend is open, or has been closed</span>
-<span class="doccomment">/// for writing</span>
+<span class="doccomment">/// Whether storage backend is open, or is closed for writing</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">StorageState</span> {
     <span class="doccomment">/// Backend is open (can be written to)</span>
@@ -170,13 +169,14 @@
 ***** TarArchive *****
 *********************/</span>
 
-<span class="doccomment">/// Error type for TarArchive (wrapping around `std::io::Error` and `PathGeneratorError`)</span>
+<span class="doccomment">/// Error type for TarArchive (wrapping around `std::io::Error` and</span>
+<span class="doccomment">/// [PathGeneratorError](enum.PathGeneratorError.html))</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">thiserror</span>::<span class="ident">Error</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TarArchiveError</span> {
     <span class="doccomment">/// IO error</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
     <span class="ident">IOError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span>),
-    <span class="doccomment">/// PathGenerator error</span>
+    <span class="doccomment">/// [PathGenerator](trait.PathGenerator.html) error</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
     <span class="ident">PathGenerator</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">PathGeneratorError</span>),
 }

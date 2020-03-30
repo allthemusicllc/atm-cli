@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["gen_sequences","Generate all permutations (with replacement) of given length from the given sequence of MIDI notes."]]});
+initSidebarItems({"fn":[["gen_sequences","Generate melodies of length `length` containing the notes in provided note set `notes`. In other words, generate the cartesion product of `notes` with itself `length` times."]]});

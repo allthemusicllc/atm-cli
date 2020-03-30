@@ -17,8 +17,7 @@ use crate::storage::{
 ***** StorageState *****
 ***********************/
 
-/// Whether storage backend is open, or has been closed
-/// for writing
+/// Whether storage backend is open, or is closed for writing
 #[derive(Debug, PartialEq)]
 pub enum StorageState {
     /// Backend is open (can be written to)
@@ -31,13 +30,14 @@ pub enum StorageState {
 ***** TarArchive *****
 *********************/
 
-/// Error type for TarArchive (wrapping around `std::io::Error` and `PathGeneratorError`)
+/// Error type for TarArchive (wrapping around `std::io::Error` and
+/// [PathGeneratorError](enum.PathGeneratorError.html))
 #[derive(Debug, thiserror::Error)]
 pub enum TarArchiveError {
     /// IO error
     #[error(transparent)]
     IOError(#[from] std::io::Error),
-    /// PathGenerator error
+    /// [PathGenerator](trait.PathGenerator.html) error
     #[error(transparent)]
     PathGenerator(#[from] PathGeneratorError),
 }

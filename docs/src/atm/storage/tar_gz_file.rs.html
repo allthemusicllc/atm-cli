@@ -111,7 +111,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">G</span>: <span class="ident">PathGenerator</span><span class="op">&gt;</span> <span class="ident">TarGzFile</span><span class="op">&lt;</span><span class="ident">G</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Create new `TarGzFile` instance. If no compression level specified,</span>
     <span class="doccomment">/// uses default compression level as implemented in</span>
-    <span class="doccomment">/// [flate2::Compression](../../flate2/struct.Compression.html#method.default).</span>
+    <span class="doccomment">/// [flate2::Compression](../../../flate2/struct.Compression.html#method.default).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">target_path</span>: <span class="ident">P</span>,
         <span class="ident">path_generator</span>: <span class="ident">G</span>,

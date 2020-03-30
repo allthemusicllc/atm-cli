@@ -30,7 +30,7 @@ pub struct TarGzFile<G: PathGenerator> {
 impl<G: PathGenerator> TarGzFile<G> {
     /// Create new `TarGzFile` instance. If no compression level specified,
     /// uses default compression level as implemented in
-    /// [flate2::Compression](../../flate2/struct.Compression.html#method.default).
+    /// [flate2::Compression](../../../flate2/struct.Compression.html#method.default).
     pub fn new<P: AsRef<std::path::Path>>(
         target_path: P,
         path_generator: G,

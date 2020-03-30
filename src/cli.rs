@@ -8,68 +8,73 @@
 
 use std::str::FromStr;
 
-/*******************************
-***** Shared CLI Arguments *****
-*******************************/
+/*************************
+***** Utility Macros *****
+*************************/
 
-macro_rules! impl_deref {
+macro_rules! impl_into {
     ($struct:ty, $field:ident, $target:ty) => {
-        impl std::ops::Deref for $struct {
-            type Target = $target;
-
-            fn deref(&self) -> &Self::Target {
-                &self.$field
+        impl std::convert::Into<$target> for $struct {
+            fn into(self) -> $target {
+                self.$field
             }
         }
     }
 }
 
+/**********************
+***** Error Types *****
+**********************/
+
+/// Error type for parsing integers arguments from `&str`
 #[derive(Debug, thiserror::Error)]
-pub enum ParseBatchSizeArgError {
+pub enum ParseNumberArgError {
     #[error(transparent)]
     NotInteger(#[from] std::num::ParseIntError),
-    #[error("Batch size must be greater than 0")]
-    InvalidBatchSize,
+    #[error("{arg_name} must be greater than 0")]
+    LessThanZero { arg_name: String },
+    #[error("{arg_name} must be between {min} and {max}, found {input}")]
+    OutOfRange { arg_name: String, min: String, max: String, input: String },
 }
 
-fn try_batch_from_str(arg: &str) -> Result<u32, ParseBatchSizeArgError> {
+/********************
+***** BatchSize *****
+********************/
+
+fn try_batch_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
     let batch_size = arg.parse::<u32>()?;
     if batch_size == 0 {
-        return Err(ParseBatchSizeArgError::InvalidBatchSize);
+        return Err(ParseNumberArgError::LessThanZero { arg_name: "Batch size".to_string() });
     }
     Ok(batch_size)
 }
 
-#[derive(structopt::StructOpt)]
+#[derive(Debug, structopt::StructOpt)]
 pub struct BatchSize {
     #[structopt(
         short="s",
-        long="batch-size",
+        long,
         default_value="25",
         help="Number of melodies per batch",
-        parse(try_from_str=try_batch_from_str))]
+        parse(try_from_str = try_batch_from_str))]
     pub batch_size: u32,
 }
 
-impl_deref! { BatchSize, batch_size, u32 }
+impl_into! { BatchSize, batch_size, u32 }
 
-#[derive(Debug, thiserror::Error)]
-pub enum ParseMelodyLengthArgError {
-    #[error(transparent)]
-    NotInteger(#[from] std::num::ParseIntError),
-    #[error("Length must be greater than 0")]
-    InvalidLength,
-}
+/***********************
+***** MelodyLength *****
+***********************/
 
-fn try_length_from_str(arg: &str) -> Result<u32, ParseMelodyLengthArgError> {
+fn try_length_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
     let length = arg.parse::<u32>()?;
     if length == 0 {
-        return Err(ParseMelodyLengthArgError::InvalidLength);
+        return Err(ParseNumberArgError::LessThanZero { arg_name: "Length".to_string() });
     }
     Ok(length)
 }
 
-#[derive(structopt::StructOpt)]
+#[derive(Debug, structopt::StructOpt)]
 pub struct MelodyLengthArg {
     #[structopt(
         help="Length of melodies (pitch sequences) to generate",
@@ -77,9 +82,13 @@ pub struct MelodyLengthArg {
     pub melody_length: u32,
 }
 
-impl_deref! { MelodyLengthArg, melody_length, u32 }
+impl_into! { MelodyLengthArg, melody_length, u32 }
 
-#[derive(structopt::StructOpt)]
+/**************************
+***** NoteSet/NoteVec *****
+**************************/
+
+#[derive(Debug, structopt::StructOpt)]
 pub struct NoteSetArg {
     #[structopt(
         value_name="notes",
@@ -89,9 +98,9 @@ pub struct NoteSetArg {
     pub note_set: libatm::MIDINoteSet,
 }
 
-impl_deref! { NoteSetArg, note_set, libatm::MIDINoteSet }
+impl_into! { NoteSetArg, note_set, libatm::MIDINoteSet }
 
-#[derive(structopt::StructOpt)]
+#[derive(Debug, structopt::StructOpt)]
 pub struct NoteVecArg {
     #[structopt(
         value_name="notes",
@@ -101,41 +110,39 @@ pub struct NoteVecArg {
     pub note_vec: libatm::MIDINoteVec,
 }
 
-impl_deref! { NoteVecArg, note_vec, libatm::MIDINoteVec }
+impl_into! { NoteVecArg, note_vec, libatm::MIDINoteVec }
 
-#[derive(Debug, thiserror::Error)]
-pub enum ParseMaxFilesArgError {
-    #[error(transparent)]
-    NotFloat(#[from] std::num::ParseIntError),
-    #[error("Max files per directory must be between 1 and 4096, inclusive (found {input})")]
-    ValueOutOfRange { input: u32, },
-}
+/************************
+***** PartitionArgs *****
+************************/
 
-fn try_maxf_from_str(arg: &str) -> Result<f32, ParseMaxFilesArgError> {
+fn try_maxf_from_str(arg: &str) -> Result<f32, ParseNumberArgError> {
     let max_files = arg.parse::<u32>()?;
     if max_files <= 0 || max_files > 4096 {
-        return Err(ParseMaxFilesArgError::ValueOutOfRange { input: max_files });
+        return Err(ParseNumberArgError::OutOfRange {
+            arg_name: "Max files per directory".to_string(),
+            min: "0".to_string(),
+            max: "4096".to_string(),
+            input: arg.to_string(),
+        });
     }
     Ok(max_files as f32)
 }
 
-#[derive(Debug, thiserror::Error)]
-pub enum ParsePartitionDepthArgError {
-    #[error(transparent)]
-    NotInteger(#[from] std::num::ParseIntError),
-    #[error("Partition depth must be between 0 and 4, inclusive (found {input})")]
-    ValueOutOfRange { input: u32, },
-}
-
-fn try_pdepth_from_str(arg: &str) -> Result<u32, ParsePartitionDepthArgError> {
+fn try_pdepth_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
     let partition_depth = arg.parse::<u32>()?;
     if partition_depth == 0 || partition_depth > 4 {
-        return Err(ParsePartitionDepthArgError::ValueOutOfRange { input: partition_depth });
+        return Err(ParseNumberArgError::OutOfRange {
+            arg_name: "Partition depth".to_string(),
+            min: "0".to_string(),
+            max: "4".to_string(),
+            input: arg.to_string(),
+        });
     }
     Ok(partition_depth)
 }
 
-#[derive(structopt::StructOpt)]
+#[derive(Debug, structopt::StructOpt)]
 pub struct PartitionArgs {
     #[structopt(
         short,
@@ -147,23 +154,26 @@ pub struct PartitionArgs {
     #[structopt(
         short="p",
         long = "partitions",
-        required=true,
         help = concat!("Partition depth to use for output directory structure.  For ",
                      "example, if set to 2 the ouput directory structure would look ",
                      "like <root>/<branch>/<hash>.mid"),
         parse(try_from_str=try_pdepth_from_str))]
-    pub partition_depth: u32, 
+    pub partition_depth: Option<u32>, 
 }
 
-#[derive(structopt::StructOpt)]
+/*****************
+***** Target *****
+*****************/
+
+#[derive(Debug, structopt::StructOpt)]
 pub struct TargetArg {
     #[structopt(
-        help="File output path (directory must exist)",
+        help="File output path (directory/directories must exist)",
         parse(from_str))]
     pub target: std::path::PathBuf,
 }
 
-impl_deref! { TargetArg, target, std::path::PathBuf }
+impl_into! { TargetArg, target, std::path::PathBuf }
 
 /******************************
 ***** CLI Directive Trait *****

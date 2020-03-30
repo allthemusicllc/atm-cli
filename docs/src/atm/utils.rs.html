@@ -35,6 +35,8 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// utils.rs</span>
 <span class="comment">//</span>
@@ -48,12 +50,14 @@
 
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 
-<span class="doccomment">/// Generate all permutations (with replacement) of given length</span>
-<span class="doccomment">/// from the given sequence of MIDI notes.</span>
+<span class="doccomment">/// Generate melodies of length `length` containing the</span>
+<span class="doccomment">/// notes in provided note set `notes`. In other words,</span>
+<span class="doccomment">/// generate the cartesion product of `notes` with itself</span>
+<span class="doccomment">/// `length` times.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Arguments:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// * `notes`: sequence of MIDI notes (see: [libatm::MIDINote](../../libatm/struct.MIDINote.html))</span>
+<span class="doccomment">/// * `notes`: set of MIDI notes (see: [libatm::MIDINote](../../libatm/midi_note/struct.MIDINote.html))</span>
 <span class="doccomment">/// * `length`: length of sequences to generate</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>

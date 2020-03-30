@@ -10,12 +10,14 @@
 
 use itertools::Itertools;
 
-/// Generate all permutations (with replacement) of given length
-/// from the given sequence of MIDI notes.
+/// Generate melodies of length `length` containing the
+/// notes in provided note set `notes`. In other words,
+/// generate the cartesion product of `notes` with itself
+/// `length` times.
 ///
 /// # Arguments:
 ///
-/// * `notes`: sequence of MIDI notes (see: [libatm::MIDINote](../../libatm/struct.MIDINote.html))
+/// * `notes`: set of MIDI notes (see: [libatm::MIDINote](../../libatm/midi_note/struct.MIDINote.html))
 /// * `length`: length of sequences to generate
 ///
 /// # Examples
