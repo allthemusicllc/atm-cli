@@ -37,7 +37,7 @@ impl<G: PathGenerator> TarGzFile<G> {
         compression_level: Option<flate2::Compression>,
     ) -> std::io::Result<Self> {
         // Open filepath
-        let archive = std::fs::File::open(target_path)?;
+        let archive = std::fs::File::create(target_path)?;
         // Wrap in BufWriter, optimized for many small writes
         // (see: https://doc.rust-lang.org/std/io/struct.BufWriter.html)
         let archive = std::io::BufWriter::new(archive);

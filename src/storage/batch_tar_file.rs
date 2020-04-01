@@ -96,7 +96,7 @@ impl BatchTarFile {
 
         // Open target file and initialize tar builder
         let archive = tar::Builder::new(std::io::BufWriter::new(
-            std::fs::File::open(target_path)?
+            std::fs::File::create(target_path)?
         ));
 
         // Generate partition manager
