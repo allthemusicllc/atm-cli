@@ -46,9 +46,10 @@ pub fn gen_num_melodies(num_notes: u32, melody_length: u32) -> u64 {
 /// ```rust
 /// // Create MIDI note set
 /// let note_set = "C:4,C:4,D:4,E:4,F:4,G:5".parse::<libatm::MIDINoteVec>().unwrap();
-/// // Create iterable over all permutations, which in this example would be
-/// // 6^8 = 1,679,616 instances of `Vec<&libatm::MIDINote>`.
-/// let permutations = atm::utils::gen_sequences(&note_set, 8);
+/// // Create iterable over all possible melodies, which in this example would be
+/// // 6 ^ 8 = 1,679,616 instances of `Vec<&libatm::MIDINote>`.
+/// let melodies = atm::utils::gen_sequences(&note_set, 8);
+/// assert_eq!(1679616usize, melodies.count())
 /// ```
 pub fn gen_sequences(
     notes: &libatm::MIDINoteVec,
