@@ -54,8 +54,12 @@ pub(crate) fn write_melodies_to_backend<B: StorageBackend>(
 ) {
     // Convert set of notes to vec
     let notes = libatm::MIDINoteVec::from(note_set); 
+    // Generate total number of melodies
+    let num_melodies = crate::utils::gen_num_melodies(notes.len() as u32, melody_length);
+    // Initialize progress bar
+    let mut pb = pbr::ProgressBar::new(num_melodies);
+    pb.set_max_refresh_rate(Some(std::time::Duration::from_millis(500)));
 
-    println!("::: INFO: Generating all melodies of length {} containing notes {:?}", melody_length, &notes);
     // For each melody
     for melody_ref in crate::utils::gen_sequences(&notes, melody_length) {
         // Copy notes into owned melody
@@ -64,14 +68,16 @@ pub(crate) fn write_melodies_to_backend<B: StorageBackend>(
         if let Err(err) = backend.append_melody(melody, None) {
             println!("::: WARNING: Failed to add melody to storage backend ({:?})", err);
         }
+        // Increment progress bar even if write failed
+        pb.inc();
     }
-
+    
+    // Stop progress bar
+    pb.finish_println("");
     // Finish writing to backend
     if let Err(err) = backend.finish() {
         println!("::: ERROR: Failed to finish writing to storage backend ({:?})", err);
         std::process::exit(1);
-    } else {
-        println!("::: INFO: Finished writing melodies to storage backend");
     }
 }
 
