@@ -15,6 +15,7 @@
 //! more information on All the Music, check out [allthemusic.info](http://allthemusic.info).
 
 extern crate flate2;
+extern crate humansize;
 extern crate itertools;
 extern crate libatm;
 extern crate pbr;

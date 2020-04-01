@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 flate2 = "1.0.9"
+humansize = "1.1.0"
 itertools = "0.8.0"
 libatm = { path = "lib/libatm" }
 pbr = "1.0.1"

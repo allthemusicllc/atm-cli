@@ -112,11 +112,25 @@ pub struct NoteVecArg {
 
 impl_into! { NoteVecArg, note_vec, libatm::MIDINoteVec }
 
+/**********************
+***** NumNotesArg *****
+**********************/
+
+#[derive(structopt::StructOpt)]
+pub struct NumNotesArg {
+    #[structopt(
+        help="Number of distinct notes to generate melodies from",
+        parse(try_from_str = u32::from_str))]
+    pub num_notes: u32,
+}
+
+impl_into! { NumNotesArg, num_notes, u32 }
+
 /************************
 ***** PartitionArgs *****
 ************************/
 
-fn try_maxf_from_str(arg: &str) -> Result<f32, ParseNumberArgError> {
+fn try_maxf_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
     let max_files = arg.parse::<u32>()?;
     if max_files <= 0 || max_files > 4096 {
         return Err(ParseNumberArgError::OutOfRange {
@@ -126,7 +140,7 @@ fn try_maxf_from_str(arg: &str) -> Result<f32, ParseNumberArgError> {
             input: arg.to_string(),
         });
     }
-    Ok(max_files as f32)
+    Ok(max_files)
 }
 
 fn try_pdepth_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
@@ -150,7 +164,7 @@ pub struct PartitionArgs {
         default_value="4096",
         help="Maximum number of files per directory",
         parse(try_from_str=try_maxf_from_str))]
-    pub max_files: f32,
+    pub max_files: u32,
     #[structopt(
         short="p",
         long = "partitions",
@@ -199,6 +213,7 @@ pub trait CliDirective {
     version = env!("CARGO_PKG_VERSION"),
     setting=structopt::clap::AppSettings::ArgRequiredElseHelp)]
 pub enum Cli {
+    Estimate(crate::directives::EstimateDirective),
     Gen(crate::directives::GenDirective),
 }
 
@@ -206,6 +221,7 @@ impl CliDirective for Cli {
     fn run(self) {
         match self {
             Self::Gen(d) => d.run(),
+            Self::Estimate(d) => d.run(),
         }
     }
 }

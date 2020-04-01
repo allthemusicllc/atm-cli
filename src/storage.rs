@@ -97,7 +97,7 @@ pub enum PartitionPathGeneratorError {
     MelodyLengthMismatch { expected: u32, observed: u32, },
     #[error("Partition depth must be less than the length of generated melodies \
             ({partition_depth} > {melody_length})")]
-    PartitionDepthLongerThanMelody { partition_depth: u32, melody_length: i32, },
+    PartitionDepthLongerThanMelody { partition_depth: u32, melody_length: u32, },
     #[error("Melodies of length {melody_length} cannot be partitioned with depth \
             {partition_depth} and length {partition_length}")]
     PartitionsLongerThanMelody { melody_length: u32, partition_depth: u32, partition_length: u32, },
@@ -123,23 +123,23 @@ pub struct PartitionPathGenerator {
 impl PartitionPathGenerator {
     /// Generate partition length (number of MIDI notes per partition) 
     fn gen_partition_length(
-        num_notes: f32,
-        num_melodies: f32,
-        melody_length: i32,
-        max_files: f32,
+        num_notes: u32,
+        num_melodies: u64,
+        melody_length: u32,
+        max_files: u32,
         partition_depth: u32
     ) -> Result<u32, PartitionPathGeneratorError> {
         // Generate maximum number of partition branches (directories)
         // as quotient of number of generated melodies and
         // maximum number of files per directory
-        let max_partitions = num_melodies / max_files;
+        let max_partitions = (num_melodies as f64) / max_files as f64;
 
-        let partition_length = max_partitions.log(num_notes.powi(partition_depth as i32)).ceil() as u32;
+        let partition_length = max_partitions.log(num_notes.pow(partition_depth).into()).ceil() as u32;
         // Ensure melody_length is at least as long as depth * length
         if (melody_length as u32) < partition_depth * partition_length {
             return Err(PartitionPathGeneratorError::PartitionsLongerThanMelody {
-                melody_length: melody_length as u32,
-                partition_depth: partition_depth,
+                melody_length,
+                partition_depth,
                 partition_length,
             });
         }
@@ -148,9 +148,9 @@ impl PartitionPathGenerator {
     
     /// Create new `PartitionPathGenerator` instance
     pub fn new(
-        num_notes: f32,
-        melody_length: i32,
-        max_files: f32,
+        num_notes: u32,
+        melody_length: u32,
+        max_files: u32,
         partition_depth: u32
     ) -> Result<Self, PartitionPathGeneratorError> {
         // Ensure partition depth is less than length of generated melodies
@@ -161,14 +161,14 @@ impl PartitionPathGenerator {
             });
         }
 
-        // Generate total number of generated melodies
-        let num_melodies = num_notes.powi(melody_length);
+        // Generate total number of melodies
+        let num_melodies = crate::utils::gen_num_melodies(num_notes, melody_length);
         // If number of notes is 1, or total number of generated melodies is
         // less than max files per directory, then partition depth should be 1
         // and partition length should be 0
         let mut calc_partition_depth = 1;
         let mut calc_partition_length = 0;
-        if !(num_notes == 1.0 || num_melodies <= max_files) {
+        if !(num_notes == 1 || num_melodies <= max_files.into()) {
             calc_partition_depth = partition_depth;
             // Generate partition length
             calc_partition_length = Self::gen_partition_length(
@@ -253,15 +253,15 @@ mod tests {
         // less than length of melodies. Each partition branch
         // must contian at least one note, so if depth > # of notes,
         // cannnot generate enough branches from the input melody.        
-        let path_generator = PartitionPathGenerator::new(3f32, 3, 4096f32, 4).unwrap();
+        let _ = PartitionPathGenerator::new(3, 3, 4096, 4).unwrap();
     }
 
     #[test]
     #[should_panic]
     fn test_melody_length_match() {
-        let path_generator = PartitionPathGenerator::new(4f32, 12, 4096f32, 2).unwrap();
+        let path_generator = PartitionPathGenerator::new(4, 12, 4096, 2).unwrap();
         let mfile = libatm::MIDIFile::new(
-            vec!["C:4", "D:5", "G:7"].iter().map(|n| n.parse::<libatm::MIDINote>().unwrap()).collect::<Vec<libatm::MIDINote>>(),
+            "C:4,D:5,G:7".parse::<libatm::MIDINoteVec>().unwrap(),
             libatm::MIDIFormat::Format0,
             1,
             1,

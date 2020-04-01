@@ -77,9 +77,9 @@ impl BatchTarFile {
     pub fn new<P: AsRef<std::path::Path>>(
         target_path: P,
         batch_size: u32,
-        num_notes: f32,
-        melody_length: i32,
-        max_files: f32,
+        num_notes: u32,
+        melody_length: u32,
+        max_files: u32,
         partition_depth: u32,
         batch_compression: Option<Compression>,
         batch_mode: Option<u32>,

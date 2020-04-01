@@ -10,6 +10,27 @@
 
 use itertools::Itertools;
 
+/// Calculate total melodies given number of distinct notes and desired length of melodies
+///
+/// # Arguments
+///
+/// * `num_notes`: number of distinct notes to generate melodies with
+/// * `melody_length`: length of melodies to generate
+///
+/// # Examples
+///
+/// ```rust 
+/// // Create MIDI note set with 6 notes
+/// let note_set = "C:4,C:7,D:4,E:4,F:4,G:5".parse::<libatm::MIDINoteSet>().unwrap();
+/// // Calculate total number of melodies of length 9 with these 6 notes
+/// let num_melodies = atm::utils::gen_num_melodies(note_set.len() as u32, 9);
+/// // 6 ^ 9 is 10,077,696
+/// assert_eq!(10077696, num_melodies);
+/// ```
+pub fn gen_num_melodies(num_notes: u32, melody_length: u32) -> u64 {
+    (num_notes as u64).pow(melody_length)
+}
+
 /// Generate melodies of length `length` containing the
 /// notes in provided note set `notes`. In other words,
 /// generate the cartesion product of `notes` with itself
@@ -23,11 +44,11 @@ use itertools::Itertools;
 /// # Examples
 ///
 /// ```rust
-/// // Create MIDI note sequence
-/// let note_set = "C:4,C:4,D:4,E:4,F:4,G:5".parse::<libatm::MIDINoteSet>().unwrap();
+/// // Create MIDI note set
+/// let note_set = "C:4,C:4,D:4,E:4,F:4,G:5".parse::<libatm::MIDINoteVec>().unwrap();
 /// // Create iterable over all permutations, which in this example would be
 /// // 6^8 = 1,679,616 instances of `Vec<&libatm::MIDINote>`.
-/// let permutations = atm::utils::gen_sequences(&Vec::from(&note_set), 8);
+/// let permutations = atm::utils::gen_sequences(&note_set, 8);
 /// ```
 pub fn gen_sequences(
     notes: &libatm::MIDINoteVec,

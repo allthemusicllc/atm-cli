@@ -67,8 +67,8 @@ impl CliDirective for GenBatchDirective {
         let backend = crate::storage::BatchTarFile::new(
             target,
             self.batch_size.into(),
-            note_set.len() as f32,
-            melody_length as i32,
+            note_set.len() as u32,
+            melody_length,
             self.partition_args.max_files,
             partition_depth,
             self.batch_compression,
