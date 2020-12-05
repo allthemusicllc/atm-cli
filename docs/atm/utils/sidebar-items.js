@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["gen_sequences","Generate melodies of length `length` containing the notes in provided note set `notes`. In other words, generate the cartesion product of `notes` with itself `length` times."]]});
+initSidebarItems({"fn":[["gen_num_melodies","Calculate total melodies given number of distinct notes and desired length of melodies"],["gen_sequences","Generate melodies of length `length` containing the notes in provided note set `notes`. In other words, generate the cartesion product of `notes` with itself `length` times."]]});

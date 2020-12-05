@@ -1,6 +1,6 @@
 var N = null;var sourcesIndex = {};
 sourcesIndex["ansi_term"] = {"name":"","files":["ansi.rs","debug.rs","difference.rs","display.rs","lib.rs","style.rs","windows.rs","write.rs"]};
-sourcesIndex["atm"] = {"name":"","dirs":[{"name":"directives","files":["gen.rs","gen_batch.rs","gen_single.rs","gen_tar.rs","gen_tar_gz.rs"]},{"name":"storage","files":["batch_tar_file.rs","tar_archive.rs","tar_file.rs","tar_gz_file.rs"]}],"files":["cli.rs","directives.rs","lib.rs","storage.rs","utils.rs"]};
+sourcesIndex["atm"] = {"name":"","dirs":[{"name":"directives","files":["estimate.rs","estimate_tar.rs","estimate_tar_gz.rs","gen.rs","gen_batch.rs","gen_single.rs","gen_tar.rs","gen_tar_gz.rs"]},{"name":"storage","files":["batch_tar_file.rs","tar_archive.rs","tar_file.rs","tar_gz_file.rs"]}],"files":["cli.rs","directives.rs","lib.rs","storage.rs","utils.rs"]};
 sourcesIndex["atty"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bitflags"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["byteorder"] = {"name":"","files":["io.rs","lib.rs"]};
@@ -11,6 +11,7 @@ sourcesIndex["either"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["filetime"] = {"name":"","dirs":[{"name":"unix","files":["mod.rs","utimes.rs"]}],"files":["lib.rs"]};
 sourcesIndex["flate2"] = {"name":"","dirs":[{"name":"deflate","files":["bufread.rs","mod.rs","read.rs","write.rs"]},{"name":"gz","files":["bufread.rs","mod.rs","read.rs","write.rs"]},{"name":"zlib","files":["bufread.rs","mod.rs","read.rs","write.rs"]}],"files":["bufreader.rs","crc.rs","ffi.rs","lib.rs","mem.rs","zio.rs"]};
 sourcesIndex["heck"] = {"name":"","files":["camel.rs","kebab.rs","lib.rs","mixed.rs","shouty_snake.rs","snake.rs","title.rs"]};
+sourcesIndex["humansize"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["itertools"] = {"name":"","dirs":[{"name":"adaptors","files":["mod.rs","multi_product.rs"]}],"files":["combinations.rs","concat_impl.rs","cons_tuples_impl.rs","diff.rs","either_or_both.rs","format.rs","free.rs","group_map.rs","groupbylazy.rs","impl_macros.rs","intersperse.rs","kmerge_impl.rs","lib.rs","merge_join.rs","minmax.rs","multipeek_impl.rs","pad_tail.rs","peeking_take_while.rs","process_results_impl.rs","put_back_n_impl.rs","rciter_impl.rs","repeatn.rs","size_hint.rs","sources.rs","tee.rs","tuple_impl.rs","unique_impl.rs","with_position.rs","zip_eq_impl.rs","zip_longest.rs","ziptuple.rs"]};
 sourcesIndex["lazy_static"] = {"name":"","files":["inline_lazy.rs","lib.rs"]};
 sourcesIndex["libatm"] = {"name":"","files":["lib.rs","midi_event.rs","midi_file.rs","midi_note.rs"]};

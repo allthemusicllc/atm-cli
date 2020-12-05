@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/cli.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cli.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../atm/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/cli.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cli.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../atm/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -209,6 +209,22 @@
 <span id="209">209</span>
 <span id="210">210</span>
 <span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// cli.rs</span>
 <span class="comment">//</span>
@@ -324,11 +340,25 @@
 
 <span class="macro">impl_into</span><span class="macro">!</span> { <span class="ident">NoteVecArg</span>, <span class="ident">note_vec</span>, <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span> }
 
+<span class="comment">/**********************
+***** NumNotesArg *****
+**********************/</span>
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NumNotesArg</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Number of distinct notes to generate melodies from&quot;</span>,
+        <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">from_str</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">num_notes</span>: <span class="ident">u32</span>,
+}
+
+<span class="macro">impl_into</span><span class="macro">!</span> { <span class="ident">NumNotesArg</span>, <span class="ident">num_notes</span>, <span class="ident">u32</span> }
+
 <span class="comment">/************************
 ***** PartitionArgs *****
 ************************/</span>
 
-<span class="kw">fn</span> <span class="ident">try_maxf_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">f32</span>, <span class="ident">ParseNumberArgError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">try_maxf_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseNumberArgError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">max_files</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="ident">max_files</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">max_files</span> <span class="op">&gt;</span> <span class="number">4096</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseNumberArgError</span>::<span class="ident">OutOfRange</span> {
@@ -338,7 +368,7 @@
             <span class="ident">input</span>: <span class="ident">arg</span>.<span class="ident">to_string</span>(),
         });
     }
-    <span class="prelude-val">Ok</span>(<span class="ident">max_files</span> <span class="kw">as</span> <span class="ident">f32</span>)
+    <span class="prelude-val">Ok</span>(<span class="ident">max_files</span>)
 }
 
 <span class="kw">fn</span> <span class="ident">try_pdepth_from_str</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">ParseNumberArgError</span><span class="op">&gt;</span> {
@@ -362,7 +392,7 @@
         <span class="ident">default_value</span><span class="op">=</span><span class="string">&quot;4096&quot;</span>,
         <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Maximum number of files per directory&quot;</span>,
         <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_maxf_from_str</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">max_files</span>: <span class="ident">f32</span>,
+    <span class="kw">pub</span> <span class="ident">max_files</span>: <span class="ident">u32</span>,
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">short</span><span class="op">=</span><span class="string">&quot;p&quot;</span>,
         <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;partitions&quot;</span>,
@@ -411,6 +441,7 @@
     <span class="ident">version</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),
     <span class="ident">setting</span><span class="op">=</span><span class="ident">structopt</span>::<span class="ident">clap</span>::<span class="ident">AppSettings</span>::<span class="ident">ArgRequiredElseHelp</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Cli</span> {
+    <span class="ident">Estimate</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">EstimateDirective</span>),
     <span class="ident">Gen</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">GenDirective</span>),
 }
 
@@ -418,8 +449,9 @@
     <span class="kw">fn</span> <span class="ident">run</span>(<span class="self">self</span>) {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="self">Self</span>::<span class="ident">Gen</span>(<span class="ident">d</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">d</span>.<span class="ident">run</span>(),
+            <span class="self">Self</span>::<span class="ident">Estimate</span>(<span class="ident">d</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">d</span>.<span class="ident">run</span>(),
         }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/utils.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>utils.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../atm/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/utils.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>utils.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../atm/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
 <span id="4"> 4</span>
@@ -37,6 +37,28 @@
 <span id="37">37</span>
 <span id="38">38</span>
 <span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// utils.rs</span>
 <span class="comment">//</span>
@@ -49,6 +71,27 @@
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unused_parens</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
+
+<span class="doccomment">/// Calculate total melodies given number of distinct notes and desired length of melodies</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Arguments</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * `num_notes`: number of distinct notes to generate melodies with</span>
+<span class="doccomment">/// * `melody_length`: length of melodies to generate</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust </span>
+<span class="doccomment">/// // Create MIDI note set with 6 notes</span>
+<span class="doccomment">/// let note_set = &quot;C:4,C:7,D:4,E:4,F:4,G:5&quot;.parse::&lt;libatm::MIDINoteSet&gt;().unwrap();</span>
+<span class="doccomment">/// // Calculate total number of melodies of length 9 with these 6 notes</span>
+<span class="doccomment">/// let num_melodies = atm::utils::gen_num_melodies(note_set.len() as u32, 9);</span>
+<span class="doccomment">/// // 6 ^ 9 is 10,077,696</span>
+<span class="doccomment">/// assert_eq!(10077696, num_melodies);</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gen_num_melodies</span>(<span class="ident">num_notes</span>: <span class="ident">u32</span>, <span class="ident">melody_length</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    (<span class="ident">num_notes</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">pow</span>(<span class="ident">melody_length</span>)
+}
 
 <span class="doccomment">/// Generate melodies of length `length` containing the</span>
 <span class="doccomment">/// notes in provided note set `notes`. In other words,</span>
@@ -63,11 +106,12 @@
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// // Create MIDI note sequence</span>
-<span class="doccomment">/// let note_set = &quot;C:4,C:4,D:4,E:4,F:4,G:5&quot;.parse::&lt;libatm::MIDINoteSet&gt;().unwrap();</span>
-<span class="doccomment">/// // Create iterable over all permutations, which in this example would be</span>
-<span class="doccomment">/// // 6^8 = 1,679,616 instances of `Vec&lt;&amp;libatm::MIDINote&gt;`.</span>
-<span class="doccomment">/// let permutations = atm::utils::gen_sequences(&amp;Vec::from(&amp;note_set), 8);</span>
+<span class="doccomment">/// // Create MIDI note set</span>
+<span class="doccomment">/// let note_set = &quot;C:4,C:4,D:4,E:4,F:4,G:5&quot;.parse::&lt;libatm::MIDINoteVec&gt;().unwrap();</span>
+<span class="doccomment">/// // Create iterable over all possible melodies, which in this example would be</span>
+<span class="doccomment">/// // 6 ^ 8 = 1,679,616 instances of `Vec&lt;&amp;libatm::MIDINote&gt;`.</span>
+<span class="doccomment">/// let melodies = atm::utils::gen_sequences(&amp;note_set, 8);</span>
+<span class="doccomment">/// assert_eq!(1679616usize, melodies.count())</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gen_sequences</span>(
     <span class="ident">notes</span>: <span class="kw-2">&amp;</span><span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span>,
@@ -78,4 +122,4 @@
         .<span class="ident">multi_cartesian_product</span>()
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

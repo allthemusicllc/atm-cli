@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/storage.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>storage.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../atm/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/storage.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>storage.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../atm/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -412,7 +412,7 @@
     <span class="ident">MelodyLengthMismatch</span> { <span class="ident">expected</span>: <span class="ident">u32</span>, <span class="ident">observed</span>: <span class="ident">u32</span>, },
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Partition depth must be less than the length of generated melodies \
             ({partition_depth} &gt; {melody_length})&quot;</span>)]</span>
-    <span class="ident">PartitionDepthLongerThanMelody</span> { <span class="ident">partition_depth</span>: <span class="ident">u32</span>, <span class="ident">melody_length</span>: <span class="ident">i32</span>, },
+    <span class="ident">PartitionDepthLongerThanMelody</span> { <span class="ident">partition_depth</span>: <span class="ident">u32</span>, <span class="ident">melody_length</span>: <span class="ident">u32</span>, },
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Melodies of length {melody_length} cannot be partitioned with depth \
             {partition_depth} and length {partition_length}&quot;</span>)]</span>
     <span class="ident">PartitionsLongerThanMelody</span> { <span class="ident">melody_length</span>: <span class="ident">u32</span>, <span class="ident">partition_depth</span>: <span class="ident">u32</span>, <span class="ident">partition_length</span>: <span class="ident">u32</span>, },
@@ -438,23 +438,23 @@
 <span class="kw">impl</span> <span class="ident">PartitionPathGenerator</span> {
     <span class="doccomment">/// Generate partition length (number of MIDI notes per partition) </span>
     <span class="kw">fn</span> <span class="ident">gen_partition_length</span>(
-        <span class="ident">num_notes</span>: <span class="ident">f32</span>,
-        <span class="ident">num_melodies</span>: <span class="ident">f32</span>,
-        <span class="ident">melody_length</span>: <span class="ident">i32</span>,
-        <span class="ident">max_files</span>: <span class="ident">f32</span>,
+        <span class="ident">num_notes</span>: <span class="ident">u32</span>,
+        <span class="ident">num_melodies</span>: <span class="ident">u64</span>,
+        <span class="ident">melody_length</span>: <span class="ident">u32</span>,
+        <span class="ident">max_files</span>: <span class="ident">u32</span>,
         <span class="ident">partition_depth</span>: <span class="ident">u32</span>
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">PartitionPathGeneratorError</span><span class="op">&gt;</span> {
         <span class="comment">// Generate maximum number of partition branches (directories)</span>
         <span class="comment">// as quotient of number of generated melodies and</span>
         <span class="comment">// maximum number of files per directory</span>
-        <span class="kw">let</span> <span class="ident">max_partitions</span> <span class="op">=</span> <span class="ident">num_melodies</span> <span class="op">/</span> <span class="ident">max_files</span>;
+        <span class="kw">let</span> <span class="ident">max_partitions</span> <span class="op">=</span> (<span class="ident">num_melodies</span> <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">/</span> <span class="ident">max_files</span> <span class="kw">as</span> <span class="ident">f64</span>;
 
-        <span class="kw">let</span> <span class="ident">partition_length</span> <span class="op">=</span> <span class="ident">max_partitions</span>.<span class="ident">log</span>(<span class="ident">num_notes</span>.<span class="ident">powi</span>(<span class="ident">partition_depth</span> <span class="kw">as</span> <span class="ident">i32</span>)).<span class="ident">ceil</span>() <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">let</span> <span class="ident">partition_length</span> <span class="op">=</span> <span class="ident">max_partitions</span>.<span class="ident">log</span>(<span class="ident">num_notes</span>.<span class="ident">pow</span>(<span class="ident">partition_depth</span>).<span class="ident">into</span>()).<span class="ident">ceil</span>() <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="comment">// Ensure melody_length is at least as long as depth * length</span>
         <span class="kw">if</span> (<span class="ident">melody_length</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&lt;</span> <span class="ident">partition_depth</span> <span class="op">*</span> <span class="ident">partition_length</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">PartitionPathGeneratorError</span>::<span class="ident">PartitionsLongerThanMelody</span> {
-                <span class="ident">melody_length</span>: <span class="ident">melody_length</span> <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="ident">partition_depth</span>: <span class="ident">partition_depth</span>,
+                <span class="ident">melody_length</span>,
+                <span class="ident">partition_depth</span>,
                 <span class="ident">partition_length</span>,
             });
         }
@@ -463,9 +463,9 @@
     
     <span class="doccomment">/// Create new `PartitionPathGenerator` instance</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">num_notes</span>: <span class="ident">f32</span>,
-        <span class="ident">melody_length</span>: <span class="ident">i32</span>,
-        <span class="ident">max_files</span>: <span class="ident">f32</span>,
+        <span class="ident">num_notes</span>: <span class="ident">u32</span>,
+        <span class="ident">melody_length</span>: <span class="ident">u32</span>,
+        <span class="ident">max_files</span>: <span class="ident">u32</span>,
         <span class="ident">partition_depth</span>: <span class="ident">u32</span>
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">PartitionPathGeneratorError</span><span class="op">&gt;</span> {
         <span class="comment">// Ensure partition depth is less than length of generated melodies</span>
@@ -476,14 +476,14 @@
             });
         }
 
-        <span class="comment">// Generate total number of generated melodies</span>
-        <span class="kw">let</span> <span class="ident">num_melodies</span> <span class="op">=</span> <span class="ident">num_notes</span>.<span class="ident">powi</span>(<span class="ident">melody_length</span>);
+        <span class="comment">// Generate total number of melodies</span>
+        <span class="kw">let</span> <span class="ident">num_melodies</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">gen_num_melodies</span>(<span class="ident">num_notes</span>, <span class="ident">melody_length</span>);
         <span class="comment">// If number of notes is 1, or total number of generated melodies is</span>
         <span class="comment">// less than max files per directory, then partition depth should be 1</span>
         <span class="comment">// and partition length should be 0</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">calc_partition_depth</span> <span class="op">=</span> <span class="number">1</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">calc_partition_length</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">if</span> <span class="op">!</span>(<span class="ident">num_notes</span> <span class="op">=</span><span class="op">=</span> <span class="number">1.0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">num_melodies</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">max_files</span>) {
+        <span class="kw">if</span> <span class="op">!</span>(<span class="ident">num_notes</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">num_melodies</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">max_files</span>.<span class="ident">into</span>()) {
             <span class="ident">calc_partition_depth</span> <span class="op">=</span> <span class="ident">partition_depth</span>;
             <span class="comment">// Generate partition length</span>
             <span class="ident">calc_partition_length</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">gen_partition_length</span>(
@@ -568,15 +568,15 @@
         <span class="comment">// less than length of melodies. Each partition branch</span>
         <span class="comment">// must contian at least one note, so if depth &gt; # of notes,</span>
         <span class="comment">// cannnot generate enough branches from the input melody.        </span>
-        <span class="kw">let</span> <span class="ident">path_generator</span> <span class="op">=</span> <span class="ident">PartitionPathGenerator</span>::<span class="ident">new</span>(<span class="number">3f32</span>, <span class="number">3</span>, <span class="number">4096f32</span>, <span class="number">4</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">PartitionPathGenerator</span>::<span class="ident">new</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="number">4096</span>, <span class="number">4</span>).<span class="ident">unwrap</span>();
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">should_panic</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_melody_length_match</span>() {
-        <span class="kw">let</span> <span class="ident">path_generator</span> <span class="op">=</span> <span class="ident">PartitionPathGenerator</span>::<span class="ident">new</span>(<span class="number">4f32</span>, <span class="number">12</span>, <span class="number">4096f32</span>, <span class="number">2</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">path_generator</span> <span class="op">=</span> <span class="ident">PartitionPathGenerator</span>::<span class="ident">new</span>(<span class="number">4</span>, <span class="number">12</span>, <span class="number">4096</span>, <span class="number">2</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">mfile</span> <span class="op">=</span> <span class="ident">libatm</span>::<span class="ident">MIDIFile</span>::<span class="ident">new</span>(
-            <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;C:4&quot;</span>, <span class="string">&quot;D:5&quot;</span>, <span class="string">&quot;G:7&quot;</span>].<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="ident">n</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">libatm</span>::<span class="ident">MIDINote</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">libatm</span>::<span class="ident">MIDINote</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+            <span class="string">&quot;C:4,D:5,G:7&quot;</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>(),
             <span class="ident">libatm</span>::<span class="ident">MIDIFormat</span>::<span class="ident">Format0</span>,
             <span class="number">1</span>,
             <span class="number">1</span>,
@@ -628,4 +628,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "atm";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
