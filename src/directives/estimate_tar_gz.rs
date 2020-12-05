@@ -14,12 +14,23 @@ use humansize::{FileSize, file_size_opts as options};
 
 use crate::{
     cli::CliDirective,
-    directives::gen::try_compression_from_str,
+    directives::{
+        estimate::{
+            gen_sim_file_size,
+            gen_sim_num_melodies,
+            pad_value_to_block,
+        },
+        gen::try_compression_from_str,
+    },
     storage::{
         IntoInner,
         MIDIHashPathGenerator,
         StorageBackend,
         tar_archive::TarArchive,
+    },
+    utils::{
+        gen_num_melodies,
+        gen_sequences,
     },
 };
 
@@ -27,13 +38,11 @@ use crate::{
 ***** EsimateTarGzDirective *****
 ********************************/
 
-const MAX_SIM_NUM_MELODIES: u64 = 200000;
-
 fn estimate_tar_gz_size(
     notes: &libatm::MIDINoteVec,
     melody_length: u32,
     num_melodies: u64,
-    compression_level: Compression
+    compression_level: Compression,
 ) -> u64 {
     // Create gzip-compressed tar archive
     let mut archive = TarArchive::new(
@@ -42,7 +51,7 @@ fn estimate_tar_gz_size(
     );
 
     // For each melody
-    for (idx, melody_ref) in crate::utils::gen_sequences(notes, melody_length).enumerate() {
+    for (idx, melody_ref) in gen_sequences(notes, melody_length).enumerate() {
         if idx as u64 == num_melodies { break; }
         // Copy notes into owned melody
         let melody = melody_ref.iter().map(|n| *n.clone()).collect::<libatm::MIDINoteVec>();
@@ -81,30 +90,12 @@ impl CliDirective for EstimateTarGzDirective {
         let melody_length = self.melody_length.into();
         let compression_level = self.compression_level.unwrap_or(Compression::new(6));
 
-        // Generate total number of melodies
-        let num_melodies = crate::utils::gen_num_melodies(num_notes, melody_length);
-        // Generate number of melodies to simulate:
-        // if total number of melodies is less than MAX, simulate all of them
-        let sim_num_melodies = if num_melodies <= MAX_SIM_NUM_MELODIES {
-            num_melodies
-        // otherwise, use minimum of 20% of total number and MAX
-        } else {
-            std::cmp::min((num_melodies as f64 * 0.20).floor() as u64, MAX_SIM_NUM_MELODIES)
-        };
-        // Generate size estimate for simulation count
-        let mut sim_size_estimate = estimate_tar_gz_size(&notes, melody_length, sim_num_melodies, compression_level);
-        // Align to 512 bytes
-        if let Some(padding) = sim_size_estimate.checked_rem_euclid(512) {
-            sim_size_estimate = sim_size_estimate + padding;
-        }
-        // Generate total size estimate
-        let file_size = if sim_num_melodies == num_melodies {
-            sim_size_estimate
-        } else if sim_num_melodies == MAX_SIM_NUM_MELODIES {
-                ((num_melodies as f64 / MAX_SIM_NUM_MELODIES as f64).ceil() as u64) * sim_size_estimate
-        } else {
-            sim_size_estimate * 5
-        };
+        let num_melodies = gen_num_melodies(num_notes, melody_length);
+        let sim_num_melodies = gen_sim_num_melodies(num_melodies);
+
+        let sim_size_estimate = estimate_tar_gz_size(&notes, melody_length, sim_num_melodies, compression_level);
+        let sim_size_estimate = pad_value_to_block(sim_size_estimate, None);
+        let file_size = gen_sim_file_size(sim_num_melodies, num_melodies, sim_size_estimate);
 
         println!(
             concat!("Number of distinct notes:               {num_notes}\n",
