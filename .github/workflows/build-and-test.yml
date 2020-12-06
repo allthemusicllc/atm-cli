@@ -18,6 +18,8 @@ jobs:
         toolchain: stable
         profile: complete
     - uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule update --init
     - name: Build in Release Mode
       run: cargo build --release
     - name: Run tests
@@ -32,6 +34,8 @@ jobs:
         toolchain: stable
         profile: complete
     - uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule update --init
     - name: Build in Release Mode
       run: cargo build --release
     - name: Run tests
