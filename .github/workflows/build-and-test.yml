@@ -24,6 +24,26 @@ jobs:
       run: cargo build --release
     - name: Run tests
       run: cargo test --verbose
+    - name: Print CLI Help Message
+      run: cargo run --release -- --help
+
+  build_mac:
+    runs-on: macos-latest
+    steps:
+    - name: Install Rust Toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        profile: complete
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule update --init
+    - name: Build in Release Mode
+      run: cargo build --release
+    - name: Run tests
+      run: cargo test --verbose
+    - name: Print CLI Help Message
+      run: cargo run --release -- --help
 
   build_windows:
     runs-on: windows-latest
@@ -40,3 +60,5 @@ jobs:
       run: cargo build --release
     - name: Run tests
       run: cargo test --verbose
+    - name: Print CLI Help Message
+      run: cargo run --release -- --help
