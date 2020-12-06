@@ -15,6 +15,7 @@ jobs:
     - name: Install Rust Toolchain
       uses: actions-rs/toolchain@v1
       with:
+        toolchain: stable
         profile: complete
     - uses: actions/checkout@v2
     - name: Build in Release Mode
@@ -28,6 +29,7 @@ jobs:
     - name: Install Rust Toolchain
       uses: actions-rs/toolchain@v1
       with:
+        toolchain: stable
         profile: complete
     - uses: actions/checkout@v2
     - name: Build in Release Mode
