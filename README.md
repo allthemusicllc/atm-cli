@@ -1,4 +1,4 @@
-# `atm-cli`: Tools for Generating and Working with MIDI Files
+# Tools for Generating and Working with MIDI Files
 
 ## Overview
 
