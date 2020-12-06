@@ -8,6 +8,7 @@
 
 pub mod estimate;
 pub mod gen;
+pub mod partition;
 mod estimate_tar;
 mod estimate_tar_gz;
 mod gen_single;
@@ -23,3 +24,4 @@ pub use gen_single::GenSingleDirective;
 pub use gen_tar::GenTarDirective;
 pub use gen_tar_gz::GenTarGzDirective;
 pub use gen_batch::GenBatchDirective;
+pub use partition::PartitionDirective;

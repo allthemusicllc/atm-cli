@@ -51,11 +51,11 @@ fn try_batch_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
 
 #[derive(Debug, structopt::StructOpt)]
 pub struct BatchSize {
+    /// Number of melodies per batch.
     #[structopt(
         short="s",
         long,
         default_value="25",
-        help="Number of melodies per batch",
         parse(try_from_str = try_batch_from_str))]
     pub batch_size: u32,
 }
@@ -76,9 +76,8 @@ fn try_length_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
 
 #[derive(Debug, structopt::StructOpt)]
 pub struct MelodyLengthArg {
-    #[structopt(
-        help="Length of melodies (pitch sequences) to generate",
-        parse(try_from_str=try_length_from_str))]
+    /// Length of melodies (pitch sequences) to generate.
+    #[structopt(parse(try_from_str=try_length_from_str))]
     pub melody_length: u32,
 }
 
@@ -90,11 +89,8 @@ impl_into! { MelodyLengthArg, melody_length, u32 }
 
 #[derive(Debug, structopt::StructOpt)]
 pub struct NoteSetArg {
-    #[structopt(
-        value_name="notes",
-        help=concat!("Comma-separated set of NOTE:OCTAVE pairs ",
-                     "(i.e., 'C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5')"),
-        parse(try_from_str = libatm::MIDINoteSet::from_str))]
+    /// Comma-separated set of NOTE:OCTAVE pairs (i.e., 'C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5').
+    #[structopt(value_name="notes", parse(try_from_str = libatm::MIDINoteSet::from_str))]
     pub note_set: libatm::MIDINoteSet,
 }
 
@@ -102,11 +98,8 @@ impl_into! { NoteSetArg, note_set, libatm::MIDINoteSet }
 
 #[derive(Debug, structopt::StructOpt)]
 pub struct NoteVecArg {
-    #[structopt(
-        value_name="notes",
-        help=concat!("Comma-separated sequence of NOTE:OCTAVE pairs ",
-                     "(i.e., 'C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5')"),
-        parse(try_from_str = libatm::MIDINoteVec::from_str))]
+    /// Comma-separated set of NOTE:OCTAVE pairs (i.e., 'C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5').
+    #[structopt(value_name="notes", parse(try_from_str = libatm::MIDINoteVec::from_str))]
     pub note_vec: libatm::MIDINoteVec,
 }
 
@@ -118,9 +111,8 @@ impl_into! { NoteVecArg, note_vec, libatm::MIDINoteVec }
 
 #[derive(structopt::StructOpt)]
 pub struct NumNotesArg {
-    #[structopt(
-        help="Number of distinct notes to generate melodies from",
-        parse(try_from_str = u32::from_str))]
+    /// Number of distinct notes to generate melodies from.
+    #[structopt(parse(try_from_str = u32::from_str))]
     pub num_notes: u32,
 }
 
@@ -158,20 +150,17 @@ fn try_pdepth_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
 
 #[derive(Debug, structopt::StructOpt)]
 pub struct PartitionArgs {
+    /// Maximum number of files per directory.
     #[structopt(
         short,
         long,
         default_value="4096",
-        help="Maximum number of files per directory",
         parse(try_from_str=try_maxf_from_str))]
     pub max_files: u32,
-    #[structopt(
-        short="p",
-        long = "partitions",
-        help = concat!("Partition depth to use for output directory structure.  For ",
-                     "example, if set to 2 the ouput directory structure would look ",
-                     "like <root>/<branch>/<hash>.mid"),
-        parse(try_from_str=try_pdepth_from_str))]
+    /// Partition depth to use for output directory structure.
+    /// For example, if set to 2 the ouput directory structure would look 
+    /// like <root>/<branch>/<hash>.mid.
+    #[structopt(short="p", long = "partitions", parse(try_from_str=try_pdepth_from_str))]
     pub partition_depth: Option<u32>, 
 }
 
@@ -181,9 +170,8 @@ pub struct PartitionArgs {
 
 #[derive(Debug, structopt::StructOpt)]
 pub struct TargetArg {
-    #[structopt(
-        help="File output path (directory/directories must exist)",
-        parse(from_str))]
+    /// File output path (directory/directories must exist).
+    #[structopt(parse(from_str))]
     pub target: std::path::PathBuf,
 }
 
@@ -204,17 +192,18 @@ pub trait CliDirective {
 ***** CLI *****
 **************/
 
+/// Tools for generating and working with MIDI files.
+/// This app was created as part of an effort to generate
+/// by brute-force billions of melodies, and is tailored for that use case.
 #[derive(structopt::StructOpt)]
 #[structopt(
-    about = concat!("Tools for generating and working with MIDI files. ",
-                    "This app was created as part of an effort to generate ",
-                    "by brute-force billions of melodies, and is tailored for that use case."),
     author = "All The Music, LLC",
     version = env!("CARGO_PKG_VERSION"),
     setting=structopt::clap::AppSettings::ArgRequiredElseHelp)]
 pub enum Cli {
     Estimate(crate::directives::EstimateDirective),
     Gen(crate::directives::GenDirective),
+    Partition(crate::directives::PartitionDirective),
 }
 
 impl CliDirective for Cli {
@@ -222,6 +211,7 @@ impl CliDirective for Cli {
         match self {
             Self::Gen(d) => d.run(),
             Self::Estimate(d) => d.run(),
+            Self::Partition(d) => d.run(),
         }
     }
 }
