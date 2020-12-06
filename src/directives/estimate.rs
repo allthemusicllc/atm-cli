@@ -14,6 +14,10 @@ use crate::{
     },
 };
 
+/**************************
+***** Utility Methods *****
+**************************/
+
 /// Maximum number of melodies to use for size estimatation.
 /// Only used for tar_gz and batch backends.
 pub(crate) const MAX_SIM_NUM_MELODIES: u64 = 200000;
@@ -53,15 +57,14 @@ pub(crate) fn pad_value_to_block(value: u64, block_size: Option<u64>) -> u64 {
 ***** EstimateDirective *****
 ****************************/
 
+/// Estimate output size of storage backends to help make informed decisions about which to use.
 #[derive(structopt::StructOpt)]
-#[structopt(about=concat!("Estimate output size of storage backends ",
-                          "to help make informed decisions about which to use."))]
 pub enum EstimateDirective {
-    #[structopt(name="tar", about="Estimate output size of Tar file storage backend")]
+    /// Estimate output size of Tar file storage backend.
+    #[structopt(name="tar")]
     EstimateTar(EstimateTarDirective),
-    #[structopt(
-        name="tar_gz",
-        about="Estimate output size of Gzip-compressed Tar file storage backend")]
+    /// Estimate output size of Gzip-compressed Tar file storage backend.
+    #[structopt(name="tar-gz")]
     EstimateTarGz(EstimateTarGzDirective),
 }
 

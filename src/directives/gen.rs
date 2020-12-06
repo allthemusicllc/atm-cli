@@ -85,28 +85,26 @@ pub(crate) fn write_melodies_to_backend<B: StorageBackend>(
 ***** GenDirective *****
 ***********************/
 
+/// Generate melodies (MIDI files) and store them in a file/files.
 #[derive(structopt::StructOpt)]
-#[structopt(about="Generate melodies (MIDI files) and store them in a file/files")]
 pub enum GenDirective {
-    #[structopt(
-        name="batch",
-        about=concat!("Generate melodies and store them in Tar file, where each entry ",
-                      "is a Gzip-compressed Tar file. Use for the largest datasets, where storing ",
-                      "the generated melodies in a single file isn't feasible."))]
+    /// Generate melodies and store them in Tar file, where each entry 
+    /// is Gzip-compressed Tar file containing a batch of melodies.
+    /// Can be useful for situations where disk space is very limited,
+    /// though in general using the `tar-gz` backend will provide better compression.
+    #[structopt(name="batch")]
     GenBatch(GenBatchDirective),
-    #[structopt(name="single", about="Generate single melody (MIDI file).")]
+    /// Generate single melody (MIDI file).
+    #[structopt(name="single")]
     GenSingle(GenSingleDirective),
-    #[structopt(
-        name="tar",
-        about=concat!("Generate melodies and store them in Tar file. ",
-                      "Use for datasets where output file size is ",
-                      "less of a concern."))]
+    /// Generate melodies and store them in Tar file. 
+    /// Use for datasets where output file size is less of a concern.
+    #[structopt(name="tar")]
     GenTar(GenTarDirective),
-    #[structopt(
-        name="tar_gz",
-        about=concat!("Generate melodies and store them in Gzip-compressed Tar file. ",
-                      "Use for datasets where output file size is ",
-                      "more of a concern (see: compression_level)."))]
+    /// Generate melodies and store them in Gzip-compressed Tar file. 
+    /// Generally provides the best compression, and should be used for larger datasets.
+    /// See `estimate` directives to simulate output file sizes.
+    #[structopt(name="tar-gz")]
     GenTarGz(GenTarGzDirective),
 }
 
