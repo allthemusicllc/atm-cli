@@ -73,6 +73,9 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// estimate.rs</span>
 <span class="comment">//</span>
@@ -89,6 +92,10 @@
         <span class="ident">EstimateTarGzDirective</span>,
     },
 };
+
+<span class="comment">/**************************
+***** Utility Methods *****
+**************************/</span>
 
 <span class="doccomment">/// Maximum number of melodies to use for size estimatation.</span>
 <span class="doccomment">/// Only used for tar_gz and batch backends.</span>
@@ -129,15 +136,14 @@
 ***** EstimateDirective *****
 ****************************/</span>
 
+<span class="doccomment">/// Estimate output size of storage backends to help make informed decisions about which to use.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
-<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">about</span><span class="op">=</span><span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Estimate output size of storage backends &quot;</span>,
-                          <span class="string">&quot;to help make informed decisions about which to use.&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EstimateDirective</span> {
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span><span class="op">=</span><span class="string">&quot;tar&quot;</span>, <span class="ident">about</span><span class="op">=</span><span class="string">&quot;Estimate output size of Tar file storage backend&quot;</span>)]</span>
+    <span class="doccomment">/// Estimate output size of Tar file storage backend.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span><span class="op">=</span><span class="string">&quot;tar&quot;</span>)]</span>
     <span class="ident">EstimateTar</span>(<span class="ident">EstimateTarDirective</span>),
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">name</span><span class="op">=</span><span class="string">&quot;tar_gz&quot;</span>,
-        <span class="ident">about</span><span class="op">=</span><span class="string">&quot;Estimate output size of Gzip-compressed Tar file storage backend&quot;</span>)]</span>
+    <span class="doccomment">/// Estimate output size of Gzip-compressed Tar file storage backend.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span><span class="op">=</span><span class="string">&quot;tar-gz&quot;</span>)]</span>
     <span class="ident">EstimateTarGz</span>(<span class="ident">EstimateTarGzDirective</span>),
 }
 

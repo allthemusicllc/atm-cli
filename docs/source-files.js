@@ -1,6 +1,6 @@
 var N = null;var sourcesIndex = {};
 sourcesIndex["ansi_term"] = {"name":"","files":["ansi.rs","debug.rs","difference.rs","display.rs","lib.rs","style.rs","windows.rs","write.rs"]};
-sourcesIndex["atm"] = {"name":"","dirs":[{"name":"directives","files":["estimate.rs","estimate_tar.rs","estimate_tar_gz.rs","gen.rs","gen_batch.rs","gen_single.rs","gen_tar.rs","gen_tar_gz.rs"]},{"name":"storage","files":["batch_tar_file.rs","tar_archive.rs","tar_file.rs","tar_gz_file.rs"]}],"files":["cli.rs","directives.rs","lib.rs","storage.rs","utils.rs"]};
+sourcesIndex["atm"] = {"name":"","dirs":[{"name":"directives","files":["estimate.rs","estimate_tar.rs","estimate_tar_gz.rs","gen.rs","gen_batch.rs","gen_single.rs","gen_tar.rs","gen_tar_gz.rs","partition.rs"]},{"name":"storage","files":["batch_tar_file.rs","tar_archive.rs","tar_file.rs","tar_gz_file.rs"]}],"files":["cli.rs","directives.rs","lib.rs","storage.rs","utils.rs"]};
 sourcesIndex["atty"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bitflags"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["byteorder"] = {"name":"","files":["io.rs","lib.rs"]};

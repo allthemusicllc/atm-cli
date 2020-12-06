@@ -118,8 +118,6 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
-<span id="121">121</span>
-<span id="122">122</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// gen.rs</span>
 <span class="comment">//</span>
@@ -208,28 +206,26 @@
 ***** GenDirective *****
 ***********************/</span>
 
+<span class="doccomment">/// Generate melodies (MIDI files) and store them in a file/files.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
-<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">about</span><span class="op">=</span><span class="string">&quot;Generate melodies (MIDI files) and store them in a file/files&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">GenDirective</span> {
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">name</span><span class="op">=</span><span class="string">&quot;batch&quot;</span>,
-        <span class="ident">about</span><span class="op">=</span><span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Generate melodies and store them in Tar file, where each entry &quot;</span>,
-                      <span class="string">&quot;is a Gzip-compressed Tar file. Use for the largest datasets, where storing &quot;</span>,
-                      <span class="string">&quot;the generated melodies in a single file isn&#39;t feasible.&quot;</span>))]</span>
+    <span class="doccomment">/// Generate melodies and store them in Tar file, where each entry </span>
+    <span class="doccomment">/// is Gzip-compressed Tar file containing a batch of melodies.</span>
+    <span class="doccomment">/// Can be useful for situations where disk space is very limited,</span>
+    <span class="doccomment">/// though in general using the `tar-gz` backend will provide better compression.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span><span class="op">=</span><span class="string">&quot;batch&quot;</span>)]</span>
     <span class="ident">GenBatch</span>(<span class="ident">GenBatchDirective</span>),
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span><span class="op">=</span><span class="string">&quot;single&quot;</span>, <span class="ident">about</span><span class="op">=</span><span class="string">&quot;Generate single melody (MIDI file).&quot;</span>)]</span>
+    <span class="doccomment">/// Generate single melody (MIDI file).</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span><span class="op">=</span><span class="string">&quot;single&quot;</span>)]</span>
     <span class="ident">GenSingle</span>(<span class="ident">GenSingleDirective</span>),
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">name</span><span class="op">=</span><span class="string">&quot;tar&quot;</span>,
-        <span class="ident">about</span><span class="op">=</span><span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Generate melodies and store them in Tar file. &quot;</span>,
-                      <span class="string">&quot;Use for datasets where output file size is &quot;</span>,
-                      <span class="string">&quot;less of a concern.&quot;</span>))]</span>
+    <span class="doccomment">/// Generate melodies and store them in Tar file. </span>
+    <span class="doccomment">/// Use for datasets where output file size is less of a concern.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span><span class="op">=</span><span class="string">&quot;tar&quot;</span>)]</span>
     <span class="ident">GenTar</span>(<span class="ident">GenTarDirective</span>),
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">name</span><span class="op">=</span><span class="string">&quot;tar_gz&quot;</span>,
-        <span class="ident">about</span><span class="op">=</span><span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Generate melodies and store them in Gzip-compressed Tar file. &quot;</span>,
-                      <span class="string">&quot;Use for datasets where output file size is &quot;</span>,
-                      <span class="string">&quot;more of a concern (see: compression_level).&quot;</span>))]</span>
+    <span class="doccomment">/// Generate melodies and store them in Gzip-compressed Tar file. </span>
+    <span class="doccomment">/// Generally provides the best compression, and should be used for larger datasets.</span>
+    <span class="doccomment">/// See `estimate` directives to simulate output file sizes.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span><span class="op">=</span><span class="string">&quot;tar-gz&quot;</span>)]</span>
     <span class="ident">GenTarGz</span>(<span class="ident">GenTarGzDirective</span>),
 }
 

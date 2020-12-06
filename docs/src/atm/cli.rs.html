@@ -215,16 +215,6 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
-<span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// cli.rs</span>
 <span class="comment">//</span>
@@ -279,11 +269,11 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchSize</span> {
+    <span class="doccomment">/// Number of melodies per batch.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">short</span><span class="op">=</span><span class="string">&quot;s&quot;</span>,
         <span class="ident">long</span>,
         <span class="ident">default_value</span><span class="op">=</span><span class="string">&quot;25&quot;</span>,
-        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Number of melodies per batch&quot;</span>,
         <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">try_batch_from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">batch_size</span>: <span class="ident">u32</span>,
 }
@@ -304,9 +294,8 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MelodyLengthArg</span> {
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Length of melodies (pitch sequences) to generate&quot;</span>,
-        <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_length_from_str</span>))]</span>
+    <span class="doccomment">/// Length of melodies (pitch sequences) to generate.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_length_from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">melody_length</span>: <span class="ident">u32</span>,
 }
 
@@ -318,11 +307,8 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteSetArg</span> {
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">value_name</span><span class="op">=</span><span class="string">&quot;notes&quot;</span>,
-        <span class="ident">help</span><span class="op">=</span><span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Comma-separated set of NOTE:OCTAVE pairs &quot;</span>,
-                     <span class="string">&quot;(i.e., &#39;C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5&#39;)&quot;</span>),
-        <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span>::<span class="ident">from_str</span>))]</span>
+    <span class="doccomment">/// Comma-separated set of NOTE:OCTAVE pairs (i.e., &#39;C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5&#39;).</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">value_name</span><span class="op">=</span><span class="string">&quot;notes&quot;</span>, <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span>::<span class="ident">from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">note_set</span>: <span class="ident">libatm</span>::<span class="ident">MIDINoteSet</span>,
 }
 
@@ -330,11 +316,8 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteVecArg</span> {
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">value_name</span><span class="op">=</span><span class="string">&quot;notes&quot;</span>,
-        <span class="ident">help</span><span class="op">=</span><span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Comma-separated sequence of NOTE:OCTAVE pairs &quot;</span>,
-                     <span class="string">&quot;(i.e., &#39;C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5&#39;)&quot;</span>),
-        <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span>::<span class="ident">from_str</span>))]</span>
+    <span class="doccomment">/// Comma-separated set of NOTE:OCTAVE pairs (i.e., &#39;C:4,D:4,E:4,F:4,G:4,A:4,B:4,C:5&#39;).</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">value_name</span><span class="op">=</span><span class="string">&quot;notes&quot;</span>, <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span>::<span class="ident">from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">note_vec</span>: <span class="ident">libatm</span>::<span class="ident">MIDINoteVec</span>,
 }
 
@@ -346,9 +329,8 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NumNotesArg</span> {
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Number of distinct notes to generate melodies from&quot;</span>,
-        <span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">from_str</span>))]</span>
+    <span class="doccomment">/// Number of distinct notes to generate melodies from.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">parse</span>(<span class="ident">try_from_str</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">num_notes</span>: <span class="ident">u32</span>,
 }
 
@@ -386,20 +368,17 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PartitionArgs</span> {
+    <span class="doccomment">/// Maximum number of files per directory.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(
         <span class="ident">short</span>,
         <span class="ident">long</span>,
         <span class="ident">default_value</span><span class="op">=</span><span class="string">&quot;4096&quot;</span>,
-        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;Maximum number of files per directory&quot;</span>,
         <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_maxf_from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">max_files</span>: <span class="ident">u32</span>,
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">short</span><span class="op">=</span><span class="string">&quot;p&quot;</span>,
-        <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;partitions&quot;</span>,
-        <span class="ident">help</span> <span class="op">=</span> <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Partition depth to use for output directory structure.  For &quot;</span>,
-                     <span class="string">&quot;example, if set to 2 the ouput directory structure would look &quot;</span>,
-                     <span class="string">&quot;like &lt;root&gt;/&lt;branch&gt;/&lt;hash&gt;.mid&quot;</span>),
-        <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_pdepth_from_str</span>))]</span>
+    <span class="doccomment">/// Partition depth to use for output directory structure.</span>
+    <span class="doccomment">/// For example, if set to 2 the ouput directory structure would look </span>
+    <span class="doccomment">/// like &lt;root&gt;/&lt;branch&gt;/&lt;hash&gt;.mid.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span><span class="op">=</span><span class="string">&quot;p&quot;</span>, <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;partitions&quot;</span>, <span class="ident">parse</span>(<span class="ident">try_from_str</span><span class="op">=</span><span class="ident">try_pdepth_from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">partition_depth</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>, 
 }
 
@@ -409,9 +388,8 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TargetArg</span> {
-    <span class="attribute">#[<span class="ident">structopt</span>(
-        <span class="ident">help</span><span class="op">=</span><span class="string">&quot;File output path (directory/directories must exist)&quot;</span>,
-        <span class="ident">parse</span>(<span class="ident">from_str</span>))]</span>
+    <span class="doccomment">/// File output path (directory/directories must exist).</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">parse</span>(<span class="ident">from_str</span>))]</span>
     <span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>,
 }
 
@@ -432,17 +410,18 @@
 ***** CLI *****
 **************/</span>
 
+<span class="doccomment">/// Tools for generating and working with MIDI files.</span>
+<span class="doccomment">/// This app was created as part of an effort to generate</span>
+<span class="doccomment">/// by brute-force billions of melodies, and is tailored for that use case.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">structopt</span>::<span class="ident">StructOpt</span>)]</span>
 <span class="attribute">#[<span class="ident">structopt</span>(
-    <span class="ident">about</span> <span class="op">=</span> <span class="macro">concat</span><span class="macro">!</span>(<span class="string">&quot;Tools for generating and working with MIDI files. &quot;</span>,
-                    <span class="string">&quot;This app was created as part of an effort to generate &quot;</span>,
-                    <span class="string">&quot;by brute-force billions of melodies, and is tailored for that use case.&quot;</span>),
     <span class="ident">author</span> <span class="op">=</span> <span class="string">&quot;All The Music, LLC&quot;</span>,
     <span class="ident">version</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>),
     <span class="ident">setting</span><span class="op">=</span><span class="ident">structopt</span>::<span class="ident">clap</span>::<span class="ident">AppSettings</span>::<span class="ident">ArgRequiredElseHelp</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Cli</span> {
     <span class="ident">Estimate</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">EstimateDirective</span>),
     <span class="ident">Gen</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">GenDirective</span>),
+    <span class="ident">Partition</span>(<span class="kw">crate</span>::<span class="ident">directives</span>::<span class="ident">PartitionDirective</span>),
 }
 
 <span class="kw">impl</span> <span class="ident">CliDirective</span> <span class="kw">for</span> <span class="ident">Cli</span> {
@@ -450,6 +429,7 @@
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="self">Self</span>::<span class="ident">Gen</span>(<span class="ident">d</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">d</span>.<span class="ident">run</span>(),
             <span class="self">Self</span>::<span class="ident">Estimate</span>(<span class="ident">d</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">d</span>.<span class="ident">run</span>(),
+            <span class="self">Self</span>::<span class="ident">Partition</span>(<span class="ident">d</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">d</span>.<span class="ident">run</span>(),
         }
     }
 }
