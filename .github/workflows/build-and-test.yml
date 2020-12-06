@@ -1,0 +1,36 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+
+  build_linux:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Rust Toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: complete
+    - uses: actions/checkout@v2
+    - name: Build in Release Mode
+      run: cargo build --release
+    - name: Run tests
+      run: cargo test --verbose
+
+  build_windows:
+    runs-on: windows-latest
+    steps:
+    - name: Install Rust Toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: complete
+    - uses: actions/checkout@v2
+    - name: Build in Release Mode
+      run: cargo build --release
+    - name: Run tests
+      run: cargo test --verbose
