@@ -8,7 +8,7 @@
 
 use crate::{
     cli::{CliDirective, PartitionArgs},
-    storage::{PartitionPathGenerator, PathGenerator},
+    storage::{PartitionPathGenerator, PartitionPathGeneratorError, PathGenerator},
 };
 
 /*****************************
@@ -22,17 +22,30 @@ pub struct PartitionDirective {
     #[structopt(flatten)]
     pub note_vec: crate::cli::NoteVecArg,
     #[structopt(flatten)]
+    pub num_notes: crate::cli::NumDistinctNotesArg,
+    #[structopt(flatten)]
     pub partition: PartitionArgs,
+}
+
+impl PartitionDirective {
+    fn path_generator(&self) -> Result<PartitionPathGenerator, PartitionPathGeneratorError> {
+        let melody_length = self.note_vec.note_vec.len() as u32;
+        let max_files = self.partition.max_files;
+        let partition_depth = self.partition.partition_depth.unwrap_or(1);
+
+        PartitionPathGenerator::new(
+            self.num_notes.num_notes,
+            melody_length,
+            max_files,
+            partition_depth,
+        )
+    }
 }
 
 impl CliDirective for PartitionDirective {
     fn run(self) {
+        let path_generator = self.path_generator();
         let note_vec = self.note_vec.note_vec;
-        let melody_length = note_vec.len() as u32;
-        let max_files = self.partition.max_files;
-        let partition_depth = self.partition.partition_depth.unwrap_or(1);
-
-        let path_generator = PartitionPathGenerator::new(melody_length, melody_length, max_files, partition_depth);
         match path_generator {
             Ok(path_generator) => {
                 let mfile = libatm::MIDIFile::new(note_vec, libatm::MIDIFormat::Format0, 1, 1);
@@ -49,5 +62,50 @@ impl CliDirective for PartitionDirective {
                 std::process::exit(2);
             },
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use structopt::StructOpt;
+
+    #[test]
+    fn partition_uses_explicit_note_set_size() {
+        let directive = PartitionDirective::from_iter_safe([
+            "atm",
+            "--num-notes",
+            "2",
+            "--max-files",
+            "2",
+            "--partitions",
+            "2",
+            "C:4,D:4,D:4",
+        ])
+        .unwrap();
+
+        let path_generator = directive.path_generator().unwrap();
+        let melody = libatm::MIDIFile::new(
+            directive.note_vec.note_vec,
+            libatm::MIDIFormat::Format0,
+            1,
+            1,
+        );
+        let path = path_generator.gen_path_for_file(&melody).unwrap();
+        assert_eq!(std::path::Path::new(&path).components().count(), 3);
+    }
+
+    #[test]
+    fn partition_requires_note_set_size() {
+        let result = PartitionDirective::from_iter_safe([
+            "atm",
+            "--max-files",
+            "2",
+            "--partitions",
+            "2",
+            "C:4,D:4,D:4",
+        ]);
+
+        assert!(result.is_err());
     }
 }

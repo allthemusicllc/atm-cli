@@ -118,6 +118,27 @@ pub struct NumNotesArg {
 
 impl_into! { NumNotesArg, num_notes, u32 }
 
+fn try_distinct_note_count_from_str(arg: &str) -> Result<u32, ParseNumberArgError> {
+    let num_notes = arg.parse::<u32>()?;
+    if num_notes == 0 {
+        return Err(ParseNumberArgError::LessThanZero {
+            arg_name: "Number of distinct notes".to_string(),
+        });
+    }
+    Ok(num_notes)
+}
+
+#[derive(Debug, structopt::StructOpt)]
+pub struct NumDistinctNotesArg {
+    /// Number of distinct notes in the original note set used to generate the melody.
+    #[structopt(
+        short = "n",
+        long = "num-notes",
+        value_name = "count",
+        parse(try_from_str = try_distinct_note_count_from_str))]
+    pub num_notes: u32,
+}
+
 /************************
 ***** PartitionArgs *****
 ************************/
